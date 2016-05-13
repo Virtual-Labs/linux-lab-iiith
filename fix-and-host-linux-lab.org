@@ -1,0 +1,41 @@
+#+Title: Efforts on fix and host Linux lab
+#+Date: <2016-05-13 Fri>
+#+Author: Yogesh Agrawal
+#+Email: yogesh@vlabs.ac.in
+
+* Introduction
+  This document describes the efforts that are done in order to host
+  the Linux Lab.
+
+* Efforts
+  I have created three containers in base4. One for Linux lab, one for
+  Linux ldap and one for Linux nfs.
+
+** Set up ldap server
+   No error encountered in setting up ldap server.
+
+** Set up NFS server
+   To setup nfs server followings steps are done:
+   1. Install nfs kernel 
+      #+BEGIN_EXAMPLE
+      mkdir -p /var/export/nfs4/home
+      apt-get install nfs-kernel-server
+      #+END_EXAMPLE
+   2. Edit /etc/exports and add the following lines
+      #+BEGIN_EXAMPLE
+      /var/export/nfs4       10.4.15.92(rw,sync,no_subtree_check)
+      /var/export/nfs4/home  10.4.15.92(rw,sync,no_subtree_check)
+      #+END_EXAMPLE
+   3. Refresh the export list
+      #+BEGIN_EXAMPLE
+      exports -rav
+      #+END_EXAMPLE
+      - status :: This command throws an error as command not found.
+      #+BEGIN_EXAMPLE
+      root@linux-lab-nfs:~# exports -rav
+      -su: exports: command not found
+      #+END_EXAMPLE
+
+* Reference Links
+  - https://github.com/Virtual-Labs/documentation-popl-linux-labs/blob/master/documents/POPL-backend-gateone-ldap.pdf
+  - 
