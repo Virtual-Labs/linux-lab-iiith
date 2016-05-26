@@ -77,33 +77,126 @@
 *** Reference
    - https://github.com/liftoff/GateOne/downloads
    - https://www.youtube.com/watch?v=gnVohdlZXVY&list=UU8c7zNWoShUxaFqWKv7H51g&index=3&feature=plpp_video
-    
-** SSH Server
 ** Ldap server
    1. set proxy
    2. Update the system.
       #+BEGIN_EXAMPLE
       apt-get update
       #+END_EXAMPLE
-   3. Install openldap and set passwd: *vlead123*
+   3. Install openldap.
       #+BEGIN_EXAMPLE
-      apt-get install slapd
+      apt-get install slapd ldap-utils
       #+END_EXAMPLE
-   4. 
-
+   4. Reconfigure slapd.
+      #+BEGIN_EXAMPLE
+      dpkg-reconfigure slapd
+      #+END_EXAMPLE
+      Use following settings:
+      #+BEGIN_EXAMPLE
+      Omit OpenLDAP server configuration? No
+      DNS domain name: virtual-labs.ac.in
+      Organization name? Virtual Labs
+      Administrator password: password
+      Confirm password: password
+      Database backend to use: HDB
+      Do you want the database to be removed when slapd is purged? No
+      #+END_EXAMPLE
+   5. Verify that the ldap setup is done properly.
+      #+BEGIN_EXAMPLE
+      ldapsearch -Y EXTERNAL -H ldapi:// -b 'dc=virtual-labs,dc=ac,dc=in'
+      #+END_EXAMPLE
+   6. Create organizational units for people and groups using
+      following command:
+      #+BEGIN_EXAMPLE
+      ldapadd -x -D 'cn=admin,dc=virtual-labs,dc=ac,dc=in' -W -f units.ldif
+      #+END_EXAMPLE
+      units.ldif file should have following content:
+      #+BEGIN_EXAMPLE
+      dn: ou=People,dc=virtual-labs,dc=ac,dc=in
+      ou: People
+      objectClass: organizationalUnit
+      dn: ou=Group,dc=virtual-labs,dc=ac,dc=in
+      ou: Group
+      objectClass: organizationalUnit
+      #+END_EXAMPLE
+   7. Create a group 'vlusers' for Virtual Labs end users using
+      following command:
+      #+BEGIN_EXAMPLE
+      ldapadd -x -D 'cn=admin,dc=virtual-labs,dc=ac,dc=in' -W -f group.ldif
+      #+END_EXAMPLE
+      group.ldif should have following content:
+      #+BEGIN_EXAMPLE
+      dn: cn=vlusers,ou=Group,dc=virtual-labs,dc=ac,dc=in
+      cn: vlusers
+      gidNumber: 20000
+      objectClass: top
+      objectClass: posixGroup
+      #+END_EXAMPLE
+   8. Create a 'testuser' user in 'vlusers' group using following
+      command:
+      #+BEGIN_EXAMPLE
+      ldapadd -x -D 'cn=admin,dc=virtual-labs,dc=ac,dc=in' -W -f testuser1.ldif
+      #+END_EXAMPLE
+      testuser1.ldif should have following content
+      #+BEGIN_EXAMPLE
+      dn: uid=testuser1,ou=People,dc=virtual-labs,dc=ac,dc=in
+      uid: testuser1
+      uidNumber: 20000
+      gidNumber: 20000
+      cn: Test User 1
+      sn: User
+      objectClass: top
+      objectClass: person
+      objectClass: posixAccount
+      objectClass: shadowAccount
+      loginShell: /bin/bash
+      homeDirectory: /home/testuser1
+      #+END_EXAMPLE
+    
+** SSH Server
+   1. set proxy
+   2. apt-get update
+   3. Install libpam-ldapd package
+      #+BEGIN_EXAMPLE
+      apt-get install libpam-ldapd
+      #+END_EXAMPLE
+      Answer the following questions:
+      #+BEGIN_EXAMPLE
+      IP address / hostname of the LDAP server: ldap.virtual-labs.ac.in
+      The search base: dc=virutal-labs,dc=ac,dc=in
+      Version of the LDAP connecting to: Version 3
+      Configuring LIBNSS-LDAP: OK
+      Make root the DB admin: Yes
+      DB requires logging in: No
+      Root account of LDAP: cn=admin,dc=virtual-labs,dc=ac,dc=in
+      Root password: password
+      #+END_EXAMPLE
+   4. Verify that the ldap server is being reached and everything is
+      working fine:
+      #+BEGIN_EXAMPLE
+      getent passwd
+      #+END_EXAMPLE
+   5. Enable creating home directories when user logs in. Edit
+      /etc/pam.d/common-session and add the following line.
+     #+BEGIN_EXAMPLE
+     session required pam_mkhomedir.so skel=/etc/skel umask=0022
+     #+END_EXAMPLE
 ** Set up NFS server
    To setup nfs server followings steps are done:
-   1. Install nfs kernel 
+   1. set proxy
+   2. apt-get update
+   3. Install nfs kernel 
       #+BEGIN_EXAMPLE
       mkdir -p /var/export/nfs4/home
-      apt-get install nfs-kernel-server
+      apt-get install nfs-kernel-server -y
       #+END_EXAMPLE
-   2. Edit /etc/exports and add the following lines
+   4. Edit /etc/exports and add the following lines, replace
+      <ip-address> with the ip of the shell server.
       #+BEGIN_EXAMPLE
-      /var/export/nfs4       10.4.15.92(rw,sync,no_subtree_check)
-      /var/export/nfs4/home  10.4.15.92(rw,sync,no_subtree_check)
+      /var/export/nfs4       <ip-address>(rw,sync,no_subtree_check)
+      /var/export/nfs4/home  <ip-address>(rw,sync,no_subtree_check)
       #+END_EXAMPLE
-   3. Refresh the export list
+   5. Refresh the export list
       #+BEGIN_EXAMPLE
       exports -rav
       #+END_EXAMPLE
