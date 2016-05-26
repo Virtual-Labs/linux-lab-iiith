@@ -4,15 +4,92 @@
 #+Email: yogesh@vlabs.ac.in
 
 * Introduction
-  This document describes the efforts that are done in order to host
-  the Linux Lab.
+  This document describes the efforts that are done to fix and host
+  Linux Lab.
 
-* Efforts
-  I have created three containers in base4. One for Linux lab, one for
-  Linux ldap and one for Linux nfs.
+* Provisioning of servers
+  Create following containers in base4:
+  - template :: ubuntu-12.04-custom-x86_64
 
-** Set up ldap server
-   No error encountered in setting up ldap server.
+** Linux Lab
+   1. Set proxy in ~/.bashrc file.
+   2. Update the system.
+      #+BEGIN_EXAMPLE
+      apt-get update
+      #+END_EXAMPLE
+   3. Clone the lab source code.
+      #+BEGIN_EXAMPLE
+      git clone https://github.com/Virtual-Labs/linux-lab-iiith.git
+      #+END_EXAMPLE
+   4. Install graphviz and php.
+      #+BEGIN_EXAMPLE
+      apt-get install graphviz php5
+      #+END_EXAMPLE
+   5. Navigate to src folder and execute make command.
+   6. Rsync the content of build folder to =/var/www= directory.
+   7. Navigate to http://10.4.15.214/ to view the lab.
+** GateOne server
+*** Approach 1 (Not working)
+   - refer: https://www.digitalocean.com/community/tutorials/how-to-ssh-into-your-vps-from-the-browser-with-gateone
+   1. set proxy
+   2. apt-get update
+   3. apt-get install curl
+   4. Download gateone
+      #+BEGIN_EXAMPLE
+      curl -L http://github.com/liftoff/GateOne/archive/master.tar.gz > ~/gateone.tar.gz
+      #+END_EXAMPLE
+   5. Extract
+      #+BEGIN_EXAMPLE
+      tar xvzf ~/gateone.tar.gz -C ~
+      #+END_EXAMPLE
+   6. Install python libraries
+      #+BEGIN_EXAMPLE
+      apt-get install python-pip debhelper python-support -y
+      #+END_EXAMPLE
+   7. Use pip to install extra packages
+      #+BEGIN_EXAMPLE
+      pip install tornado stdeb
+      #+END_EXAMPLE
+   8. Create a deb package for GateOne
+      #+BEGIN_EXAMPLE
+      cd ~/GateOne-master
+      python setup.py --command-packages=stdeb.command bdist_deb
+      #+END_EXAMPLE
+
+*** Approach 2 (Working)
+    - refer: http://liftoff.github.io/GateOne/About/
+    1. install tornado
+       #+BEGIN_EXAMPLE
+       pip install tornado==2.4.1
+       #+END_EXAMPLE
+    2. Download gateone from
+       https://github.com/downloads/liftoff/GateOne/gateone_1.1-1_all.deb
+    3. Install gateone via dpkg
+       #+BEGIN_EXAMPLE
+       dpkg -i gateone*.deb
+       #+END_EXAMPLE
+    4. Navigate inside =/opt/gateone= directory, and execute
+       gateone.py.
+       #+BEGIN_EXAMPLE
+       ./gateone.py
+       #+END_EXAMPLE
+    5. Now browse https://10.4.15.215 to access gateone server.
+*** Reference
+   - https://github.com/liftoff/GateOne/downloads
+   - https://www.youtube.com/watch?v=gnVohdlZXVY&list=UU8c7zNWoShUxaFqWKv7H51g&index=3&feature=plpp_video
+    
+** SSH Server
+** Ldap server
+   1. set proxy
+   2. Update the system.
+      #+BEGIN_EXAMPLE
+      apt-get update
+      #+END_EXAMPLE
+   3. Install openldap and set passwd: *vlead123*
+      #+BEGIN_EXAMPLE
+      apt-get install slapd
+      #+END_EXAMPLE
+   4. 
 
 ** Set up NFS server
    To setup nfs server followings steps are done:
