@@ -190,6 +190,14 @@
       mkdir -p /var/export/nfs4/home
       apt-get install nfs-kernel-server -y
       #+END_EXAMPLE
+      - status :: Installation fails
+		 #+BEGIN_EXAMPLE
+		 Creating config file /etc/exports with new version
+		 Creating config file /etc/default/nfs-kernel-server with new version
+		 * Not starting NFS kernel daemon: no support in current kernel.
+		 Processing triggers for libc-bin ...
+		 ldconfig deferred processing now taking place
+		 #+END_EXAMPLE
    4. Edit /etc/exports and add the following lines, replace
       <ip-address> with the ip of the shell server.
       #+BEGIN_EXAMPLE
