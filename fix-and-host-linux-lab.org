@@ -39,7 +39,7 @@
       BINDDN='cn=admin,dc=example,dc=com'
       BINDPWDFILE="/etc/ldapscripts/ldapscripts.passwd"
       SUFFIX='dc=example,dc=com'
-      GSUFFIX='ou=Groups'
+      GSUFFIX='ou=Group'
       USUFFIX='ou=People'
       MSUFFIX='ou=Computers'
       GIDSTART=10000
@@ -84,7 +84,7 @@
 			$ ldapadduser george vlusers
 			Cannot resolve group vlusers to gid : not found
 			#+END_EXAMPLE
-		   3. 
+		   
 ** GateOne server
 *** Approach 1 (Not working)
    - refer: https://www.digitalocean.com/community/tutorials/how-to-ssh-into-your-vps-from-the-browser-with-gateone
