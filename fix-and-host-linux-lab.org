@@ -32,6 +32,7 @@
       #+BEGIN_EXAMPLE
       apt-get install ldapscripts
       #+END_EXAMPLE
+      - refer :: http://www.meso.northwestern.edu/intranet/recipies/useful-computer-files-and-programs/configuring-group-linux-servers-and-terminals-with-ldap-kerberos-and-nfs/ldap-user-and-group-management		  
    9. Configure =/etc/ldapscripts/ldapscripts.conf= as follows:
       #+BEGIN_EXAMPLE
       SERVER=localhost
@@ -59,7 +60,31 @@
        Oops! Some error occurred.
        Failed to create user: Could not guess current userUnable to create /var/log/ldapscripts.log, exiting...
        #+END_EXAMPLE
-       - refer :: http://www.meso.northwestern.edu/intranet/recipies/useful-computer-files-and-programs/configuring-group-linux-servers-and-terminals-with-ldap-kerberos-and-nfs/ldap-user-and-group-management		  
+       - Efforts ::
+		   1. Posted question at [[http://stackoverflow.com/questions/37480782/ldapadduser-command-throws-could-not-guess-current-user][stackoverflow]]
+		   2. After reading /usr/sbin/ldapadduser and
+                      /usr/share/ldapscripts/runtime scripts I found
+                      that the $USER variable is set using =logname=
+                      command. But executing =logname= command returns
+                      no name as follows:
+		      #+BEGIN_EXAMPLE
+		      $ logname
+		      logname: no login name
+		      #+END_EXAMPLE
+		      - Replace =USER=$(logname 2>/dev/null)= with
+                        =USER=$(whoami 2>/dev/null)=. refer:
+                        http://stackoverflow.com/questions/18017311/bash-script-using-ldapscripts-package-does-not-work-from-cron
+		      - Grant read privileges to ldapscripts.passwd
+                        file.
+                        #+BEGIN_EXAMPLE
+		        chmod +r ldapscripts.passwd
+		        #+END_EXAMPLE
+		      - Now when add user it throws
+			#+BEGIN_EXAMPLE
+			$ ldapadduser george vlusers
+			Cannot resolve group vlusers to gid : not found
+			#+END_EXAMPLE
+		   3. 
 ** GateOne server
 *** Approach 1 (Not working)
    - refer: https://www.digitalocean.com/community/tutorials/how-to-ssh-into-your-vps-from-the-browser-with-gateone
