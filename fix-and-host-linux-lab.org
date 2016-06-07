@@ -60,34 +60,31 @@
        Oops! Some error occurred.
        Failed to create user: Could not guess current userUnable to create /var/log/ldapscripts.log, exiting...
        #+END_EXAMPLE
-
-*** Troubleshooting
-    1. Posted question at [[http://stackoverflow.com/questions/37480782/ldapadduser-command-throws-cannot-resolve-group-to-gid-not-found][stackoverflow]]
-    2. After reading /usr/sbin/ldapadduser and
-       /usr/share/ldapscripts/runtime scripts I found that the $USER
-       variable is set using =logname= command. But executing
-       =logname= command returns no name as follows:
-       #+BEGIN_EXAMPLE
-       $ logname
-       logname: no login name
-       #+END_EXAMPLE
-       So replace =USER=$(logname 2>/dev/null)= with =USER=$(whoami
-       2>/dev/null)=. refer:
-       http://stackoverflow.com/questions/18017311/bash-script-using-ldapscripts-package-does-not-work-from-cron
-    3. Grant read privileges to ldapscripts.passwd file.
-       #+BEGIN_EXAMPLE
-       chmod +r ldapscripts.passwd
-       #+END_EXAMPLE
-    4. Now when we add user it throws
-       #+BEGIN_EXAMPLE
-       $ ldapadduser george vlusers
-       Cannot resolve group vlusers to gid : not found
-       #+END_EXAMPLE
-    5. When we try to add group it throws:
-       #+BEGIN_EXAMPLE
-       $ ldapaddgroup example
-       Error adding group example to LDAP
-       #+END_EXAMPLE
+       After doing below troubleshooting steps registration is working
+       properly.
+       - Troubleshooting ::
+         1. Set =USER= directive in =/usr/share/ldapscripts/runtime=
+            as follows:
+            #+BEGIN_EXAMPLE
+            USER=$(whoami 2>/dev/null)
+            #+END_EXAMPLE
+            Because =logname= does not work.
+            #+BEGIN_EXAMPLE
+            $ logname
+            logname: no login name
+            #+END_EXAMPLE
+	    - refer:
+              http://stackoverflow.com/questions/18017311/bash-script-using-ldapscripts-package-does-not-work-from-cron
+         2. Grant read privileges to ldapscripts.passwd file.
+            #+BEGIN_EXAMPLE
+            chmod 440 ldapscripts.passwd
+            #+END_EXAMPLE
+         3. Add =www-data= user to =root= group and restart apache
+            service so that it can read the password file.
+            #+BEGIN_EXAMPLE
+            usermod -a -G root www-data
+            service apache2 restart
+            #+END_EXAMPLE
 		   
 ** GateOne server
 *** Approach 1 (Not working)
