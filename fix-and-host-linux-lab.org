@@ -102,6 +102,14 @@
        #+BEGIN_EXAMPLE
        <frame src="https://10.4.15.215/" />
        #+END_EXAMPLE
+   17. After login enter following credentials a gateone web interface
+       will be presented:
+       #+BEGIN_EXAMPLE
+       host: 10.4.15.216
+       port: 22
+       User: test
+       passwd: test
+       #+END_EXAMPLE
 		   
 ** GateOne server
 *** Approach 1 (Not working)
@@ -246,21 +254,55 @@
       Root account of LDAP: cn=admin,dc=virtual-labs,dc=ac,dc=in
       Root password: password
       #+END_EXAMPLE
-   4. Verify that the ldap server is being reached and everything is
+   4. Modify =/etc/nsswitch.conf= to contain something like this
+      #+BEGIN_EXAMPLE
+      passwd:         compat ldap
+      group:          compat ldap
+      shadow:         compat ldap
+      hosts:          files dns ldap
+      #+END_EXAMPLE
+   5. Verify that the ldap server is being reached and everything is
       working fine:
       #+BEGIN_EXAMPLE
       getent passwd
       #+END_EXAMPLE
-   5. Enable creating home directories when user logs in. Edit
+   6. Enable creating home directories when user logs in. Edit
       /etc/pam.d/common-session and add the following line.
-     #+BEGIN_EXAMPLE
-     session required pam_mkhomedir.so skel=/etc/skel umask=0022
-     #+END_EXAMPLE
+      #+BEGIN_EXAMPLE
+      session required pam_mkhomedir.so skel=/etc/skel umask=0022
+      #+END_EXAMPLE
+   7. Install nfs client
+      #+BEGIN_EXAMPLE
+      apt-get install nfs-common
+      #+END_EXAMPLE
+   8. Edit =/etc/fstab= and the following line (with proper server
+      address)
+      #+BEGIN_EXAMPLE
+      10.4.15.218:/var/export/nfs4/home /home nfs4 defaults 0 1
+      #+END_EXAMPLE
+   9. Mount the filesystem now
+      #+BEGIN_EXAMPLE
+      mount -a
+      #+END_EXAMPLE
+      - status :: This command throws error as follows:
+		  #+BEGIN_EXAMPLE
+		  mount.nfs4: No such device
+		  #+END_EXAMPLE
+      - Efforts ::
+		  #+BEGIN_EXAMPLE
+		  modprobe nfs
+		  apt-get dist-upgrade
+		  apt-get install linux-image-generic
+		  vzctl set 16203 --features "nfs:on" --save
+		  mount -t nfs4 10.4.15.218:/var/export/nfs4/home /home
+		  #+END_EXAMPLE
+
+
 ** Set up NFS server
    To setup nfs server followings steps are done:
    1. set proxy
    2. apt-get update
-   3. Install nfs kernel 
+   3. Install nfs kernel
       #+BEGIN_EXAMPLE
       mkdir -p /var/export/nfs4/home
       apt-get install nfs-kernel-server -y
@@ -273,7 +315,7 @@
 		 Processing triggers for libc-bin ...
 		 ldconfig deferred processing now taking place
 		 #+END_EXAMPLE
-   4. Edit /etc/exports and add the following lines, replace
+   4. Edit =/etc/exports= and add the following lines, replace
       <ip-address> with the ip of the shell server.
       #+BEGIN_EXAMPLE
       /var/export/nfs4       <ip-address>(rw,sync,no_subtree_check)
@@ -281,12 +323,9 @@
       #+END_EXAMPLE
    5. Refresh the export list
       #+BEGIN_EXAMPLE
-      exports -rav
-      #+END_EXAMPLE
-      - status :: This command throws an error as command not found.
-      #+BEGIN_EXAMPLE
-      root@linux-lab-nfs:~# exports -rav
-      -su: exports: command not found
+      $ exportfs -rav
+      exporting 10.4.15.0/24:/var/export/nfs4/home
+      exporting 10.4.15.0/24:/var/export/nfs4
       #+END_EXAMPLE
 
 * Reference Links
