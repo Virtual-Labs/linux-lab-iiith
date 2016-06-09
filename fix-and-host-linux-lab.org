@@ -8,10 +8,9 @@
   Linux Lab.
 
 * Provisioning of servers
-  Create following containers in base4:
-  - template :: ubuntu-12.04-custom-x86_64
-
-** Linux Lab
+  Following containers are created using the
+  =ubuntu-12.04-custom-x86_64= template in base4.
+** Linux Lab Server
    1. Set proxy in ~/.bashrc file.
    2. Update the system.
       #+BEGIN_EXAMPLE
@@ -64,6 +63,8 @@
        #+BEGIN_EXAMPLE
        USER=$(whoami 2>/dev/null)
        #+END_EXAMPLE
+       - refer:
+         http://stackoverflow.com/questions/18017311/bash-script-using-ldapscripts-package-does-not-work-from-cron
    14. Grant read privileges to ldapscripts.passwd file.
        #+BEGIN_EXAMPLE
        chmod 440 ldapscripts.passwd
@@ -89,8 +90,8 @@
        User: test
        passwd: test
        #+END_EXAMPLE
-		   
-** GateOne server
+       
+** GateOne Server
 *** Approach 1 (Not working)
    - refer: https://www.digitalocean.com/community/tutorials/how-to-ssh-into-your-vps-from-the-browser-with-gateone
    1. set proxy
@@ -261,13 +262,13 @@
    9. Edit =/etc/fstab= and the following line (with proper server
       address)
       #+BEGIN_EXAMPLE
-      10.4.15.219:/var/export/nfs4/home /home nfs defaults 0 1
+      10.4.15.219:/var/export/nfs4/home /home nfs defaults,nolock 0 1
       #+END_EXAMPLE
    10. Mount the filesystem now
        #+BEGIN_EXAMPLE
-       mount -a -o nolock
+       mount -a
        #+END_EXAMPLE
-   11. Alternative
+       or using
        #+BEGIN_EXAMPLE
        $ mount -t nfs 10.4.15.219:/var/export/nfs4/home /home -o nolock
        #+END_EXAMPLE
@@ -282,14 +283,18 @@
 		   apt-get install linux-image-generic
 		   #+END_EXAMPLE
 
-** NFS server (Ubuntu) not working
+** NFS Server
    To setup nfs server following steps are done:
-   1. set proxy
-   2. apt-get update
-   3. Install nfs kernel
+   1. Turn on nfsd feature
+      #+BEGIN_EXAMPLE
+      vzctl set $CTID --feature nfsd:on --save      
+      #+END_EXAMPLE
+   2. set proxy
+   3. apt-get update
+   4. Install nfs kernel
       #+BEGIN_EXAMPLE
       mkdir -p /var/export/nfs4/home
-      apt-get install nfs-kernel-server -y
+      apt-get install nfs-kernel-server rpcbind -y
       #+END_EXAMPLE
       - status :: Installation fails
 		 #+BEGIN_EXAMPLE
@@ -299,25 +304,65 @@
 		 Processing triggers for libc-bin ...
 		 ldconfig deferred processing now taking place
 		 #+END_EXAMPLE
-   4. Edit =/etc/exports= and add the following lines, replace
+   5. Edit =/etc/exports= and add the following lines, replace
       <ip-address> with the ip of the shell server.
       #+BEGIN_EXAMPLE
       /var/export/nfs4       <ip-address>(rw,sync,no_subtree_check,no_root_squash)
       /var/export/nfs4/home  <ip-address>(rw,sync,no_subtree_check,no_root_squash)
       #+END_EXAMPLE
-   5. Refresh the export list
+   6. Refresh the export list
       #+BEGIN_EXAMPLE
       $ exportfs -rav
       exporting 10.4.15.0/24:/var/export/nfs4/home
       exporting 10.4.15.0/24:/var/export/nfs4
       #+END_EXAMPLE
-** NFS server (Centos) working
+   8. Restart nfs kernel and portmap
+      #+BEGIN_EXAMPLE
+      service portmap restart
+      service nfs-kernel-server restart
+      #+END_EXAMPLE
+   7. refer: https://help.ubuntu.com/community/SettingUpNFSHowTo
+* Setting nfs in openvz containers
+** Host
+   1. Load nfs and nfsd module
+      #+BEGIN_EXAMPLE
+      modprobe nfs
+      modprobe nfsd
+      #+END_EXAMPLE
+   2. Setting in /etc/rc.d/rc.local file:
+      #+BEGIN_EXAMPLE
+      modprobe nfs
+      #+END_EXAMPLE
+   3. Setting in /etc/sysctl.conf  
+      #+BEGIN_EXAMPLE
+      kernel.ve_allow_kthreads=1
+      #+END_EXAMPLE
+   4. refer:
+      https://wiki.archlinux.org/index.php/kernel_modules
+
+* Troubleshooting
+** Php errors
+   To troubleshoot php errors add following lines in php to debug the
+   error:
+   #+BEGIN_EXAMPLE
+   ini_set('display_errors', 1);
+   ini_set('display_startup_errors', 1);
+   error_reporting(E_ALL);
+   #+END_EXAMPLE
+** Testing the NFS mount
+   Once you have successfully mounted NFS directory, we can test that
+   it works by creating a file on the client and checking its
+   availability on the server.
+   #+BEGIN_EXAMPLE
+   $ touch /home/a.txt
+   #+END_EXAMPLE
+** NFS server (Centos)
    1. Create a centos container.
    2. Set proxy in /etc/yum.conf
       #+BEGIN_EXAMPLE
       http_proxy=http://proxy.iiit.ac.in:8080
       #+END_EXAMPLE
-   3. Turn on nfsd feature 
+   3. Turn on nfsd feature
       #+BEGIN_EXAMPLE
       vzctl set $CTID --feature nfsd:on --save      
       #+END_EXAMPLE
@@ -345,71 +390,17 @@
       #+END_EXAMPLE
    8. Write /etc/exports
       #+BEGIN_EXAMPLE
-      /var/export/nfs4 10.4.15.0/24(rw,sync,no_subtree_check)
-      /var/export/nfs4/home 10.4.15.0/24(rw,sync,no_subtree_check)
+      /var/export/nfs4 10.4.15.0/24(rw,sync,no_subtree_check,no_root_squash)
+      /var/export/nfs4/home 10.4.15.0/24(rw,sync,no_subtree_check,no_root_squash)
       #+END_EXAMPLE
    9. Export them
       #+BEGIN_EXAMPLE
       exportfs -rav
       #+END_EXAMPLE
    10. refer:
+       https://openvz.org/NFS
+       https://openvz.org/NFS_server_inside_container
        https://www.digitalocean.com/community/tutorials/how-to-set-up-an-nfs-mount-on-centos-6
 
-* Setting nfs in openvz containers
-** Host
-   - refer: https://wiki.archlinux.org/index.php/kernel_modules
-   1. Load nfs and nfsd module
-      #+BEGIN_EXAMPLE
-      modprobe nfs
-      modprobe nfsd
-      #+END_EXAMPLE
-  
-* Troubleshooting
-** Registration error:
-   If you get as follows while registration follow the below steps:
-   #+BEGIN_EXAMPLE
-   Oops! Some error occurred.
-   Failed to create user: Could not guess current userUnable to create /var/log/ldapscripts.log, exiting...
-   #+END_EXAMPLE
-
-   1. Set =USER= directive in =/usr/share/ldapscripts/runtime= as
-      follows:
-      #+BEGIN_EXAMPLE
-      USER=$(whoami 2>/dev/null)
-      #+END_EXAMPLE
-      Because =logname= does not work.
-      #+BEGIN_EXAMPLE
-      $ logname
-      logname: no login name
-      #+END_EXAMPLE
-      - refer :: http://stackoverflow.com/questions/18017311/bash-script-using-ldapscripts-package-does-not-work-from-cron
-         
-   2. Grant read privileges to ldapscripts.passwd file.
-      #+BEGIN_EXAMPLE
-      chmod 440 ldapscripts.passwd
-      #+END_EXAMPLE
-  
-   3. Add =www-data= user to =root= group and restart apache service
-      so that it can read the password file.
-      #+BEGIN_EXAMPLE
-      usermod -a -G root www-data
-      service apache2 restart
-      #+END_EXAMPLE
-
-** php error
-   Add following lines in php to debug the error:
-   #+BEGIN_EXAMPLE
-   ini_set('display_errors', 1);
-   ini_set('display_startup_errors', 1);
-   error_reporting(E_ALL);
-   #+END_EXAMPLE
-** Testing the NFS mount
-   Once you have successfully mounted NFS directory, we can test that
-   it works by creating a file on the client and checking its
-   availability on the server.
-   #+BEGIN_EXAMPLE
-   $ touch /home/a.txt
-   #+END_EXAMPLE
 * Reference Links
-  - https://github.com/Virtual-Labs/documentation-popl-linux-labs/blob/master/documents/POPL-backend-gateone-ldap.pdf
-  - 
+  - https://github.com/Virtual-Labs/documentation-popl-linux-labs/blob/master/documents/POPL-backend-gateone-ldap.pdf 
