@@ -59,50 +59,29 @@
        #+END_EXAMPLE
    12. Set ip address and password of ldap server in
        /var/www/php/ldapexec.php file.
-   13. Register using http://10.4.15.214/php/register-form.php it
-       throws following error:
+   13. Set =USER= directive in =/usr/share/ldapscripts/runtime= as
+       follows:
        #+BEGIN_EXAMPLE
-       Oops! Some error occurred.
-       Failed to create user: Could not guess current userUnable to create /var/log/ldapscripts.log, exiting...
+       USER=$(whoami 2>/dev/null)
        #+END_EXAMPLE
-       After doing below troubleshooting steps registration is working
-       properly.
-       - Troubleshooting ::
-         1. Set =USER= directive in =/usr/share/ldapscripts/runtime=
-            as follows:
-            #+BEGIN_EXAMPLE
-            USER=$(whoami 2>/dev/null)
-            #+END_EXAMPLE
-            Because =logname= does not work.
-            #+BEGIN_EXAMPLE
-            $ logname
-            logname: no login name
-            #+END_EXAMPLE
-	    - refer:
-              http://stackoverflow.com/questions/18017311/bash-script-using-ldapscripts-package-does-not-work-from-cron
-         2. Grant read privileges to ldapscripts.passwd file.
-            #+BEGIN_EXAMPLE
-            chmod 440 ldapscripts.passwd
-            #+END_EXAMPLE
-         3. Add =www-data= user to =root= group and restart apache
-            service so that it can read the password file.
-            #+BEGIN_EXAMPLE
-            usermod -a -G root www-data
-            service apache2 restart
-            #+END_EXAMPLE
-   14. Add following lines in php to debug the error:
+   14. Grant read privileges to ldapscripts.passwd file.
        #+BEGIN_EXAMPLE
-       ini_set('display_errors', 1);
-       ini_set('display_startup_errors', 1);
-       error_reporting(E_ALL);
+       chmod 440 ldapscripts.passwd
        #+END_EXAMPLE
-   15. Login using http://10.4.15.214/php/login-form.php.
+   15. Add =www-data= user to =root= group and restart apache service
+       so that it can read the password file.
+       #+BEGIN_EXAMPLE
+       usermod -a -G root www-data
+       service apache2 restart
+       #+END_EXAMPLE
    16. Set src to gateone server =https://10.4.15.215= in
        =/var/www/exp4/interaction-frame.html= as follows:
        #+BEGIN_EXAMPLE
        <frame src="https://10.4.15.215/" />
        #+END_EXAMPLE
-   17. After login enter following credentials a gateone web interface
+   17. Register using http://10.4.15.214/php/register-form.php.           
+   18. Login using http://10.4.15.214/php/login-form.php.
+   19. After login enter following credentials a gateone web interface
        will be presented:
        #+BEGIN_EXAMPLE
        host: 10.4.15.216
@@ -327,6 +306,48 @@
       exporting 10.4.15.0/24:/var/export/nfs4/home
       exporting 10.4.15.0/24:/var/export/nfs4
       #+END_EXAMPLE
+
+
+* Troubleshooting
+** Registration error:
+   If you get as follows while registration follow the below steps:
+   #+BEGIN_EXAMPLE
+   Oops! Some error occurred.
+   Failed to create user: Could not guess current userUnable to create /var/log/ldapscripts.log, exiting...
+   #+END_EXAMPLE
+
+   1. Set =USER= directive in =/usr/share/ldapscripts/runtime= as
+      follows:
+      #+BEGIN_EXAMPLE
+      USER=$(whoami 2>/dev/null)
+      #+END_EXAMPLE
+      Because =logname= does not work.
+      #+BEGIN_EXAMPLE
+      $ logname
+      logname: no login name
+      #+END_EXAMPLE
+      - refer :: http://stackoverflow.com/questions/18017311/bash-script-using-ldapscripts-package-does-not-work-from-cron
+         
+   2. Grant read privileges to ldapscripts.passwd file.
+      #+BEGIN_EXAMPLE
+      chmod 440 ldapscripts.passwd
+      #+END_EXAMPLE
+  
+   3. Add =www-data= user to =root= group and restart apache service
+      so that it can read the password file.
+      #+BEGIN_EXAMPLE
+      usermod -a -G root www-data
+      service apache2 restart
+      #+END_EXAMPLE
+
+** php error
+   Add following lines in php to debug the error:
+   #+BEGIN_EXAMPLE
+   ini_set('display_errors', 1);
+   ini_set('display_startup_errors', 1);
+   error_reporting(E_ALL);
+   #+END_EXAMPLE
+
 
 * Reference Links
   - https://github.com/Virtual-Labs/documentation-popl-linux-labs/blob/master/documents/POPL-backend-gateone-ldap.pdf
