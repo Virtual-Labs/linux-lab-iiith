@@ -1,4 +1,4 @@
-#+Title: Efforts on fix and host Linux lab
+#+Title: Efforts for fixing and hosting Linux lab
 #+Date: <2016-05-13 Fri>
 #+Author: Yogesh Agrawal
 #+Email: yogesh@vlabs.ac.in
