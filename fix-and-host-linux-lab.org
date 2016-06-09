@@ -216,9 +216,13 @@
       #+END_EXAMPLE
     
 ** SSH Server
-   1. set proxy
-   2. apt-get update
-   3. Install libpam-ldapd package
+   1. Turn on nfs
+      #+BEGIN_EXAMPLE
+      vzctl set 16203 --features "nfs:on" --save
+      #+END_EXAMPLE
+   2. set proxy
+   3. apt-get update
+   4. Install libpam-ldapd package
       #+BEGIN_EXAMPLE
       apt-get install libpam-ldapd
       #+END_EXAMPLE
@@ -233,52 +237,53 @@
       Root account of LDAP: cn=admin,dc=virtual-labs,dc=ac,dc=in
       Root password: password
       #+END_EXAMPLE
-   4. Modify =/etc/nsswitch.conf= to contain something like this
+   5. Modify =/etc/nsswitch.conf= to contain something like this
       #+BEGIN_EXAMPLE
       passwd:         compat ldap
       group:          compat ldap
       shadow:         compat ldap
       hosts:          files dns ldap
       #+END_EXAMPLE
-   5. Verify that the ldap server is being reached and everything is
+   6. Verify that the ldap server is being reached and everything is
       working fine:
       #+BEGIN_EXAMPLE
       getent passwd
       #+END_EXAMPLE
-   6. Enable creating home directories when user logs in. Edit
+   7. Enable creating home directories when user logs in. Edit
       /etc/pam.d/common-session and add the following line.
       #+BEGIN_EXAMPLE
       session required pam_mkhomedir.so skel=/etc/skel umask=0022
       #+END_EXAMPLE
-   7. Install nfs client
+   8. Install nfs client
       #+BEGIN_EXAMPLE
       apt-get install nfs-common
       #+END_EXAMPLE
-   8. Edit =/etc/fstab= and the following line (with proper server
+   9. Edit =/etc/fstab= and the following line (with proper server
       address)
       #+BEGIN_EXAMPLE
-      10.4.15.218:/var/export/nfs4/home /home nfs4 defaults 0 1
+      10.4.15.219:/var/export/nfs4/home /home nfs defaults 0 1
       #+END_EXAMPLE
-   9. Mount the filesystem now
-      #+BEGIN_EXAMPLE
-      mount -a
-      #+END_EXAMPLE
-      - status :: This command throws error as follows:
-		  #+BEGIN_EXAMPLE
-		  mount.nfs4: No such device
-		  #+END_EXAMPLE
-      - Efforts ::
-		  #+BEGIN_EXAMPLE
-		  modprobe nfs
-		  apt-get dist-upgrade
-		  apt-get install linux-image-generic
-		  vzctl set 16203 --features "nfs:on" --save
-		  mount -t nfs4 10.4.15.218:/var/export/nfs4/home /home
-		  #+END_EXAMPLE
+   10. Mount the filesystem now
+       #+BEGIN_EXAMPLE
+       mount -a -o nolock
+       #+END_EXAMPLE
+   11. Alternative
+       #+BEGIN_EXAMPLE
+       $ mount -t nfs 10.4.15.219:/var/export/nfs4/home /home -o nolock
+       #+END_EXAMPLE
+       - status :: This command throws error as follows:
+		   #+BEGIN_EXAMPLE
+		   mount.nfs4: No such device
+		   #+END_EXAMPLE
+       - Efforts ::
+		   #+BEGIN_EXAMPLE
+		   modprobe nfs
+		   apt-get dist-upgrade
+		   apt-get install linux-image-generic
+		   #+END_EXAMPLE
 
-
-** Set up NFS server
-   To setup nfs server followings steps are done:
+** NFS server (Ubuntu) not working
+   To setup nfs server following steps are done:
    1. set proxy
    2. apt-get update
    3. Install nfs kernel
@@ -297,8 +302,8 @@
    4. Edit =/etc/exports= and add the following lines, replace
       <ip-address> with the ip of the shell server.
       #+BEGIN_EXAMPLE
-      /var/export/nfs4       <ip-address>(rw,sync,no_subtree_check)
-      /var/export/nfs4/home  <ip-address>(rw,sync,no_subtree_check)
+      /var/export/nfs4       <ip-address>(rw,sync,no_subtree_check,no_root_squash)
+      /var/export/nfs4/home  <ip-address>(rw,sync,no_subtree_check,no_root_squash)
       #+END_EXAMPLE
    5. Refresh the export list
       #+BEGIN_EXAMPLE
@@ -306,8 +311,59 @@
       exporting 10.4.15.0/24:/var/export/nfs4/home
       exporting 10.4.15.0/24:/var/export/nfs4
       #+END_EXAMPLE
+** NFS server (Centos) working
+   1. Create a centos container.
+   2. Set proxy in /etc/yum.conf
+      #+BEGIN_EXAMPLE
+      http_proxy=http://proxy.iiit.ac.in:8080
+      #+END_EXAMPLE
+   3. Turn on nfsd feature 
+      #+BEGIN_EXAMPLE
+      vzctl set $CTID --feature nfsd:on --save      
+      #+END_EXAMPLE
+   4. Do yum update
+      #+BEGIN_EXAMPLE
+      yum update
+      #+END_EXAMPLE
+   5. Install nfs utils
+      #+BEGIN_EXAMPLE
+      yum install nfs-utils nfs-utils-lib
+      #+END_EXAMPLE
+   6. Disable NFSv4 and nfsd module loading warnings in
+      /etc/sysconfig/nfs by uncommenting the following lines:
+      #+BEGIN_EXAMPLE
+      MOUNTD_NFS_V3="yes"
+      RPCNFSDARGS="-N 4"
+      NFSD_MODULE="noload"  
+      #+END_EXAMPLE
+   7. Run services
+      #+BEGIN_EXAMPLE
+      chkconfig nfs on 
+      chkconfig rpcbind on
+      service rpcbind start
+      service nfs start
+      #+END_EXAMPLE
+   8. Write /etc/exports
+      #+BEGIN_EXAMPLE
+      /var/export/nfs4 10.4.15.0/24(rw,sync,no_subtree_check)
+      /var/export/nfs4/home 10.4.15.0/24(rw,sync,no_subtree_check)
+      #+END_EXAMPLE
+   9. Export them
+      #+BEGIN_EXAMPLE
+      exportfs -rav
+      #+END_EXAMPLE
+   10. refer:
+       https://www.digitalocean.com/community/tutorials/how-to-set-up-an-nfs-mount-on-centos-6
 
-
+* Setting nfs in openvz containers
+** Host
+   - refer: https://wiki.archlinux.org/index.php/kernel_modules
+   1. Load nfs and nfsd module
+      #+BEGIN_EXAMPLE
+      modprobe nfs
+      modprobe nfsd
+      #+END_EXAMPLE
+  
 * Troubleshooting
 ** Registration error:
    If you get as follows while registration follow the below steps:
@@ -347,8 +403,13 @@
    ini_set('display_startup_errors', 1);
    error_reporting(E_ALL);
    #+END_EXAMPLE
-
-
+** Testing the NFS mount
+   Once you have successfully mounted NFS directory, we can test that
+   it works by creating a file on the client and checking its
+   availability on the server.
+   #+BEGIN_EXAMPLE
+   $ touch /home/a.txt
+   #+END_EXAMPLE
 * Reference Links
   - https://github.com/Virtual-Labs/documentation-popl-linux-labs/blob/master/documents/POPL-backend-gateone-ldap.pdf
   - 
