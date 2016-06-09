@@ -219,7 +219,7 @@
 ** SSH Server
    1. Turn on nfs
       #+BEGIN_EXAMPLE
-      vzctl set 16203 --features "nfs:on" --save
+      vzctl set $CTID --features "nfs:on" --save
       #+END_EXAMPLE
    2. set proxy
    3. apt-get update
@@ -229,8 +229,8 @@
       #+END_EXAMPLE
       Answer the following questions:
       #+BEGIN_EXAMPLE
-      IP address / hostname of the LDAP server: ldap.virtual-labs.ac.in
-      The search base: dc=virutal-labs,dc=ac,dc=in
+      IP address / hostname of the LDAP server: <ip-address-of-ldap-server>
+      The search base: dc=virtual-labs,dc=ac,dc=in
       Version of the LDAP connecting to: Version 3
       Configuring LIBNSS-LDAP: OK
       Make root the DB admin: Yes
@@ -251,7 +251,7 @@
       getent passwd
       #+END_EXAMPLE
    7. Enable creating home directories when user logs in. Edit
-      /etc/pam.d/common-session and add the following line.
+      =/etc/pam.d/common-session= and add the following line.
       #+BEGIN_EXAMPLE
       session required pam_mkhomedir.so skel=/etc/skel umask=0022
       #+END_EXAMPLE
@@ -272,45 +272,30 @@
        #+BEGIN_EXAMPLE
        $ mount -t nfs 10.4.15.219:/var/export/nfs4/home /home -o nolock
        #+END_EXAMPLE
-       - status :: This command throws error as follows:
-		   #+BEGIN_EXAMPLE
-		   mount.nfs4: No such device
-		   #+END_EXAMPLE
-       - Efforts ::
-		   #+BEGIN_EXAMPLE
-		   modprobe nfs
-		   apt-get dist-upgrade
-		   apt-get install linux-image-generic
-		   #+END_EXAMPLE
 
 ** NFS Server
    To setup nfs server following steps are done:
    1. Turn on nfsd feature
       #+BEGIN_EXAMPLE
-      vzctl set $CTID --feature nfsd:on --save      
+      vzctl set $CTID --feature nfsd:on --save
       #+END_EXAMPLE
    2. set proxy
    3. apt-get update
    4. Install nfs kernel
-      #+BEGIN_EXAMPLE
-      mkdir -p /var/export/nfs4/home
+      #+BEGIN_EXAMPLE      
       apt-get install nfs-kernel-server rpcbind -y
       #+END_EXAMPLE
-      - status :: Installation fails
-		 #+BEGIN_EXAMPLE
-		 Creating config file /etc/exports with new version
-		 Creating config file /etc/default/nfs-kernel-server with new version
-		 * Not starting NFS kernel daemon: no support in current kernel.
-		 Processing triggers for libc-bin ...
-		 ldconfig deferred processing now taking place
-		 #+END_EXAMPLE
-   5. Edit =/etc/exports= and add the following lines, replace
+   5. Create directory
+      #+BEGIN_EXAMPLE
+      mkdir -p /var/export/nfs4/home
+      #+END_EXAMPLE
+   6. Edit =/etc/exports= and add the following lines, replace
       <ip-address> with the ip of the shell server.
       #+BEGIN_EXAMPLE
-      /var/export/nfs4       <ip-address>(rw,sync,no_subtree_check,no_root_squash)
-      /var/export/nfs4/home  <ip-address>(rw,sync,no_subtree_check,no_root_squash)
+      /var/export/nfs4 10.4.15.0/24(rw,sync,no_subtree_check,no_root_squash)
+      /var/export/nfs4/home 10.4.15.0/24(rw,sync,no_subtree_check,no_root_squash)
       #+END_EXAMPLE
-   6. Refresh the export list
+   7. Refresh the export list
       #+BEGIN_EXAMPLE
       $ exportfs -rav
       exporting 10.4.15.0/24:/var/export/nfs4/home
@@ -321,7 +306,7 @@
       service portmap restart
       service nfs-kernel-server restart
       #+END_EXAMPLE
-   7. refer: https://help.ubuntu.com/community/SettingUpNFSHowTo
+   9. refer: https://help.ubuntu.com/community/SettingUpNFSHowTo
 * Setting nfs in openvz containers
 ** Host
    1. Load nfs and nfsd module
