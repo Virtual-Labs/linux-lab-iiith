@@ -7,6 +7,10 @@
   This document describes the efforts that are done to fix and host
   Linux Lab.
 
+* Design
+** Design diagram
+   [[images/linux-lab-architecture.png]]
+
 * Provisioning of servers
   Following containers are created using the
   =ubuntu-12.04-custom-x86_64= template in base4.
@@ -325,6 +329,16 @@
    4. refer:
       https://wiki.archlinux.org/index.php/kernel_modules
 
+* Setting quota
+  1. Set quotaugidlimit
+     #+BEGIN_EXAMPLE
+     vzctl set 101 --quotaugidlimit 100 --save
+     #+END_EXAMPLE
+  2. Install tools
+     #+BEGIN_EXAMPLE
+     apt-get install quota quotatool
+     #+END_EXAMPLE
+  3. refer: https://wiki.openvz.org/User_Guide/Managing_Resources
 * Troubleshooting
 ** Php errors
    To troubleshoot php errors add following lines in php to debug the
@@ -386,6 +400,26 @@
        https://openvz.org/NFS
        https://openvz.org/NFS_server_inside_container
        https://www.digitalocean.com/community/tutorials/how-to-set-up-an-nfs-mount-on-centos-6
+
+* Using the lab
+  Linux lab is deployed in the testing environment at :
+  http://10.4.15.214/index.html
+
+  While performing experiments you can either register or use test
+  account: 
+  #+BEGIN_EXAMPLE
+  username: test 
+  password: test​
+  #+END_EXAMPLE
+  
+  When presented with gateone (ssh) console use following details to
+  login to shell: 
+  #+BEGIN_EXAMPLE
+  URL: 10.4.15.216
+  port: 22
+  username: test or <registered-username>
+  password: test or <registered-password>​
+  #+END_EXAMPLE
 
 * Reference Links
   - https://github.com/Virtual-Labs/documentation-popl-linux-labs/blob/master/documents/POPL-backend-gateone-ldap.pdf 
