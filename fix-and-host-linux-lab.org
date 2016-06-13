@@ -397,9 +397,9 @@
       exportfs -rav
       #+END_EXAMPLE
    10. refer:
-       https://openvz.org/NFS
-       https://openvz.org/NFS_server_inside_container
-       https://www.digitalocean.com/community/tutorials/how-to-set-up-an-nfs-mount-on-centos-6
+       - https://openvz.org/NFS
+       - https://openvz.org/NFS_server_inside_container
+       - https://www.digitalocean.com/community/tutorials/how-to-set-up-an-nfs-mount-on-centos-6
 
 * Using the lab
   Linux lab is deployed in the testing environment at :
