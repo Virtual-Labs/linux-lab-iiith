@@ -421,5 +421,9 @@
   password: test or <registered-password>​
   #+END_EXAMPLE
 
+* Features to be implemented
+  1. Capthca in register
+  2. Restricting user root privileges using "chroot jail".
+
 * Reference Links
   - https://github.com/Virtual-Labs/documentation-popl-linux-labs/blob/master/documents/POPL-backend-gateone-ldap.pdf 
