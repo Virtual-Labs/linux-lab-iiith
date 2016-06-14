@@ -9,7 +9,7 @@
 
 * Design
 ** Architecture diagram
-   [[images/linux-lab-architecture.png]]
+   [[images/linux-lab-architecture.jpeg]]
 * Setting in host machine for nfs inside openvz containers
 ** Host Machine
    1. Load nfs and nfsd module
