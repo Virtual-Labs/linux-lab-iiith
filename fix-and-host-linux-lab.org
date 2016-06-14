@@ -8,8 +8,25 @@
   Linux Lab.
 
 * Design
-** Design diagram
+** Architecture diagram
    [[images/linux-lab-architecture.png]]
+* Setting in host machine for nfs inside openvz containers
+** Host Machine
+   1. Load nfs and nfsd module
+      #+BEGIN_EXAMPLE
+      modprobe nfs
+      modprobe nfsd
+      #+END_EXAMPLE
+   2. Setting in /etc/rc.d/rc.local file:
+      #+BEGIN_EXAMPLE
+      modprobe nfs
+      #+END_EXAMPLE
+   3. Setting in /etc/sysctl.conf  
+      #+BEGIN_EXAMPLE
+      kernel.ve_allow_kthreads=1
+      #+END_EXAMPLE
+   4. refer:
+      https://wiki.archlinux.org/index.php/kernel_modules
 
 * Provisioning of servers
   Following containers are created using the
@@ -283,62 +300,89 @@
       #+BEGIN_EXAMPLE
       vzctl set $CTID --feature nfsd:on --save
       #+END_EXAMPLE
-   2. set proxy
-   3. apt-get update
-   4. Install nfs kernel
+   2. Set quotaugidlimit
+      #+BEGIN_EXAMPLE
+      vzctl set CTID --quotaugidlimit 10000 --save
+      #+END_EXAMPLE
+   3. Start the container and set proxy.
+   4. apt-get update
+   5. Install nfs kernel
       #+BEGIN_EXAMPLE      
       apt-get install nfs-kernel-server rpcbind -y
       #+END_EXAMPLE
-   5. Create directory
+   6. Create directory
       #+BEGIN_EXAMPLE
       mkdir -p /var/export/nfs4/home
       #+END_EXAMPLE
-   6. Edit =/etc/exports= and add the following lines, replace
+   7. Edit =/etc/exports= and add the following lines, replace
       <ip-address> with the ip of the shell server.
       #+BEGIN_EXAMPLE
       /var/export/nfs4 10.4.15.0/24(rw,sync,no_subtree_check,no_root_squash)
       /var/export/nfs4/home 10.4.15.0/24(rw,sync,no_subtree_check,no_root_squash)
       #+END_EXAMPLE
-   7. Refresh the export list
+   8. Refresh the export list
       #+BEGIN_EXAMPLE
       $ exportfs -rav
       exporting 10.4.15.0/24:/var/export/nfs4/home
       exporting 10.4.15.0/24:/var/export/nfs4
       #+END_EXAMPLE
-   8. Restart nfs kernel and portmap
+   9. Restart nfs kernel and portmap
       #+BEGIN_EXAMPLE
       service portmap restart
       service nfs-kernel-server restart
       #+END_EXAMPLE
-   9. refer: https://help.ubuntu.com/community/SettingUpNFSHowTo
-* Setting nfs in openvz containers
-** Host
-   1. Load nfs and nfsd module
-      #+BEGIN_EXAMPLE
-      modprobe nfs
-      modprobe nfsd
-      #+END_EXAMPLE
-   2. Setting in /etc/rc.d/rc.local file:
-      #+BEGIN_EXAMPLE
-      modprobe nfs
-      #+END_EXAMPLE
-   3. Setting in /etc/sysctl.conf  
-      #+BEGIN_EXAMPLE
-      kernel.ve_allow_kthreads=1
-      #+END_EXAMPLE
-   4. refer:
-      https://wiki.archlinux.org/index.php/kernel_modules
-
-* Setting quota
-  1. Set quotaugidlimit
-     #+BEGIN_EXAMPLE
-     vzctl set 101 --quotaugidlimit 100 --save
-     #+END_EXAMPLE
-  2. Install tools
-     #+BEGIN_EXAMPLE
-     apt-get install quota quotatool
-     #+END_EXAMPLE
-  3. refer: https://wiki.openvz.org/User_Guide/Managing_Resources
+   10. refer: https://help.ubuntu.com/community/SettingUpNFSHowTo
+*** Setting quota
+    Quota is to be set inside the NFS server machine. Below steps
+    describes how to setup quota tool.
+    1. Install quota tools
+       #+BEGIN_EXAMPLE
+       apt-get install quota quotatool
+       #+END_EXAMPLE
+    2. Add a line in =/etc/fstab= file as follows:
+       #+BEGIN_EXAMPLE
+       /dev/simfs /	  simfs   rw,gid=5,mode=620,usrquota,grpquota    0    0
+       #+END_EXAMPLE
+    3. Restart the container
+       #+BEGIN_EXAMPLE
+       $ vzctl restart ctid
+       #+END_EXAMPLE
+    4. Remove any aquota.group and aquota.user files if present inside
+       /root directory.
+       #+BEGIN_EXAMPLE
+       rm -rf /aquota.group /aquota.user
+       #+END_EXAMPLE
+    5. Do quotacheck
+       #+BEGIN_EXAMPLE
+       $ quotaoff
+       $ quotacheck -cum /
+       #+END_EXAMPLE
+    6. Enable quota
+       #+BEGIN_EXAMPLE
+       $ quotaon /
+       #+END_EXAMPLE
+       - Note :: To disable quota you can do.
+               	 #+BEGIN_EXAMPLE
+	       	 quotaoff -a
+               	 #+END_EXAMPLE
+    7. Configure quota for different user
+       #+BEGIN_EXAMPLE
+       edquota root
+       #+END_EXAMPLE
+    8. Check quota for a user
+       #+BEGIN_EXAMPLE
+       quota root
+       #+END_EXAMPLE
+    9. Generate report for different quota
+       #+BEGIN_EXAMPLE
+       repquota -a
+       #+END_EXAMPLE
+    10. Refer the [[https://github.com/Virtual-Labs/documentation-popl-linux-labs/blob/master/POPL-backend-gateone-ldap.pdf][pdf document]], the quota is to be setup of
+        vlusers. As NFS server is not ldap clients groups created in
+        ldap is not visible here.
+    11. refer: 
+	- https://wiki.openvz.org/User_Guide/Managing_Resources#Turning_On_and_Off_Second-Level_Quotas_for_Container
+	- https://www.digitalocean.com/community/tutorials/how-to-enable-user-and-group-quotas
 * Troubleshooting
 ** Php errors
    To troubleshoot php errors add following lines in php to debug the
@@ -415,7 +459,7 @@
   When presented with gateone (ssh) console use following details to
   login to shell: 
   #+BEGIN_EXAMPLE
-  URL: 10.4.15.216
+  URL: <ssh-server-ip>
   port: 22
   username: test or <registered-username>
   password: test or <registered-password>​
