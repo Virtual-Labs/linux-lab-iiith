@@ -246,7 +246,6 @@
       Do you want the database to be removed when slapd is purged? No
       #+END_EXAMPLE
       refer : [[https://www.digitalocean.com/community/tutorials/how-to-install-and-configure-a-basic-ldap-server-on-an-ubuntu-12-04-vps]]
-      refer : [[https://arthurdejong.org/nss-pam-ldapd/setup]]
    6. Verify that the ldap setup is done properly.
       #+BEGIN_EXAMPLE
       ldapsearch -Y EXTERNAL -H ldapi:// -b 'dc=virtual-labs,dc=ac,dc=in'
@@ -300,7 +299,8 @@
       loginShell: /bin/bash
       homeDirectory: /home/testuser1
       #+END_EXAMPLE
-    
+   10. refer :
+       [[https://arthurdejong.org/nss-pam-ldapd/setup]]
 ** SSH Server
    -create container  
    1. before starting the container and entering into it (i.e after using =ssh username@IP= and then =sudo su=)  
