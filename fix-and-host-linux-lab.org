@@ -31,7 +31,9 @@
 * Provisioning of servers
   Following containers are created using the
   =ubuntu-12.04-custom-x86_64= template in base4.
+  - Use [[commands For creating container]] for creating any container
 ** Linux Lab Server
+   - Create container
    1. Set proxy in ~/.bashrc (use =vim ~/.bashrc=) file. (add these two line add end of the file .bashrc)
       #+BEGIN_SRC 
       export http_proxy="proxy.iiit.ac.in:8080"
@@ -164,13 +166,26 @@
 
 *** Approach 2 (Working)
     - refer: http://liftoff.github.io/GateOne/About/
-    1. Create container
-    2. set proxy same as in Linux Lab server above (repeat step 1,2 and 3)
-    1. install tornado
+    - Create container
+   1. Set proxy in ~/.bashrc (use =vim ~/.bashrc=) file. (add these two line add end of the file .bashrc)
+      #+BEGIN_SRC 
+      export http_proxy="proxy.iiit.ac.in:8080"
+      export https_proxy="proxy.iiit.ac.in:8080"
+      #+END_SRC
+   2. Also set proxy in =vim /etc/apt/apt.conf= (add these two line add end of the file apt.conf)
+      #+BEGIN_SRC 
+      Acquire::http::Proxy "http://proxy.iiit.ac.in:8080";
+      Acquire::https::Proxy "http://proxy.iiit.ac.in:8080";
+      #+END_SRC
+   3. Update the system.
+      #+BEGIN_EXAMPLE
+      apt-get update
+      #+END_EXAMPLE
+    4. install tornado
        #+BEGIN_EXAMPLE
        pip install tornado==2.4.1
        #+END_EXAMPLE
-    2. Download gateone from (right click on the given link and click on =copy link location=)
+    5. Download gateone from (right click on the given link and click on =copy link location=)
        https://github.com/downloads/liftoff/GateOne/gateone_1.1-1_all.deb and use this for downloading:
        #+BEGIN_SRC 
        wget https://github.com/downloads/liftoff/GateOne/gateone_1.1-1_all.deb
@@ -179,35 +194,44 @@
        #+BEGIN_EXAMPLE
        sudo apt-get upgrade wget
        #+END_EXAMPLE
-    3. Install python-support if not already installed
+    6. Install python-support if not already installed
        #+BEGIN_EXAMPLE
        sudo apt-get install python-support
        #+END_EXAMPLE
-    3. Install gateone via dpkg
+    7. Install gateone via dpkg
        #+BEGIN_EXAMPLE
        dpkg -i gateone*.deb
        #+END_EXAMPLE
-    4. Navigate inside =/opt/gateone= directory, and execute
+    8. Navigate inside =/opt/gateone= directory, and execute
        gateone.py.
        #+BEGIN_EXAMPLE
        ./gateone.py
        #+END_EXAMPLE
-    5. Now browse https://IP to access gateone server.(Replace =IP= by IP addr of gateone-server or gateone container)
+    9. Now browse https://IP to access gateone server.(Replace =IP= by IP addr of gateone-server or gateone container)
 *** Reference
    - https://github.com/liftoff/GateOne/downloads
    - https://www.youtube.com/watch?v=gnVohdlZXVY&list=UU8c7zNWoShUxaFqWKv7H51g&index=3&feature=plpp_video
 ** Ldap server
-   Create container
-   1. set proxy
-   2. Update the system.
+   - Create container
+   1. Set proxy in ~/.bashrc (use =vim ~/.bashrc=) file. (add these two line add end of the file .bashrc)
+      #+BEGIN_SRC 
+      export http_proxy="proxy.iiit.ac.in:8080"
+      export https_proxy="proxy.iiit.ac.in:8080"
+      #+END_SRC
+   2. Also set proxy in =vim /etc/apt/apt.conf= (add these two line add end of the file apt.conf)
+      #+BEGIN_SRC 
+      Acquire::http::Proxy "http://proxy.iiit.ac.in:8080";
+      Acquire::https::Proxy "http://proxy.iiit.ac.in:8080";
+      #+END_SRC
+   3. Update the system.
       #+BEGIN_EXAMPLE
       apt-get update
       #+END_EXAMPLE
-   3. Install openldap.
+   4. Install openldap.
       #+BEGIN_EXAMPLE
       apt-get install slapd ldap-utils
       #+END_EXAMPLE
-   4. Reconfigure slapd.
+   5. Reconfigure slapd.
       #+BEGIN_EXAMPLE
       dpkg-reconfigure slapd
       #+END_EXAMPLE
@@ -222,11 +246,11 @@
       Do you want the database to be removed when slapd is purged? No
       #+END_EXAMPLE
       refer : [[https://www.digitalocean.com/community/tutorials/how-to-install-and-configure-a-basic-ldap-server-on-an-ubuntu-12-04-vps]]
-   5. Verify that the ldap setup is done properly.
+   6. Verify that the ldap setup is done properly.
       #+BEGIN_EXAMPLE
       ldapsearch -Y EXTERNAL -H ldapi:// -b 'dc=virtual-labs,dc=ac,dc=in'
       #+END_EXAMPLE
-   6. Create organizational units for people and groups using
+   7. Create organizational units for people and groups using
       following commands:
       #+BEGIN_EXAMPLE
       vim units.ldif // paste the below content of units.ldif and execute below command
@@ -242,7 +266,7 @@
       ou: Group
       objectClass: organizationalUnit
       #+END_EXAMPLE
-   7. Create a group 'vlusers' for Virtual Labs end users using
+   8. Create a group 'vlusers' for Virtual Labs end users using
       following command:
       #+BEGIN_EXAMPLE
       ldapadd -x -D 'cn=admin,dc=virtual-labs,dc=ac,dc=in' -W -f group.ldif
@@ -255,7 +279,7 @@
       objectClass: top
       objectClass: posixGroup
       #+END_EXAMPLE
-   8. Create a 'testuser' user in 'vlusers' group using following
+   9. Create a 'testuser' user in 'vlusers' group using following
       command:
       #+BEGIN_EXAMPLE
       ldapadd -x -D 'cn=admin,dc=virtual-labs,dc=ac,dc=in' -W -f testuser1.ldif
@@ -277,17 +301,30 @@
       #+END_EXAMPLE
     
 ** SSH Server
-   create container
-   set proxy as above
-   update =apt-get update= 
-   1. Turn on nfs
+   -create container  
+   1. before starting the container and entering into it (i.e after using =ssh username@IP= and then =sudo su=)  
+      Turn on nfs
       #+BEGIN_EXAMPLE
       vzctl set $CTID --features "nfs:on" --save
       #+END_EXAMPLE
       =CTID= is ID of this container
-   2. set proxy
-   3. apt-get update
-   4. Install libpam-ldapd package
+   2. Enter into the container
+   3. Set proxy in ~/.bashrc (use =vim ~/.bashrc=) file. (add these two line add end of the file .bashrc)
+      #+BEGIN_SRC 
+      export http_proxy="proxy.iiit.ac.in:8080"
+      export https_proxy="proxy.iiit.ac.in:8080"
+      #+END_SRC
+   4. Also set proxy in =vim /etc/apt/apt.conf= (add these two line add end of the file apt.conf)
+      #+BEGIN_SRC 
+      Acquire::http::Proxy "http://proxy.iiit.ac.in:8080";
+      Acquire::https::Proxy "http://proxy.iiit.ac.in:8080";
+      #+END_SRC
+   5. Update the system.
+      #+BEGIN_EXAMPLE
+      apt-get update
+      #+END_EXAMPLE
+   6. apt-get update
+   7. Install libpam-ldapd package
       #+BEGIN_EXAMPLE
       apt-get install libpam-ldap nscd
       #+END_EXAMPLE
@@ -304,33 +341,34 @@
       #+END_EXAMPLE
       - refer:
         https://www.digitalocean.com/community/tutorials/how-to-authenticate-client-computers-using-ldap-on-an-ubuntu-12-04-vps
-   5. Modify =/etc/nsswitch.conf= to contain something like this
+   8. Modify =/etc/nsswitch.conf= to contain something like this
       #+BEGIN_EXAMPLE
       passwd:         ldap compat
       group:          ldap compat
       shadow:         ldap compat
       hosts:          files dns ldap
       #+END_EXAMPLE
-   6. Verify that the ldap server is being reached and everything is
+   9. Verify that the ldap server is being reached and everything is
       working fine:
       #+BEGIN_EXAMPLE
       getent passwd
       #+END_EXAMPLE
-   7. Enable creating home directories when user logs in. Edit
+   10. Enable creating home directories when user logs in. Edit
       =/etc/pam.d/common-session= and =add= the following line.
       #+BEGIN_EXAMPLE
       session required pam_mkhomedir.so skel=/etc/skel umask=0022
       #+END_EXAMPLE
-   8. Install nfs client
+   11. Install nfs client
       #+BEGIN_EXAMPLE
       apt-get install nfs-common
       #+END_EXAMPLE
-   9. Edit =/etc/fstab= and =add= the following line (with proper server
+   12. Edit =/etc/fstab= and =add= the following line (with proper server
       address)
       #+BEGIN_EXAMPLE
-      IP:/var/export/nfs4/home /home nfs defaults,nolock 0 1 // Replace IP by IP of nfs-server (i.e nfs container)
+      IP:/var/export/nfs4/home /home nfs defaults,nolock 0 1 
       #+END_EXAMPLE
-   10. Mount the filesystem now
+      Replace =IP= by =IP= of nfs-server (i.e nfs container)
+   13. Mount the filesystem now
        #+BEGIN_EXAMPLE
        mount -a
        #+END_EXAMPLE
@@ -341,7 +379,9 @@
 
 ** NFS Server
    To setup nfs server following steps are done:
-   1. Turn on nfsd feature
+    - create container 
+   1. Before entering the container do: 
+      Turn on nfsd feature
       #+BEGIN_EXAMPLE
       vzctl set $CTID --feature nfsd:on --save
       #+END_EXAMPLE
