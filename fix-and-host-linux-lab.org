@@ -520,27 +520,32 @@
   - https://github.com/Virtual-Labs/documentation-popl-linux-labs/blob/master/documents/POPL-backend-gateone-ldap.pdf 
 
 * commands For creating container
-** UID is the user ID of the LDAP account
-** IP is the of base4 machine
-** It will ask for your LDAP-account password
-   =ssh UID@IP=
+   1. =UID= is the user ID of the LDAP account
+   2. =IP= is the of base4 machine
+   3. It will ask for your LDAP-account password
+      #+BEGIN_SRC 
+      ssh UID@IP
+      #+END_SRC
 
-** use this command to have superuser privileges
-   =sudo su=
-
-** Before starting to create a Container, you shall decide on which OS template your Container will be based.
-** There might be several OS templates installed on the Hardware Node and prepared for the Container creation
-** use the following command to find out what OS templates are available on your system: 
-   =ls /vz/template/cache/=
-
-** After the Container ID and the installed OS template have been chosen
-** for choosing CTID(container-ID) use =vzlist -a= and choose the available container id
-** After that choose the ipadd for container use =ping IP= ( where replace IP by any valid IP addr). 
-** If the output shows =Destination Host Unreachable= again and again then use this IP.
-
-** For creating container use :
-   =vzctl create CTID --ostemplate ubuntu-12.04-custom-x86_64 --ipadd IP --hostname NAME_OF_THE_CONTAINER=
-** Replace CTID by container-ID, IP by chosen IP address, NAME_OF_THE_CONTAINER by the container name (can be anything)
-
-** use =vzctl start CTID= to start container.
-** use =vzctl enter CTID= to enter into the container.
+   4. Use this command to have superuser privileges
+      #+BEGIN_SRC 
+      sudo su
+      #+END_SRC
+   5. Before starting to create a Container, you shall decide on which OS template your Container will be based.
+   6. There might be several OS templates installed on the Hardware Node and prepared for the Container creation
+   7. use the following command to find out what OS templates are available on your system:
+      #+BEGIN_SRC 
+      ls /vz/template/cache/   
+      #+END_SRC
+   8. After the Container ID and the installed OS template have been chosen
+   9. for choosing CTID(container-ID) use =vzlist -a= and choose the available container id
+   10. After that choose the ipadd for container use =ping IP= ( where replace IP by any valid IP addr). 
+   11. If the output shows =Destination Host Unreachable= again and again then use this IP.
+   
+   12. For creating container use :
+       #+BEGIN_SRC 
+       vzctl create CTID --ostemplate ubuntu-12.04-custom-x86_64 --ipadd IP --hostname NAME_OF_THE_CONTAINER
+       #+END_SRC
+   13. Replace CTID by container-ID, IP by chosen IP address, NAME_OF_THE_CONTAINER by the container name (can be anything)
+   14. use =vzctl start CTID= to start container.
+   15. use =vzctl enter CTID= to enter into the container.
