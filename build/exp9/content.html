@@ -1,0 +1,648 @@
+<!-- This file needs to be edited by the lab developer to suit
+the requirements of their lab in particular.-->
+
+<!-- Add class="default" to include any element as it is
+specified in default.html. 
+Do not include class="default" to the elements that you want to
+edit -->
+
+<!DOCTYPE html>
+<html>
+<head></head>
+<body>
+
+<div id="experiment"> <!-- The Experiment Document Container-->
+
+<!-- The lab Header contains the logo and the name of the lab,
+	usually displayed on the top of the page-->
+
+	<header id="experiment-header" >
+
+	<div id="experiment-header-logo" class="logo">
+	<!-- Enclose the logo image of your lab or write it in 
+	text-->
+	<img src="../images/logo.jpg" />
+	</div>
+
+	<div id="experiment-header-heading" class="heading">
+	<!-- Write the name of your lab and link it to the home 
+	page of your lab (h1 tag is preferred while writing your 
+			lab name)-->
+	<a href="../index.html">Linux Lab</a>	
+	</div>
+
+	<!-- Add any additional element you want to add to the lab 
+	header, For example : Help (Enclosing them with suitable 
+			div is recommended)-->
+
+	</header>
+
+
+	<!-- The lab article is the main content area where all the 
+	experiment content sits-->
+	<article id="experiment-article">
+
+	<!-- The lab article has an header, optional navigational 
+	menu, number of sections, an optional sidebar and a closing 
+	footer-->
+	<div id="experiment-article-breadcrumb">
+	</div>
+	<header id="experiment-article-heading" class="heading">
+	<!-- You can add a welcome message or title of the 
+	experiment here -->
+	  9. Basic Networking
+	<!-- Add any additional element if required with proper 
+	enclosing-->
+	</header>
+
+	<!-- Navigation menu is useful to organize the view of 
+	multiple sections inside the article-->
+	<nav id="experiment-article-navigation" class="default">
+	<ul id="experiment-article-navigation-menu">
+	<!-- The menu can be dynamically generated to contain 
+	the headings of your sections or instead write the 
+	menu items of your choice individually enclosedu in 
+	<li> tag as shown below-->
+	</ul>
+	</nav>
+
+	<!-- All the sections of your lab or experiment can be 
+	enclosed together with a div element as shown below-->
+	<div id="experiment-article-sections">
+
+	<!-- First section of the article-->
+	<section id="experiment-article-section-1">
+
+	<div id="experiment-article-section-1-icon" 
+	class="icon">
+	<!-- Enclose the icon image of your lab -->
+	<img src="../images/introduction.jpg" />
+	</div>	
+
+	<!-- The heading for the section can be enclosed in a 
+	div tag. -->
+	<div id="experiment-article-section-1-heading" 
+	class="heading">
+	Introduction
+	</div>
+	<!-- Write the section content inside a paragraph 
+	element, You can also include images with <img> tag -->
+	<div id="experiment-article-section-1-content" 
+	     class="content">	
+	  <p>
+	    This experiment introduces basic networking-related
+	    commands so that users can work across multiple machines
+	    connected via network.
+	  </p>
+	  <p>
+	    Users will learn the following:
+	    <ul>
+	      <li>What is an IP address</li>
+	      <li>How to find current machine's IP address</li>
+	      <li>How to check network connectivity</li>
+	      <li>How to login to another machine connected via
+		network</li> 
+	      <li>How to transfer files from one machine to another
+		machine</li>
+	      <li>How to synchronize files and directories across two machines on
+		a network</li>
+	    </ul>
+	  </p>
+	</div>	
+	</section>
+
+
+	  <section id="experiment-article-section-2">
+            
+            <div id="experiment-article-section-2-icon" 
+		 class="icon">
+	      <!-- Enclose the icon image of your lab. -->
+	      <img src="../images/objective.jpg" />
+	    </div>
+	    
+            <!-- The heading for the section can be enclosed in a 
+		 div tag. -->
+            <div id="experiment-article-section-2-heading" 
+		 class="heading">
+	      Objective
+            </div>
+	    
+	    
+            <!-- Write the section content inside a paragraph 
+	    element, we can also include images with <img> tag -->
+            <div id="experiment-article-section-2-content" 
+		 class="content">
+	      <!-- Second section of the article-->
+	      <p>
+		This experiment aims to make you comfortable in
+		working with remote machines and transferring
+		files between two connected machines.
+	      </p>
+	      <p>
+		After this experiment, you will be able
+		to perform various activities listed in the
+		Introduction section of this experiment.
+	      </p>
+	    </div>
+	  </section>
+	  
+	<!-- Third section of the article-->
+	<section id="experiment-article-section-3">
+
+	<div id="experiment-article-section-3-icon" 
+	class="icon">
+	<!-- Enclose the icon image of your lab. -->
+	<img src="../images/theory.jpg" />
+	</div>
+
+	<!-- The heading for the section can be enclosed in a 
+	div tag. -->
+	<div id="experiment-article-section-3-heading" 
+	class="heading">
+	Theory
+	</div>
+
+
+	<!-- Write the section content inside a paragraph 
+	element, we can also include images with <img> tag -->
+	<div id="experiment-article-section-3-content" 
+	class="content">
+	<h3>What is an IP address?</h3>
+	<p>
+	  An IP address is a way to identify a network
+	  device, e.g. a computer, on a network.  In order
+	  to connect to a computer, you need to know
+	  its IP address.
+	</p>
+	<p>
+	  A computer can have multiple IP addresses e.g. one
+	  for each interface it has.  An interface can be
+	  wired or wireless.
+	</p>
+	<p>
+	</p>
+	<h3>How to find this machine's IP address?</h3>
+	<p>
+	  Running the command "/sbin/ifconfig" will display
+	  the IP addresses of each interface on the
+	  machine.
+	</p>
+	<p>
+	  The example below shows that the machine has three
+	  interfaces: eth0, lo and wlan0. (Note: the naming
+	  of the interfaces varies with different linux
+	  distributions, so you may see different interface
+	  names on your machine.)
+	</p>
+	<ul>
+	  <li>
+	  "eth0" is the wired interface (eth
+	  stands for ethernet).  The machine's IP address
+	  for this interface is 10.9.24.110.
+	  </li>
+	  <li>
+	  "lo" interface is a local interface
+	  i.e. it cannot be used for communicating across
+	  the network.  This interface is present on all
+	  computers.  It's IP address is always 127.0.0.1.
+	  </li>
+	  <li>
+	  "wlan0" is the wireless interface.  It's IP
+	  address is 10.9.24.231.
+	  </li>
+	  <li>
+	    This machine can be contacted via either of the
+	    two IP addresses 10.9.24.110 and 10.9.24.231.
+	  </li>
+	</ul>
+	<pre class="code">
+aditi@mylaptop:~$ /sbin/ifconfig 
+eth0      Link encap:Ethernet  HWaddr 60:eb:69:5e:a9:22  
+          inet addr:10.9.24.110  Bcast:10.9.24.255  Mask:255.255.255.0
+          inet6 addr: fe80::62eb:69ff:fe5d:a1f2/64 Scope:Link
+          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+          RX packets:1797096 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:1167412 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000 
+          RX bytes:951537984 (951.5 MB)  TX bytes:99185523 (99.1 MB)
+          Interrupt:40 Base address:0x2000 
+
+lo        Link encap:Local Loopback  
+          inet addr:127.0.0.1  Mask:255.0.0.0
+          inet6 addr: ::1/128 Scope:Host
+          UP LOOPBACK RUNNING  MTU:16436  Metric:1
+          RX packets:42427 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:42427 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:0 
+          RX bytes:26128666 (26.1 MB)  TX bytes:26128666 (26.1 MB)
+
+wlan0     Link encap:Ethernet  HWaddr 60:eb:69:5e:a9:23  
+          inet addr:10.9.24.231  Bcast:10.9.24.255  Mask:255.255.255.0
+          inet6 addr: fe80::f27b:cbff:fea1:1581/64 Scope:Link
+          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+          RX packets:440021 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:98766 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000 
+          RX bytes:86138146 (86.1 MB)  TX bytes:13110795 (13.1 MB)</pre>
+	<p>
+	</p>
+	<h3>How to check if this machine is connected to
+	other machines, to the Internet?</h3>
+	<p>
+	  Run the "ping" command with an IP address you want
+	  to test e.g. 10.9.24.1.  Press CTRL-C when you
+	  want to stop pinging.  The ping command's response
+	  below shows that out of 3 packets transmitted to
+	  the remote machine, all 3 were acknowledged
+	  (received) with none of the packets being lost and
+	  it took a total of about 2 seconds.
+	</p>
+	<pre class="code">
+aditi@mylaptop:~$ ping 10.9.24.1
+PING 10.9.24.1 (10.9.24.1) 56(84) bytes of data.                                                                
+64 bytes from 10.9.24.1: icmp_req=1 ttl=255 time=0.787 ms                                                       
+64 bytes from 10.9.24.1: icmp_req=2 ttl=255 time=1.20 ms                                                        
+64 bytes from 10.9.24.1: icmp_req=3 ttl=255 time=0.782 ms                                                       
+^C                                                                                                              
+--- 10.9.24.1 ping statistics ---                                                                               
+3 packets transmitted, 3 received, 0% packet loss, time 2002ms                                                  
+rtt min/avg/max/mdev = 0.782/0.924/1.203/0.197 ms                                                               
+aditi@mylaptop:~$</pre>
+	<p>
+	  To check Internet access, run the "ping" command
+	  with a web service name e.g. www.google.com
+	</p>
+	<pre class="code">
+aditi@mylaptop:~$ ping www.google.com                                                                          
+PING www.google.com (173.194.36.17) 56(84) bytes of data.                                                       
+64 bytes from bom04s01-in-f17.1e100.net (173.194.36.17): icmp_req=1 ttl=52 time=33.1 ms                         
+64 bytes from bom04s01-in-f17.1e100.net (173.194.36.17): icmp_req=2 ttl=52 time=33.1 ms                         
+64 bytes from bom04s01-in-f17.1e100.net (173.194.36.17): icmp_req=3 ttl=52 time=33.1 ms                         
+64 bytes from bom04s01-in-f17.1e100.net (173.194.36.17): icmp_req=4 ttl=52 time=32.9 ms                         
+64 bytes from bom04s01-in-f17.1e100.net (173.194.36.17): icmp_req=5 ttl=52 time=32.7 ms                         
+64 bytes from bom04s01-in-f17.1e100.net (173.194.36.17): icmp_req=6 ttl=52 time=33.2 ms                         
+64 bytes from bom04s01-in-f17.1e100.net (173.194.36.17): icmp_req=7 ttl=52 time=32.7 ms                         
+^C                                                                                                              
+--- www.google.com ping statistics ---                                                                          
+7 packets transmitted, 7 received, 0% packet loss, time 6008ms                                                  
+rtt min/avg/max/mdev = 32.746/33.031/33.288/0.310 ms                                                            
+aditi@mylaptop:~$</pre>
+	<h3>How to login to another remote machine</h3>
+	<p>
+	  Use ssh (secure shell) to remotely connect to
+	  another machine.  Type
+	  "ssh username@&lt;ip address&gt;" or 
+	  "ssh username@&lt;hostname&gt;" at the command prompt.  
+	</p>
+	<pre class="code">aditi@mylaptop:~$ ssh shyam@127.0.0.1                                                                               
+The authenticity of host '127.0.0.1 (127.0.0.1)' can't be established.
+RSA key fingerprint is 28:07:e5:0b:e0:bb:06:65:a6:f3:19:24:bf:22:69:22.
+Are you sure you want to continue connecting (yes/no)? yes
+Warning: Permanently added '10.9.24.22' (RSA) to the list of known hosts.</pre>
+	<p>
+	  You will get the message above if you are
+	  connecting to a machine for the first time.
+	  Answer "yes" to the question above.
+	</p>
+	<pre class="code">shyam@127.0.0.1's password:
+Permission denied, please try again.
+shyam@127.0.0.1's password:</pre>
+	<p>
+	  If you enter incorrect password, you will get the
+	  above message and prompted to re-enter password.
+	</p>
+	<p>
+	  After you enter the correct password, you will get
+	  a message and the shell prompt.  The message
+	  content depends upon the system administrator and
+	  can be modified.  Below you can see the shell
+	  prompt after the default linux message.
+	</p>
+	<pre class="code">Linux shyamslaptop 3.2.0-2-amd64 #1 SMP Mon May 21 17:45:41 UTC 2012 x86_64
+The programs included with the Debian GNU/Linux system are free software;
+the exact distribution terms for each program are described in the
+individual files in /usr/share/doc/*/copyright.
+Debian GNU/Linux comes with ABSOLUTELY NO WARRANTY, to the extent
+permitted by applicable law.
+Last login: Tue Jan  8 05:07:49 2013 from 10.9.24.11 
+shyam@shyamslaptop:~$</pre>
+	<p>
+	  At this stage, you can work in the remote machine
+	  as if it was a local machine.  After you are done,
+	  you can type "exit" to log out of the remote
+	  machine.
+	</p>
+	<pre class="code">shyam@shyamslaptop:~$ exit
+logout
+Connection to 127.0.0.1 closed.
+aditi@mylaptop:~$ </pre>
+	<p>
+	  You need to know the password on the remote
+	  machine in order to connect.  Anyone with the
+	  userid and password can connect, hence it is
+	  important to have a good password on your machine.
+	   You can change your password using "passwd"
+	  command, as show below.
+	</p>
+	<pre class="code">aditi@mylaptop:~$ 
+(current) Password: 
+New password:
+Retype new password:
+passwd: password updated successfully
+aditi@mylaptop:~$ </pre>
+	<h3>How to copy files from one machine to another
+	machine?</h3>
+	<p>
+	  Use "scp" (secure copy) to copy files from one
+	  machine to another.
+	</p>
+	<pre class="code">aditi@mylaptop:~$ scp marks.txt shyam@127.0.0.1:/home/shyam/guestfiles
+shyam@127.0.0.1's password:
+marks.txt                                          100%     127    10KB/s    00:00
+aditi@mylaptop:~$ </pre> 
+	<h3>How to synchronize two files or directories on
+	one machine to another machine</h3>
+	<p>
+	  Synchronizing two locations means having the same
+	  content (files, directories) on both the
+	  locations.  You can use "rsync" to synchronize files
+	  and folders across different directories in the same
+	  computer, or across different computers. 
+	</p>
+	<p>
+	  If you want to synchronize two
+	  directories with small content (a few kilobytes or
+	  a few megabytes), you can just do an "scp" (as
+	  explained above) and copy
+	  the files from the source to target.  But if you
+	  need to synchronize bigger directories (several
+	  megabytes or even gigabytes), copy will not be
+	  effective as scp copies all the content from
+	  scratch and will take a lot of time.  
+	</p>
+	<p>
+	  rsync only copyies the changes that were
+	  done since last sync.  If both the locations
+	  already have the same content, rsync will
+	  not do anything.  rsync has the
+	  additional benefit that it can retain the file
+	  permissions and other attributes across the
+	  locations. 
+	</p>
+	<p>
+	  Example 1: Synchronize contents of lectures
+	  folder.  The below command syncs all the files
+	  (but not subdirectories) in
+	  /home/aditi/lectures directory with lectures
+	  folder in Shyam's home directory.  Using the "-v"
+	  (verbose) option, you can see the files being
+	  synchronized. 
+	</p>
+	<pre class="code">rsync -v /home/aditi/lectures/ shyam@127.0.0.1:~/lectures/</pre>
+	<p>
+	  Example 2: Synchronize all C programs from present
+	  working directory to /opt/cprograms/ directory,
+	  retaining the last modified timestamps.  Using the
+	  "-t" option enables synchronization of timestamps
+	  as well (date and time when the file was last
+	  modified).
+	</p>
+	<pre class="code">rsync -t *.c shyam@127.0.0.1:/opt/cprograms/</pre>
+	<p>
+	  Example 3: Synchronize all contents of "readings"
+	  directory (including subdirectories) to "readings"
+	  directory in Shyam's home directory.  Adding the
+	  "-r" option synchronizes the directory recursively.
+	</p>
+	<pre class="code">rsync -vtr /home/aditi/readings shyam@127.0.0.1:~/readings</pre>
+	<p>
+	  Example 4: Synchronize all contents of Shyam's "music"
+	  directory to the music directory in present
+	  working directory.
+	</p>
+	<pre class="code">rsync -vtr shyam@127.0.0.1:~/music music</pre>
+	<p>
+	  Example 5: Synchronize all music from Shyam's
+	  "music" directory to Ram's "music" directory.
+	  Using the "-a" option triggers the "archive" mode
+	  i.e. it synchronizes not only the content but also
+	  permissions, attributes, timestamps, ownerships,
+	  etc.  Using the "-z" option uses compression
+	  during transmission, speeding up the transfer.
+	</p>
+	<pre class="code">rsync -az shyam@127.0.0.1:~/music ram@10.9.12.110:~/music</pre>
+	<p>
+	  For more details on any of the commands discussed
+	  here, please refer to the manpage.
+	</p>
+	<pre class="code">man rsync</pre>
+	</div>
+      </section>
+
+
+	<section id="experiment-article-section-5">
+	  <div id="experiment-article-section-5-icon" 
+	       class="icon">
+	    <!-- Enclose the icon image of your lab.-->
+	    <img src="../images/simulation.jpg" />
+	  </div>
+	  
+	  <div id="experiment-article-section-5-heading" 
+	       class="heading">
+	    Tasks
+	  </div>
+	  
+	  <div id="experiment-article-section-5-content" 
+	       class="content">
+	    <p style="margin-left:0px">
+	      Students who already have a Virtual-Labs login should click
+	      <a href="javascript:void(0)"
+		 onclick="window.open('../php/login-form.php?expid=9',
+			  'welcome', width=screen.availWidth, height=screen.availHeight,status='yes')">
+		here</a> 
+	      to see the list of tasks for this experiment. <br /> 
+	      In case the login credentials are not available, then please click 
+	      <a href="../php/register-form.php">here</a> to
+	      register.
+	    </p>
+          </div> 
+	</section>
+
+
+
+
+        <section id="experiment-article-section-6">
+	  
+          <div id="experiment-article-section-6-icon" 
+               class="icon">
+	    <!-- Enclose the icon image of your lab.-->
+	    <img src="../images/quizzes.jpg" />
+	  </div>
+
+          <div id="experiment-article-section-6-heading" 
+               class="heading">
+            Quiz
+          </div>
+
+          <div id="experiment-article-section-6-content" 
+               class="content">
+	      <p>
+		<ol>
+		  <li>What is the right command to synchronize two
+		    directories <i>/home/aditi/work</i>
+		    and <i>/media/backup/work</i>?
+		    <ol style="list-style-type:upper-alpha">
+		      <li>rsync -vtr /media/backup/work
+		      /home/aditi/work</li>
+		      <li>rsync -az /media/backup/work
+		      /home/aditi/work</li>
+		      <li>rsync -vtr /home/aditi/work /media/backup/work</li>
+		      <li>rsync -az /home/aditi/work /media/backup/work</li>
+		    </ol>
+		  </li>
+		  <li>Which of the below statements is NOT correct?
+		    <ol style="list-style-type:upper-alpha">
+		      <li>rsync is efficient since it
+		      copies only the differences between
+		      the two synced locations</li>
+		      <li>rsync can use timestamps to
+		      identify changed files</li>
+		      <li>rsync can use compression for
+		      reducing size of transmitted data across network</li>
+		      <li>rsync cannot use timestamps to
+		      identify changed files</li>
+		    </ol>
+		  </li>
+		  <li>A network device can have multiple IP addresses.
+		    <ol style="list-style-type:upper-alpha">
+		      <li>True</li>
+		      <li>False</li>
+		    </ol>
+		  </li>
+		  <li>Which of the below is the local
+		  loopback IP address?
+		    <ol style="list-style-type:upper-alpha">
+		      <li>255.0.0.0</li>
+		      <li>255.255.255.0</li>
+		      <li>127.0.0.1</li>
+		      <li>10.0.0.1</li>
+		    </ol>
+		  </li>
+		  <li>Which of the below is NOT correct?
+		    <ol style="list-style-type:upper-alpha">
+		      <li>scp can copy files from local
+		      machine to remote machine.</li>
+		      <li>scp can copy files from remote
+		      machine to local machine.</li>
+		      <li>scp can copy files from one remote
+		      machine to another remote machine.</li>
+		      <li>scp cannot copy files from one
+		      remote machine to another remote machine.</li>
+		    </ol>
+		  </li>
+		  <li>Which of the below is NOT correct?
+		    <ol style="list-style-type:upper-alpha">
+		      <li>rsync can sync files from local
+		      machine to remote machine.</li>
+		      <li>rsync can sync files from remote
+		      machine to local machine.</li>
+		      <li>rsync can sync files from one remote
+		      machine to another remote machine.</li>
+		      <li>rsync cannot sync files from one
+		      remote machine to another remote machine.</li>
+		    </ol>
+		  </li>
+		  <li>To login to a remote machine, you need
+		  to know
+		    <ol style="list-style-type:upper-alpha">
+		      <li>User ID</li>
+		      <li>Password</li>
+		      <li>IP address</li>
+		      <li>All of the above</li>
+		    </ol>
+		  </li>
+		</ol>
+	      </p>
+          </div>
+        </section>
+
+        <section id="experiment-article-section-8">
+          <div id="experiment-article-section-8-icon" 
+               class="icon">
+	    <!-- Enclose the icon image of your lab.-->
+	    <img src="../images/readings.jpg" />
+	  </div>
+
+          <div id="experiment-article-section-8-heading" 
+               class="heading">
+            Further Readings
+          </div>
+
+          <div id="experiment-article-section-8-content" 
+               class="content">
+	    <ol>
+	      <li>Read man pages of every command discussed
+	      in this experiment.</li>
+	      <li><a href="http://www.hypexr.org/linux_scp_help.php">http://www.hypexr.org/linux_scp_help.php</a></li>
+	      <li><a href="http://www.thegeekstuff.com/2010/09/rsync-command-examples/">http://www.thegeekstuff.com/2010/09/rsync-command-examples/</a></li>
+	      <li><a href="http://ss64.com/bash/rsync.html">http://ss64.com/bash/rsync.html</a></li>
+	    </ol>
+          </div>
+        </section>
+
+	<section id="experiment-article-section-9">
+
+          <div id="experiment-article-section-9-icon" 
+               class="icon">
+            <!-- Enclose the icon image of your lab.-->
+            <img src="../images/readings.jpg" />
+          </div>
+
+          <div id="experiment-article-section-9-heading" 
+               class="heading">
+	    Feedback
+          </div>
+
+          <div id="experiment-article-section-9-content" 
+               class="content">
+	    <p>
+	      Please provide your
+	      feedback <a href="http://virtual-labs.ac.in/feedback/"> here </a>
+	    </p>
+          </div>
+
+        </section>
+
+
+      </div>
+
+
+    <!-- An article can have a sidebar that contain related 
+    links and additional material (however it is kept optional 
+    at this moment) -->
+    <aside id="lab-article-sidebar" class="default">
+      <!-- put the content that you want to appear in the 
+      sidebar -->	
+    </aside>
+
+
+    <!-- Article footer can display related content and 
+    additional links -->						
+    <footer id="lab-article-footer" class="default">
+      <!-- Put the content that you want to appear here -->
+    </footer>
+
+  </article>
+
+
+  <!-- Links to other labs, about us page can be kept the lab 
+  footer-->
+   <footer id="lab-footer" class="footer">
+    <!-- Put the content here-->
+	<a href="http://virtual-labs.ac.in/nmeict/" >Sponsered by MHRD (NME-ICT) </a> | <a href="http://virtual-labs.ac.in/licensing/" target="_blank"> Licensing Terms </a>
+  </footer>
+
+</div>		
+
+</body>
+</html>

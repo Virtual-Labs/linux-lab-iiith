@@ -1,0 +1,6 @@
+digraph teacher_marks
+{
+	"english_teacher" -> "marks.txt" ;
+	"maths_teacher" -> "marks.txt" [label="Needs access"];
+	"physics_teacher" -> "marks.txt" ;
+}

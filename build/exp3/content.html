@@ -1,0 +1,547 @@
+<!-- This file needs to be edited by the lab developer to suit
+the requirements of their lab in particular.-->
+
+<!-- Add class="default" to include any element as it is
+specified in default.html. 
+Do not include class="default" to the elements that you want to
+edit -->
+
+<!DOCTYPE html>
+<html>
+<head></head>
+<body>
+
+<div id="experiment"> <!-- The Experiment Document Container-->
+
+<!-- The lab Header contains the logo and the name of the lab,
+	usually displayed on the top of the page-->
+
+	<header id="experiment-header" >
+
+	<div id="experiment-header-logo" class="logo">
+	<!-- Enclose the logo image of your lab or write it in 
+	text-->
+	<img src="../images/logo.jpg" />
+	</div>
+
+	<div id="experiment-header-heading" class="heading">
+	<!-- Write the name of your lab and link it to the home 
+	page of your lab (h1 tag is preferred while writing your 
+			lab name)-->
+	<a href="../index.html">Linux Lab</a>	
+	</div>
+
+	<!-- Add any additional element you want to add to the lab 
+	header, For example : Help (Enclosing them with suitable 
+			div is recommended)-->
+
+	</header>
+
+
+	<!-- The lab article is the main content area where all the 
+	experiment content sits-->
+	<article id="experiment-article">
+
+	<!-- The lab article has an header, optional navigational 
+	menu, number of sections, an optional sidebar and a closing 
+	footer-->
+	<div id="experiment-article-breadcrumb">
+	</div>
+	<header id="experiment-article-heading" class="heading">
+	<!-- You can add a welcome message or title of the 
+	experiment here -->
+	3. File Content
+	<!-- Add any additional element if required with proper 
+	enclosing-->
+	</header>
+
+	<!-- Navigation menu is useful to organize the view of 
+	multiple sections inside the article-->
+	<nav id="experiment-article-navigation" class="default">
+	<ul id="experiment-article-navigation-menu">
+	<!-- The menu can be dynamically generated to contain 
+	the headings of your sections or instead write the 
+	menu items of your choice individually enclosedu in 
+	<li> tag as shown below-->
+	</ul>
+	</nav>
+
+	<!-- All the sections of your lab or experiment can be 
+	enclosed together with a div element as shown below-->
+	<div id="experiment-article-sections">
+
+	  <!-- First section of the article-->
+	  <section id="experiment-article-section-1">
+
+	    <div id="experiment-article-section-1-icon" 
+		 class="icon">
+	      <!-- Enclose the icon image of your lab -->
+	      <img src="../images/introduction.jpg" />
+	    </div>	
+
+	    <!-- The heading for the section can be enclosed in a 
+		 div tag. -->
+	    <div id="experiment-article-section-1-heading" 
+		 class="heading">
+	      Introduction
+	    </div>
+	    <!-- Write the section content inside a paragraph 
+		 element, You can also include images with <img> tag -->
+	    <div id="experiment-article-section-1-content" 
+		 class="content">	
+	      <p>
+		This experiment describes various commands
+		that perform different types of operations
+		on file content such as listing, sorting,
+		counting number of lines or words, etc.
+		Various commands which can be used to
+		display first few lines of a file, last few
+		lines of a file, etc. are explained.
+		Further, this experiment also explains
+		commands which can be used to see contents
+		of large text files in manageable way.
+	      </p>
+	    </div>
+	  </section>
+
+
+	  <section id="experiment-article-section-2">
+
+	    <div id="experiment-article-section-2-icon" 
+		 class="icon">
+	      <!-- Enclose the icon image of your lab. -->
+	      <img src="../images/objective.jpg" />
+	    </div>
+
+	    <!-- The heading for the section can be enclosed in a 
+		 div tag. -->
+	    <div id="experiment-article-section-2-heading" 
+		 class="heading">
+	      Objective
+	    </div>
+
+
+	    <!-- Write the section content inside a paragraph 
+		 element, we can also include images with <img> tag -->
+	    <div id="experiment-article-section-2-content" 
+		 class="content">
+	      <p>
+		The objective of this lab is to teach you some basic
+		ways to view content of a text file in different
+		formats or dimensions using Linux commands.
+	      </p>
+	    </div>
+	  </section>
+
+	<!-- Second section of the article-->
+	<section id="experiment-article-section-3">
+
+	  <div id="experiment-article-section-3-icon" 
+	       class="icon">
+	    <!-- Enclose the icon image of your lab. -->
+	    <img src="../images/theory.jpg" />
+	  </div>
+
+	  <!-- The heading for the section can be enclosed in a 
+	       div tag. -->
+	  <div id="experiment-article-section-3-heading" 
+	       class="heading">
+	    Theory
+	  </div>
+
+
+	<!-- Write the section content inside a paragraph 
+	element, we can also include images with <img> tag -->
+	<div id="experiment-article-section-3-content" 
+	class="content">
+	  
+	  <h3>1. echo</h3>
+	  <p>
+	    echo writes input strings to standard output
+	    i.e. it echoes back whatever it gets.
+	  </p>
+	  <p>
+	    Syntax of echo command is <b>"echo &lt;string&gt;"</b>.  In
+	    the example below, "Hello World" string is
+	    echoed back.
+	  </p>
+	<pre class="code">
+aditi@mylaptop:~$ echo "Hello World"
+Hello World </pre>
+	
+	<h3>2. cat</h3>
+	  <p>
+	    cat displays content of a text file.
+	  </p>
+
+	  <p>
+	    Syntax of cat command is <b>"cat &lt;filename&gt;"</b>.  The
+	    example below displays the contents of file
+	    example.txt using cat.
+	  </p>
+      	<pre class="code">
+aditi@mylaptop:~$ cat example.txt 
+jug
+papaya
+sun
+cat
+boy
+queen
+dog
+kite
+frog
+goat
+horse
+apple
+icecream
+elephant
+lemon
+mango
+net
+orange
+rabbit</pre>
+
+	<h3>3. head</h3>
+	  <p>
+	    head displays the first few lines of a text file
+	    to standard output.  By default, it displays the
+	    first 10 lines of the input file, but "-n"
+	    option can be used to display any number of
+	    lines.
+	  <p>
+	    
+          <p>Syntax of head command is <b>"head &lt;filename&gt;"</b>.
+          The example below displays the first 10 lines of example.txt
+          file.</p>
+
+	<pre class="code">
+aditi@mylaptop:~$ head example.txt 
+jug
+papaya
+sun
+cat
+boy
+queen
+dog
+kite
+frog
+goat</pre>
+
+	  <p>
+	    To see the first 5 lines only, use "head -n 5
+	    example.txt" or simply "head -5 example.txt"
+	  </p>
+
+	<h3>4. tail</h3>
+	  <p>
+	    tail displays the last few lines of a text file
+	    to standard output.  By default, it displays
+	    last 10 lines of the input file, but "-n" option
+	    can be used to display any number of lines.
+	  <p>
+	    
+          <p>Syntax of tail command is <b>"tail &lt;filename&gt;"</b>.
+          The example below displays the last 10 lines of example.txt
+          file.</p>
+
+	<pre class="code">
+aditi@mylaptop:~$ tail example.txt 
+goat
+horse
+apple
+icecream
+elephant
+lemon
+mango
+net
+orange
+rabbit</pre>
+
+	  <p>
+	    To see the last 5 lines only, use "tail -n 5
+	    example.txt" or simply "tail -5 example.txt"
+	  </p>
+
+	  <h3>5. wc</h3>
+	  <p>
+	    wc displays count of lines, words, and
+	    characters in a file.
+	  </p>
+	  <p>Syntax of wc command is <b>"wc [options]
+	  &lt;filename&gt;"</b></p>.
+	  <p>
+	    Below are the available options for wc command
+	  </p>
+	  <table>
+	      <tr><th>Option</th><th>Description</th>
+	      <tr><td>c</td><td>Counts and displays the
+	      number of bytes in the input file</td></tr>
+	      <tr><td>l</td><td>Counts and displays the
+	      number of lines in the input file</td></tr>
+	      <tr><td>w</td><td>Counts and displays the
+	      number of words in the input file</td></tr>
+	  </table>
+
+	  <p>	
+	    Below example displays the count of lines, words
+	    and bytes in "example.txt" file.  The file
+	    contains 19 lines, 19 words and 108 bytes.
+	  </p>
+	  <pre class="code">
+aditi@mylaptop:~$ wc example.txt 
+ 19  19 108 example.txt</pre>
+
+
+          <h3>6. sort</h3>
+	  <p>
+	    "sort" displays contents of the input file in
+	    sorted order.  The input file remains unsorted.
+	    It is only the displayed contents that are
+	    sorted.
+	  </p>
+	  <p>Syntax for sort command is <b>"sort &lt;filename&gt;</b>.
+	  The below example displays the input file "example.txt" in
+	  sorted order.</p>
+
+	  <pre class="code">
+aditi@mylaptop:~$ cat example.txt
+apple
+boy
+cat
+dog
+elephant
+frog
+goat
+horse
+icecream
+jug
+kite
+lemon
+mango
+net
+orange
+papaya
+queen
+rabbit
+sun</pre>
+
+	  <p>
+	    The file example.txt is unchanged, as the below
+	    output shows.
+	  </p>
+	  <pre class="code">
+aditi@mylaptop:~$ head -5 example.txt
+jug
+papaya
+sun
+cat
+boy</pre>
+	  
+	  <h3>6. diff</h3>
+	  <p>
+	    <i>diff</i> compares input files and displays
+	    the differences between them.  If there are no
+	    differences, it doesn't display anything.
+	    Discussion of details of the diff output is
+	    outside the scope of this experiment.
+	  </p>
+	  <p>
+	    Syntax of diff command is <b>"diff &lt;file1&gt;
+	    &lt;file2&gt;"</b>.  The below example compares
+	    example.txt with its copy example2.txt
+	  </p>  
+	  <pre class="code">
+aditi@mylaptop:~$ diff example.txt examplecopy.txt
+aditi@mylaptop:~$</pre>
+
+	  <h3>7. more</h3>
+	  <p>
+	    <i>more</i> is used to view contents of
+	    large output one page at a time (e.g. "cat"
+	    of large file or a command that results in
+	    large output such as "ps aux").  
+	  </p>
+	  <p>
+	    <i>more</i> displays a page and pauses until the
+	    user presses spacebar or down-arrow to move to
+	    the next page of output.  When there are no more
+	    pages to display, it will return to the command
+	    prompt.  You can also press 'q' key to stop
+	    'more' without having to go through all pages.
+	    It allows only forward navigation i.e. you
+	    cannot "scroll-up"
+	  </p>
+	  <p>Syntax for more command is <b>"more &lt;filename&gt;"</b></p>
+
+	  <h3>9. less</h3>
+	  <p>
+            <i>less</i> is a more versatile version
+	    of <i>more</i>.  It allows both forward and
+	    reverse scrolling.  You can scroll one page at a
+	    time (Page Up/ Page Down keys) or one line (Up/
+	    Down arrow) or directly jump to the beginning or
+	    the end (Home/ End keys) of the content.
+	  </p>
+	  <p>
+	    Syntax for less command is <b>"less &lt;filename&gt;"</b>
+	  </p>
+     </div>
+     </section>
+
+      <section id="experiment-article-section-4">
+	<div id="experiment-article-section-4-icon" 
+	     class="icon">
+	  <!-- Enclose the icon image of your lab.-->
+	  <img src="../images/simulation.jpg" />
+	</div>
+	
+	<div id="experiment-article-section-4-heading" 
+	     class="heading">
+	  Tasks
+	</div>
+	
+	<div id="experiment-article-section-4-content" 
+	     class="content">
+	  <p style="margin-left:0px">
+	    Students who already have a Virtual-Labs login should click
+	    <a href="javascript:void(0)"
+	       onclick="window.open('../php/login-form.php?expid=3',
+			'welcome', width=screen.availWidth, height=screen.availHeight,status='yes')">
+	      here</a> 
+	    to see the list of tasks for this experiment. <br /> 
+	    In case the login credentials are not available, then please click 
+	    <a href="../php/register-form.php">here</a> to
+	    register.
+	  </p>
+        </div> 
+      </section>
+
+
+        <section id="experiment-article-section-5">
+      
+          <div id="experiment-article-section-5-icon" 
+          class="icon">
+	    <!-- Enclose the icon image of your lab.-->
+	    <img src="../images/quizzes.jpg" />
+	  </div>
+
+          <div id="experiment-article-section-5-heading" 
+          class="heading">
+            Quiz
+          </div>
+
+          <div id="experiment-article-section-5-content" 
+          class="content">
+	    <p>
+	      <ol>
+		<li>Which command allows forward and
+		  reverse navigation when viewing contents
+		  of a text file?
+		  <ol style="list-style-type:upper-alpha">
+		    <li>more</li>
+		    <li>less</li>
+		    <li>cat</li>
+		    <li>head</li>
+		  </ol>
+		</li>
+		<li>Which command is used to count just the number of lines in a file?
+                  <ol style="list-style-type:upper-alpha">
+		    <li>wc -l</li>
+                    <li>wc -c</li>
+                    <li>wc -w</li>
+                    <li>wc -r</li>
+		  </ol>
+                </li>
+                <li>What is the command to display the first 8 lines of a text file "example.txt"?
+		  <ol style="list-style-type:upper-alpha">
+		    <li>head -8 example.txt</li>
+                    <li>cat -8 example.txt</li>
+		    <li>tail -8 example.txt</li>
+		    <li>head example.txt</li>
+		  </ol>
+		</li>
+		<li>Which command is used to display the content in reverse order?
+		  <ol style="list-style-type:upper-alpha">
+		    <li>head <file name></li>
+		    <li>sort <file name></li>
+		    <li>sort -r <file name></li>
+		    <li>cat -r <file name></li>
+                  </ol>
+		<li>Which command is used to display the last 20 lines of a file?
+		  <ol style="list-style-type:upper-alpha">
+		    <li>head -20 <file name>
+			<li>tail</li>
+			<li>tail -20 <file name></li>
+			<li>cat <file name></li>
+		  </ol>
+		<li>Which command is used to see the difference between two text file?
+	          <ol style="list-style-type:upper-alpha">	
+		    <li>cat</li>
+		    <li>diff</li>
+		    <li>sort</li>
+		    <li>head</li>
+		  </ol>
+		</li>
+	      </ol>
+	    </p>
+	  </div>
+	</section>
+
+
+        <section id="experiment-article-section-6">
+   
+          <div id="experiment-article-section-6-icon" 
+          class="icon">
+	    <!-- Enclose the icon image of your lab.-->
+	    <img src="../images/readings.jpg" />
+	  </div>
+
+          <div id="experiment-article-section-6-heading" 
+          class="heading">
+            Further Readings
+          </div>
+
+          <div id="experiment-article-section-6-content" 
+          class="content">
+<!--
+	<ol>
+<li><a href="http://www.cyberciti.biz/tips/understanding-linuxlinux-symbolic-soft-and-hard-links.html">http://www.cyberciti.biz/tips/understanding-linuxlinux-symbolic-soft-and-hard-links.html</a></li>
+<li><a href="http://linuxgazette.net/105/pitcher.html">http://linuxgazette.net/105/pitcher.html</a></li>	</ol> -->
+          </div>
+
+        </section>
+
+    
+
+      </div>
+
+
+    <!-- An article can have a sidebar that contain related 
+    links and additional material (however it is kept optional 
+    at this moment) -->
+    <aside id="lab-article-sidebar" class="default">
+      <!-- put the content that you want to appear in the 
+      sidebar -->	
+    </aside>
+
+
+    <!-- Article footer can display related content and 
+    additional links -->						
+    <footer id="lab-article-footer" class="default">
+      <!-- Put the content that you want to appear here -->
+    </footer>
+
+  </article>
+
+
+  <!-- Links to other labs, about us page can be kept the lab 
+  footer-->
+   <footer id="lab-footer" class="footer">
+    <!-- Put the content here-->
+	<a href="http://virtual-labs.ac.in/nmeict/" >Sponsered by MHRD (NME-ICT) </a> | <a href="http://virtual-labs.ac.in/licensing/" target="_blank"> Licensing Terms </a>
+  </footer>
+
+</div>		
+
+</body>
+</html>

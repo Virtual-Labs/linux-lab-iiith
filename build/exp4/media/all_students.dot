@@ -1,0 +1,5 @@
+graph students {
+	students -- "student_a";
+	students -- "student_b";
+	students -- "student_c";
+};

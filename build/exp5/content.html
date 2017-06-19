@@ -1,0 +1,690 @@
+<!-- This file needs to be edited by the lab developer to suit
+the requirements of their lab in particular.-->
+
+<!-- Add class="default" to include any element as it is
+specified in default.html. 
+Do not include class="default" to the elements that you want to
+edit -->
+
+<!DOCTYPE html>
+<html>
+<head></head>
+<body>
+
+<div id="experiment"> <!-- The Experiment Document Container-->
+
+<!-- The lab Header contains the logo and the name of the lab,
+	usually displayed on the top of the page-->
+
+	<header id="experiment-header" >
+
+	<div id="experiment-header-logo" class="logo">
+	<!-- Enclose the logo image of your lab or write it in 
+	text-->
+	<img src="../images/logo.jpg" />
+	</div>
+
+	<div id="experiment-header-heading" class="heading">
+	<!-- Write the name of your lab and link it to the home 
+	page of your lab (h1 tag is preferred while writing your 
+			lab name)-->
+	<a href="../index.html">Linux Lab</a>	
+	</div>
+
+	<!-- Add any additional element you want to add to the lab 
+	header, For example : Help (Enclosing them with suitable 
+			div is recommended)-->
+
+	</header>
+
+
+	<!-- The lab article is the main content area where all the 
+	experiment content sits-->
+	<article id="experiment-article">
+
+	<!-- The lab article has an header, optional navigational 
+	menu, number of sections, an optional sidebar and a closing 
+	footer-->
+	<div id="experiment-article-breadcrumb">
+	</div>
+	<header id="experiment-article-heading" class="heading">
+	<!-- You can add a welcome message or title of the 
+	experiment here -->
+	5. Archival and Compression
+	<!-- Add any additional element if required with proper 
+	enclosing-->
+	</header>
+
+	<!-- Navigation menu is useful to organize the view of 
+	multiple sections inside the article-->
+	<nav id="experiment-article-navigation" class="default">
+	<ul id="experiment-article-navigation-menu">
+	<!-- The menu can be dynamically generated to contain 
+	the headings of your sections or instead write the 
+	menu items of your choice individually enclosed in 
+	<li> tag as shown below-->
+	</ul>
+	</nav>
+
+	<!-- All the sections of your lab or experiment can be 
+	enclosed together with a div element as shown below-->
+	<div id="experiment-article-sections">
+
+	<!-- First section of the article-->
+	<section id="experiment-article-section-1">
+
+	<div id="experiment-article-section-1-icon" 
+	class="icon">
+	<!-- Enclose the icon image of your lab -->
+	<img src="../images/introduction.jpg" />
+	</div>	
+
+	<!-- The heading for the section can be enclosed in a 
+	div tag. -->
+	<div id="experiment-article-section-1-heading" 
+	class="heading">
+	Introduction
+	</div>
+	<!-- Write the section content inside a paragraph 
+	element, You can also include images with <img> tag -->
+	<div id="experiment-article-section-1-content" 
+	class="content">	
+	<p align="justify">
+
+File Compression and File Archiving are two different functions.  File
+Archiving is useful when a number of files need to be combined into a
+single file.  This is useful when the files need to be transferred or
+sent across e-mails.  Compressions involves reducing the file size so as
+to save the disk space or to create backups of the data.
+
+	</p>
+
+	</div>
+
+
+	</section>
+
+	<section id="experiment-article-section-2">
+
+	<div id="experiment-article-section-2-icon" 
+	class="icon">
+	<!-- Enclose the icon image of your lab. -->
+	<img src="../images/objective.jpg" />
+	</div>
+
+	<!-- The heading for the section can be enclosed in a 
+	div tag. -->
+	<div id="experiment-article-section-2-heading" 
+	class="heading">
+	Objective
+	</div>
+	
+
+	<!-- Write the section content inside a paragraph 
+	element, we can also include images with <img> tag -->
+	<div id="experiment-article-section-2-content" 
+	class="content">
+	<!-- Second section of the article-->
+	<p align="justify">
+
+The objective of this experiment is to familiarize the users with some
+of the widely used commands for archiving the files and folders on Linux
+system.
+
+After finishing the Experiment, the user would be able to work with
+compressed files and archived documents. 
+
+	</p>
+	</div>
+	</section>
+
+	<section id="experiment-article-section-3">
+
+	<div id="experiment-article-section-3-icon" 
+	class="icon">
+	<!-- Enclose the icon image of your lab. -->
+	<img src="../images/theory.jpg" />
+	</div>
+
+	<!-- The heading for the section can be enclosed in a 
+	div tag. -->
+	<div id="experiment-article-section-3-heading" 
+	class="heading">
+	Theory
+	</div>
+
+
+	<!-- Write the section content inside a paragraph 
+	element, we can also include images with <img> tag -->
+	<div id="experiment-article-section-3-content" 
+	class="content">
+
+<h3> Zip and Unzip </h3>
+
+<p align="justify">
+Zip and Unzip are the most widely used archiving commands.  They work
+across all operating systems, hence, making them the most obvious
+choices.
+
+<br />
+<br />
+
+<b> Zip </b>
+
+<br />
+<br />
+
+Zip does both archiving and compression functions on the files. To
+archive using zip command:
+
+<pre class="code">
+$ ls
+abc.org image1.jpg image2.jpg 
+
+$ zip abc abc.org
+  adding: abc.org (deflated 39%)
+
+$ ls -l
+total 268
+-rw-rw-r-- 1 aditi students    451 2012-12-20 17:02 abc.org
+-rw-rw-r-- 1 aditi students    437 2012-12-27 15:41 abc.zip
+-rw-rw-r-- 1 aditi students 134964 2012-12-19 20:56 image1.jpg
+-rw-rw-r-- 1 aditi students 124945 2012-12-16 12:34 image2.jpg
+</pre>
+</p>
+
+<p align="justify">
+
+The syntax of the command is: 
+<br />
+<code> zip [options] [archive name] [file name/path name] </code>
+<br />
+where archive is the name of a new or existing archive and file name or
+path name is name of the file or directory to be archived or its path.
+
+<br />
+<br />
+
+To archive more than one file in the same zipped file:
+
+<pre class="code">
+$ ls
+abc.org abc.zip image1.jpg image2.jpg
+
+$ zip abc image1.jpg image2.jpg
+  adding: image1.jpg (deflated 2%)
+  adding: image2.jpg (deflated 6%)
+
+$ ls -l
+total 508
+-rw-rw-r-- 1 aditi students    451 2012-12-20 17:02 abc.org
+-rw-rw-r-- 1 aditi students 250422 2012-12-27 16:30 abc.zip
+-rw-rw-r-- 1 aditi students 134964 2012-12-19 20:56 image1.jpg
+-rw-rw-r-- 1 aditi students 124945 2012-12-16 12:34 image2.jpg
+</pre>
+</p>
+
+<p align="justify">
+<b> Unzip </b>
+
+<br />
+<br />
+
+Unzip is used to extract the files from the archive.  The syntax is:
+<br />
+<code>unzip [archive name]</code> 
+<br /> 
+To extract the files at a specified file location <code>-d</code> option
+should be used followed by the directory path.
+
+<pre class="code">
+$ ls
+test.zip  
+
+$ unzip test.zip
+Archive:  test.zip
+   creating: test/
+   creating: test/dir/
+  inflating: test/dir/abc.org        
+  inflating: test/image2.jpg         
+  inflating: test/image1.jpg         
+ extracting: test/abc.zip            
+  inflating: test/abd                
+  inflating: test/abc.org      
+
+$ unzip test.zip -d dir/
+Archive:  test.zip
+   creating: dir/test/
+   creating: dir/test/dir/
+  inflating: dir/test/dir/abc.org    
+  inflating: dir/test/image2.jpg     
+  inflating: dir/test/image1.jpg     
+ extracting: dir/test/abc.zip        
+  inflating: dir/test/abd            
+  inflating: dir/test/abc.org        
+
+$ cd dir/
+$ ls -l
+total 8
+-rw-rw-r-- 1 aditi students  451 2012-12-28 10:30 abc.org
+drwxrwxr-x 3 aditi students 4096 2012-12-28 11:31 test
+</pre>
+</p>
+
+<h3>Tar</h3>
+
+<p align="justify">
+Tar is used to convert the files into an archive.  The syntax is: 
+<br />
+<code>tar [options] [archive name] [file name]</code>
+<br />
+<br />
+Tar provides a lot of options. Some of the most common used ones are:
+<br />
+c - used when creating the tar files
+<br />
+v - verbose mode which shows the list of files being archived on the command line
+<br />
+x - extracts the files from the archive
+<br />
+f - indicates that next argument will be the name of new/existing archive file
+<br />
+<br /> 
+<b> Please note that f option should always be the last among all the options used.</b>
+
+<pre class="code">
+$ ls
+test
+
+$ tar -cvf test.tar test/
+test/
+test/dir/
+test/dir/abc.org
+test/image2.jpg
+test/image1.jpg
+test/abc.tar
+test/abc.zip
+test/abd
+test/abc.org
+
+$ ls
+test test.tar
+
+$ rm -rf test
+$ tar -xvf test.tar
+test/
+test/dir/
+test/dir/abc.org
+test/image2.jpg
+test/image1.jpg
+test/abc.tar
+test/abc.zip
+test/abd
+test/abc.org
+
+$ ls
+test  test.tar
+</pre>
+</p>
+
+<p align="justify">
+By default, tar doesn't provide any compression and decompression
+capabilities.  But, it can use external compression utilities like bzip2
+and gzip.  The options for these utilities are:
+<br />
+j - for compressing and decompressing using bzip2
+<br />
+z - for compressing and decompressing using gzip
+<br />
+<br />
+<b>Note: .tgz is same as .tar.gz</b>
+
+<pre class="code">
+$ ls
+test
+
+$ tar -cjvf test.tar.bz2 test/
+test/
+test/dir/
+test/dir/abc.org
+test/image2.jpg
+test/image1.jpg
+test/abc.tar
+test/abc.zip
+test/abd
+test/abc.org
+
+$ ls -l
+total 728
+drwxrwxr-x 3 aditi students 2012-12-28 14:56 test
+-rw-rw-r-- 1 aditi students 737525 2012-12-28 15:18 test.tar.bz2
+
+$ tar -czvf test.tar.gz test/
+test/
+test/dir/
+test/dir/abc.org
+test/image2.jpg
+test/image1.jpg
+test/abc.tar
+test/abc.zip
+test/abd
+test/abc.org
+
+$ ls -l
+total 984
+drwxrwxr-x 3 aditi students    4096 2012-12-28 14:56 test
+-rw-rw-r-- 1 aditi students 737525 2012-12-28 15:18 test.tar.bz2
+-rw-rw-r-- 1 aditi students 1003263 2012-12-28 15:26 test.tar.gz
+
+$ cd test/
+$ ls -l
+total 1028
+-rw-rw-r-- 1 aditi students    451 2012-12-20 17:02 abc.org
+-rw-rw-r-- 1 aditi students 522240 2012-12-28 14:46 abc.tar
+-rw-rw-r-- 1 aditi students 250981 2012-12-28 10:31 abc.zip
+-rw-rw-r-- 1 aditi students    451 2012-12-28 10:30 abd
+drwxrwxr-x 2 aditi students   4096 2012-12-28 10:30 dir
+-rw-rw-r-- 1 aditi students 134964 2012-12-19 20:56 image1.jpg
+-rw-rw-r-- 1 aditi students 124945 2012-12-16 12:34 image2.jpg
+</pre>
+</p>
+
+<h3>Gzip</h3>
+
+<p align="justify">
+Gzip is a compression utility which compresses only the files.  To
+decompress using gzip, <code>-d</code> option is used.  The command
+deletes the original file and creates a compressed file appending the
+file name with the extension .gz.
+
+<br />
+<br />
+
+<b>This compression can be used along with tar command using the option z.</b>
+
+<pre class="code">
+$ ls
+abcd.org test/
+
+$ gzip abcd.org
+$ ls
+abcd.org.gz test/
+
+$ gzip -d abcd.org.gz
+$ls
+abcd.org test/
+</pre>
+</p>
+
+<h3>Gunzip</h3>
+
+<p align="justify">
+Gunzip is a decompression utility which can decompress files created by
+gzip, zip and compress. The command decompresses the file, checks for
+the integrity of the uncompressed file and, then, deletes the compressed
+file and stores the original file.
+
+<pre class="code">
+$ ls
+abcd.org.gz  test/
+
+$ gunzip abcd.org.gz
+$ ls
+abcd.org  test/
+</pre>
+</p>
+
+<h3>Bzip2</h3>
+
+<p align="justify">
+Bzip2 provides a high rate of lossless compression when compared to Gzip
+and Zip.  But, it is slower than either.  The command, like Gzip,
+deletes the original file and creates a compressed file by appending the
+file name with .bz2 file extension.  
+
+<br />
+<br />
+
+The original files can be retained using <code>-k</code> option.  The
+file can be decompressed using the <code>-d</code> option.  Since bzip2
+doesn't archive the files, the command does not work on the
+directories.  <code>-v</code> provides the verbose option.
+
+<br />
+<br />
+
+<b>This compression can be used along with tar command using the option j.</b>
+
+<pre class="code">
+$ ls
+abcd.org test/
+
+$ bzip2 -v abcd.org
+  abcd.org:  no data compressed.
+
+$ ls 
+abcd.org.bz2 test/
+
+$ bzip2 -d abcd.org.bz2
+$ ls
+abcd.org test/
+
+$ bzip2 -k abcd.org
+abcd.org abcd.org.bz2 test/
+</pre>
+</p>
+
+<h3>Bunzip2</h3>
+
+<p align="justify">
+Bunzip2 is a decompression utility which decompresses only the files
+with extensions .bz2, .bz, .tbz2, .tbz.  In case of any other file name,
+it throws an error.  Like Gunzip, it also decompresses the file, checks
+for the integrity of the decompressed file, deletes the compressed file
+and restores the original file.
+
+<pre class="code">
+$ ls
+abcd.org.bz2  test/
+
+$ bunzip2 abcd.org.bz2
+$ ls
+abcd.org  test/
+</pre>
+</p>
+	  
+	  </div>
+	  </section>
+
+
+
+
+
+
+      <section id="experiment-article-section-5">
+	<div id="experiment-article-section-5-icon" 
+	     class="icon">
+	  <!-- Enclose the icon image of your lab.-->
+	  <img src="../images/simulation.jpg" />
+	</div>
+	
+	<div id="experiment-article-section-5-heading" 
+	     class="heading">
+	  Tasks
+	</div>
+	
+	<div id="experiment-article-section-5-content" 
+	     class="content">
+	  <p style="margin-left:0px">
+	    Students who already have a Virtual-Labs login should click
+	    <a href="javascript:void(0)"
+	       onclick="window.open('../php/login-form.php?expid=5',
+			'welcome', width=screen.availWidth, height=screen.availHeight,status='yes')">
+	      here</a> 
+	    to see the list of tasks for this experiment. <br /> 
+	    In case the login credentials are not available, then please click 
+	    <a href="../php/register-form.php">here</a> to
+	    register.
+	  </p>
+        </div> 
+      </section>
+
+
+
+
+        <section id="experiment-article-section-6">
+      
+          <div id="experiment-article-section-6-icon" 
+          class="icon">
+	    <img src="../images/quizzes.jpg" />
+	  </div>
+
+          <div id="experiment-article-section-6-heading" 
+          class="heading">
+            Quiz
+          </div>
+
+          <div id="experiment-article-section-6-content" 
+          class="content">
+<p align="justify">
+<ol>
+<li> How to run Bunzip2 on directories to decompress them? </li>
+<ul>
+<li> By using -d option </li>
+<li> Bunzip does not work on directories </li>
+<li> Bunzip decompresses directories only </li>
+</ul>
+<br />
+
+<li> What is the compression percentage of a tar file? </li>
+<ul>
+<li> Tar does not compress </li>
+<li> anywhere between 1-100% depending on the file </li>
+</ul>
+<br />
+
+<li> Which compression utility has better performance in most
+cases? </li>
+<ul>
+<li> Bzip2 </li>
+<li> Gzip </li>
+<li> Bunzip </li>
+</ul>
+<br />
+
+<li> Which compression utility has better compression rate in most
+cases? </li>
+<ul>
+<li> Bzip2 </li>
+<li> Gzip </li>
+</ul>
+<br />
+
+<li> Which of the commands discussed in the Experiment come by default
+with the Linux system. </li>
+<ul>
+<li> Tar </li>
+<li> Zip </li>
+<li> Bunzip </li>
+</ul>
+
+</ol>
+</p>
+          </div>
+
+        </section>
+
+
+        <section id="experiment-article-section-8">
+   
+          <div id="experiment-article-section-8-icon" 
+          class="icon">
+	    <!-- Enclose the icon image of your lab.-->
+	    <img src="../images/readings.jpg" />
+	  </div>
+
+          <div id="experiment-article-section-8-heading" 
+          class="heading">
+            Further Readings
+          </div>
+
+          <div id="experiment-article-section-8-content" 
+          class="content">
+
+<p align="justify">
+
+<ul>
+<li><a href="http://linux.die.net/man/1/zip">Zip Man Page</a></li>
+<li><a href="http://linux.die.net/man/1/unzip">Unzip Man Page</a></li>
+<li><a href="http://linux.die.net/man/1/tar">Tar Man Page</a></li>
+<li><a href="http://linux.die.net/man/1/gzip">Gzip Man Page</a></li>
+<li><a href="http://linux.die.net/man/1/gunzip">Gunzip Man Page</a></li>
+<li><a href="http://linux.die.net/man/1/bzip2">Bzip2 Man Page</a></li>
+<li><a href="http://linux.die.net/man/1/bunzip2">Bunzip2 Man Page</a></li>
+<li><a href="http://linux.about.com/od/commands/l/blcmdl1_tar.htm">Tar Command</a></li>
+</ul>
+
+</p>
+
+          </div>
+
+        </section>
+
+   <section id="experiment-article-section-9">
+
+          <div id="experiment-article-section-9-icon" 
+          class="icon">
+            <!-- Enclose the icon image of your lab.-->
+            <img src="../images/readings.jpg" />
+          </div>
+
+          <div id="experiment-article-section-9-heading" 
+          class="heading">
+      
+        Feedback
+          </div>
+
+          <div id="experiment-article-section-9-content" 
+          class="content">
+
+<p align="justify">
+Please send your feedback on the lab using <a href="http://virtual-labs.ac.in/feedback/">this feedback form</a>. 
+</p>
+
+          </div>
+
+        </section>
+
+
+      </div>
+
+
+    <!-- An article can have a sidebar that contain related 
+    links and additional material (however it is kept optional 
+    at this moment) -->
+    <aside id="lab-article-sidebar" class="default">
+      <!-- put the content that you want to appear in the 
+      sidebar -->	
+    </aside>
+
+
+    <!-- Article footer can display related content and 
+    additional links -->						
+    <footer id="lab-article-footer" class="default">
+      <!-- Put the content that you want to appear here -->
+    </footer>
+
+  </article>
+
+
+  <!-- Links to other labs, about us page can be kept the lab 
+  footer-->
+   <footer id="lab-footer" class="footer">
+    <!-- Put the content here-->
+	<a href="http://virtual-labs.ac.in/nmeict/" >Sponsered by MHRD (NME-ICT) </a> | <a href="http://virtual-labs.ac.in/licensing/" target="_blank"> Licensing Terms </a>
+  </footer>
+
+</div>		
+
+</body>
+</html>

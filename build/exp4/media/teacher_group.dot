@@ -1,0 +1,6 @@
+digraph teacher_group
+{
+	"english_teacher" -> "teacher group" ;
+	"maths_teacher" -> "teacher group" [label="Belongs to "];
+	"physics_teacher" -> "teacher group" ;
+}

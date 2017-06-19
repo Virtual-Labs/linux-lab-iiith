@@ -1,0 +1,111 @@
+#+TITLE: RSYNC
+
+* Theory
+
+rsync is a utility tool that is used to synchronize files and folders
+across different directories in the same computer, or even across
+different computers connected directly or via a network.
+
+The main advantage which rsync has over other synchronization tools is
+that is only transfers parts of a file/folder which have been changed,
+unlike copying each file over and again, irrespective of that fact
+whether that file has been changed or not.
+
+For the sake of simplicity, we assume that we have a file in our /home
+directory called *foo*, which is normally known as a *working copy*
+(as we will always work on it), and we maintain a backup of the file
+known as a *mirror*, in a folder */media/bar*, a mounted partition in
+our computer.  This mounted partition can also exist on a separate
+computer, about which we will discuss in some time.
+
+A typical software project consists of several files, many of which
+remain unchanged most of the time. If we maintain a backup of such a
+project in a separate mounted partition every time we make a change ,
+we end up copying many files which have not been altered since the
+last backup. An obvious alternate would be to back up data on a hourly
+or daily basis, but that would mean that if there is a system failure,
+there is a very high probability that a certain user would lose upto a
+day's work.
+
+Thus, the obvious choice to make smart and faster backups is to use an
+utility that would calculate whether a certain directory/file has any
+changes compared to the backup directory. If there are any changes,
+only those changes should be sent to the backup directory, and thus
+save CPU cycles, and if the backup exists on a separate computer,
+valuable network bandwidth.
+
+rysnc does exactly that. It checks for files whose files sizes or
+modification times have changed w.r.t. backups using a "quick-check"
+al gorithm, and then, sends the differences across to the destination,
+where the files/folders are appropriately altered.
+
+_Uses of Rsync_
+
+A typical use of rsync looks like:
+
+rsync <options> <source> <destination>
+
+** Create a file/folder which has to be rsynced
+
+touch foo
+
+** Sync the file to the destination
+
+rsync foo /media/bar
+
+** Alter the contents of foo
+
+echo "hello world">foo
+
+** Rsync the file between two folders
+
+rsync  foo /media/bar
+
+*SHOW OUTPUT HERE*
+
+** Alter the contents of foo again
+
+echo "Welcome!">foo
+
+** Rsync again between two folders
+
+rsync foo /media/bar
+
+*SHOW OUTPUT HERE*
+
+Any changes to made to foo and then rsynced to bar will effect in
+rsync calculating the difference between two files and then
+transmitting the difference, every time you run rsync. The same can be
+applied to folders as well. 
+
+** Create a folder and create a file inside it
+mkdir qux
+touch foo 
+
+** Rsync qux to the backup directory /media/baz
+
+rsync  qux /media/baz
+
+** Create a couple of more files inside qux
+echo "welcome!">foo
+echo "hello world">bar
+
+** Rsync qux to the backup directory /media/baz
+
+rsync -r qux /media/baz
+
+The option r means recursively synchronizing a folder. This is
+particularly useful as rsync will go inside every sub-folder present
+inside the parent directory.
+
+
+
+* References
+- http://www.thegeekstuff.com/2010/09/rsync-command-examples/
+- http://ss64.com/bash/rsync.html
+
+* Experiment
+** Create a file and rsync it to /tmp
+** Create a folder and rsync it to /tmp
+** Rsync to a different computer???
+

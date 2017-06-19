@@ -1,0 +1,842 @@
+<!-- This file needs to be edited by the lab developer to suit
+     the requirements of their lab in particular.-->
+
+<!-- Add class="default" to include any element as it is
+     specified in default.html. 
+     Do not include class="default" to the elements that you want to
+     edit -->
+
+<!DOCTYPE html>
+<html>
+  <head>
+  </head>
+  <body>
+    <div id="experiment"> <!-- The Experiment Document Container-->
+
+      <!-- The lab Header contains the logo and the name of the lab,
+	   usually displayed on the top of the page-->
+
+      <header id="experiment-header">	
+	<div id="experiment-header-logo" class="logo">
+	  <!-- Enclose the logo image of your lab or write it in 
+	       text-->
+	  <img src="../images/logo.jpg" />
+	</div>
+	<div id="experiment-header-heading" class="heading">
+	  <!-- Write the name of your lab and link it to the home 
+	       page of your lab (h1 tag is preferred while writing your 
+	       lab name)-->
+	  <a href="../index.html">Linux Lab</a>	
+	</div>
+	<!-- Add any additional element you want to add to the lab 
+	     header, For example : Help (Enclosing them with suitable 
+	     div is recommended)-->
+      </header>
+
+
+      <!-- The lab article is the main content area where all the 
+	   experiment content sits-->
+      <article id="experiment-article">
+	
+	<!-- The lab article has an header, optional navigational 
+	     menu, number of sections, an optional sidebar and a closing 
+	     footer-->
+	<div id="experiment-article-breadcrumb">
+	</div>
+	<header id="experiment-article-heading" class="heading">
+          <!-- You can add a welcome message or title of the 
+               experiment here -->
+	  2. Text Editor
+          <!-- Add any additional element if required with proper 
+               enclosing-->
+	</header>
+
+	<!-- Navigation menu is useful to organize the view of 
+	     multiple sections inside the article-->
+	<nav id="experiment-article-navigation" class="default">
+          <ul id="experiment-article-navigation-menu">
+            <!-- The menu can be dynamically generated to contain 
+	    the headings of your sections or instead write the 
+	    menu items of your choice individually enclosedu in 
+	    <li> tag as shown below-->
+          </ul>
+	</nav>
+
+	<!-- All the sections of your lab or experiment can be 
+	     enclosed together with a div element as shown below-->
+	<div id="experiment-article-sections">
+
+          <!-- First section of the article-->
+          <section id="experiment-article-section-1">
+            
+            <div id="experiment-article-section-1-icon" 
+		 class="icon">
+	      <!-- Enclose the icon image of your lab -->
+	      <img src="../images/introduction.jpg" />
+	    </div>	
+            
+            <!-- The heading for the section can be enclosed in a 
+		 div tag. -->
+            <div id="experiment-article-section-1-heading" 
+		 class="heading">
+              Introduction
+            </div>
+
+            <!-- Write the section content inside a paragraph 
+	    element, You can also include images with <img> tag -->
+            <div id="experiment-article-section-1-content" 
+		 class="content">	
+	      <p>
+		This experiment introduces a console-based text editor
+		called vim.
+	      </p>
+	      
+	      <p>
+		Vim is a popular editor for editing text files such as
+		computer programs as it has a lot of features such as syntax
+		highlighting, line numbering, block operations and
+		multi-level undo.  To know more about vim, visit
+		www.vim.org.
+	      </p>
+	      
+	      <p>
+		To learn vim, most linux systems come with a tutorial called
+		vimtutor.  Just type vimtutor at the shell prompt to start
+		the tutorial.  After this experiment, learners are expected
+		to  go through vimtutor and complete the lessons there.
+	      </p>
+            </div>
+	    
+	    
+	  </section>
+	  
+	  <section id="experiment-article-section-2">
+            
+            <div id="experiment-article-section-2-icon" 
+		 class="icon">
+	      <!-- Enclose the icon image of your lab. -->
+	      <img src="../images/objective.jpg" />
+	    </div>
+	    
+            <!-- The heading for the section can be enclosed in a 
+		 div tag. -->
+            <div id="experiment-article-section-2-heading" 
+		 class="heading">
+	      Objective
+            </div>
+	    
+	    
+            <!-- Write the section content inside a paragraph 
+	    element, we can also include images with <img> tag -->
+            <div id="experiment-article-section-2-content" 
+		 class="content">
+	      <!-- Second section of the article-->
+	      <p>This experiment aims to make you comfortable with
+		editing text files (such as C programs, other source code,
+		notes, etc.) using vim text editor.
+	      </p>
+	      <p>
+		After this experiment, you will be able
+		to create text files, search in text files,
+		cut, copy and paste text and replace text using
+		substitution command.
+	      </p>
+	    </div>
+	  </section>
+	  
+	  
+	  <section id="experiment-article-section-3">
+            
+            <div id="experiment-article-section-3-icon" 
+		 class="icon">
+	      <!-- Enclose the icon image of your lab. -->
+	      <img src="../images/theory.jpg" />
+	    </div>
+	    
+            <!-- The heading for the section can be enclosed in a 
+		 div tag. -->
+            <div id="experiment-article-section-3-heading" 
+		 class="heading">
+              Theory
+            </div>
+	    
+	    
+            <!-- Write the section content inside a paragraph 
+	    element, we can also include images with <img> tag -->
+            <div id="experiment-article-section-3-content" 
+		 class="content">
+	      <h3>Starting and Exiting vim</h3>
+	      <p>To start vim, type "vim filename" on the
+		command prompt, e.g.</p>
+	      <pre class="code">$ vim helloworld.txt</pre>
+	      <p>
+		If helloworld.txt exists at the present
+		working directory, vim will open it.  If
+		it doesn't exist, vim will create the file
+		once you use the save command below.
+	      </p>
+	      <p>
+		To exit vim, go to the Normal mode (press the 'Esc' key),
+		press the : key (Shift + ;) and type one of
+		the following:
+		<table>
+		  <tr>
+		    <th>
+		      command
+		    </th>
+		    <th>
+		      description
+		    </th>
+		  </tr>
+		  <tr>
+		    <td>
+		      q
+		    </td>
+		    <td>
+		      if you haven't made any change
+		    </td>
+		  </tr>
+		  <tr>
+		    <td>
+		      q!
+		    </td>
+		    <td>
+		      if you have made changes, but don't want to save it
+		    </td>
+		  </tr>
+		  <tr>
+		    <td>
+		      wq
+		    </td>
+		    <td>
+		      if you have made changes and want to save it
+		    </td>
+		  </tr>
+		</table>
+		<br />
+	      </p>
+	      <p>
+		Please note that the vim commands are
+		case-sensitive, hence 'q' and 'Q' have different meanings.
+	      </p>
+	      <pre class="code">:wq</pre>
+	      <h3>Modes in vim</h3>
+	      <p>
+		NORMAL Mode: This is the default mode that
+		you get after you start vim.  This mode is
+		not for typing text.  This is for running
+		commands such as find, save, replace,
+		etc.  You will learn these commands later in
+		this experiment.  You can press 'i' to enter
+		the Insert mode and start typing.  Press
+		'Esc' key to go back to normal mode.
+	      </p>
+	      <br />
+	      <p>
+		INSERT Mode: This mode is where you will spend most of your
+		time in vim, as it allows you to write text in the current file.
+	      </p>
+	      <p>
+		Press 'i' in Normal Mode to enter Insert Mode.  When in
+		insert mode, you will see the word "INSERT" near the bottom
+		of the editor window, as below.
+	      </p>
+	      <pre class="code">-- INSERT --</pre>
+	      <p>
+		VISUAL Mode: This mode allows selecting
+		a section of text and applying vim commands on the
+		selection such as cut, copy.  Press 'v' to go
+		to visual mode.  Press 'Esc' key to go back to
+		normal mode.
+	      </p>
+	      <p>
+		When in visual mode, you will see the word "VISUAL" near the bottom
+		of the editor window, as below.
+	      </p>
+	      <pre class="code">-- VISUAL --</pre>
+	      <p>
+		REPLACE Mode:  This mode allows you
+		to replace current text in the file with anythin you type.
+		Press 'R' (Shift + r) to enter the REPLACE mode. Press 'Esc'
+		key to go back to normal mode.
+	      </p>
+	      <p>
+		When in replace mode, you will see the word
+		"REPLACE" near the bottom of the editor
+		window, as below.
+	      </p>
+	      <pre class="code">-- REPLACE --</pre>
+	      <h3>Typing Text and Saving</h3>
+	      <p>
+		To start typing text into the file, go to
+		insert mode by pressing 'i'.  You should be
+		able to see "-- INSERT --" near the bottom
+		of the vim screen.  Everything you type now
+		will be visible in the window.  To correct
+		an already typed word, you can use backspace
+		to delete and retype it correctly.  You can
+		use arrow keys, Page Up, Page Down, Home,
+		End to navigate the file.  To save your
+		changes, type :w in normal mode.  
+	      </p>
+	      <p>
+		Below is a message you will see if you save a
+		new file "helloworld.txt".  The message says
+		that this file is a "New" file with 1 line
+		(1L) containing 15 characters (15C) in it.
+	      </p>
+	      <pre class="code">"helloworld.txt" [New] 1L, 15C written</pre>
+	      <p>
+		Go back to normal mode by pressing 'Esc' key
+		once you are done typing.
+	      </p>
+	      <h3>Cut, Copy, Paste</h3>
+	      <p>
+		All these commands are run in Normal mode.  Press 'Esc' key
+		to go to Normal mode.  
+	      </p>
+	      <table>
+		<tr>
+		  <th>
+		    command
+		  </th>
+		  <th>
+		    description
+		  </th>
+		</tr>
+		<tr>
+		  <td>
+		    dw
+		  </td>
+		  <td>
+		    this cuts a single word at the current
+		    cursor position.  Place cursor at the
+		    start of the word, else it will cut only
+		    part of the word.
+		  </td>
+		</tr>
+		<tr>
+		  <td>
+		    d2w, 2dw
+		  </td>
+		  <td>
+		    each of this cuts two words.  You can use any
+		    number e.g. d5w cuts 5 words
+		  </td>
+		</tr>
+		<tr>
+		  <td>
+		    d$
+		  </td>
+		  <td>
+		    cuts all text from the cursor position to the end of the current line
+		  </td>
+		</tr>
+		<tr>
+		  <td>
+		    dd
+		  </td>
+		  <td>
+		    cuts the current line (the line where the cursor is
+		    placed)
+		  </td>
+		</tr>
+		<tr>
+		  <td>
+		    5dd or d5d
+		  </td>
+		  <td>
+		    cuts five lines (current line + 4 lines below it)
+		  </td>
+		</tr>
+		<tr>
+		  <td>
+		    yy
+		  </td>
+		  <td>
+		    copies current line so that it can be pasted
+		    somewhere else (y stands for yanking)
+		  </td>
+		</tr>
+		<tr>
+		  <td>
+		    2yy or y2y
+		  </td>
+		  <td>
+		    copies two lines
+		  </td>
+		</tr>
+		<tr>
+		  <td>
+		    p
+		  </td>
+		  <td>
+		    pastes content at the cursor position
+		  </td>
+		</tr>
+		<tr>
+		  <td>
+		    12p
+		  </td>
+		  <td>
+		    pastes content twelve times at the cursor position
+		  </td>
+		</tr>
+	      </table>
+	      <br />
+	      <p>
+		When you cut more than 2 lines, e.g. 5dd, you get a message
+		at the bottom of the vim screen, as below. 
+	      </p>
+	      <pre class="code">5 fewer lines</pre>
+	      <p>
+		Similarly, when you copy more than 2 lines, e.g. 10yy, you
+		get this message near the bottom of the vim screen:
+	      </p>
+	      <pre class="code">10 lines yanked</pre>
+	      <p>
+		If you run the paste command (type p in normal mode), you
+		get this message:
+	      </p>
+	      <pre class="code">10 more lines</pre>
+	      <h3>Undo, Redo</h3>
+	      <p>
+		All these commands are run in Normal mode.  Press 'Esc' key
+		to go to Normal mode.
+	      </p>
+	      <table>
+		<tr>
+		  <th>
+		    command
+		  </th>
+		  <th>
+		    description
+		  </th>
+		</tr>
+		<tr>
+		  <td>
+		    u
+		  </td>
+		  <td>
+		    Undo
+		  </td>
+		</tr>
+		<tr>
+		  <td>
+		    CTRL-R
+		  </td>
+		  <td>
+		    Press the Ctrl key and 'r' key to redo a change that was undone using undo command
+		  </td>
+		</tr>
+	      </table>
+	      <br />
+	      <p>
+		You can undo subsequent changes using pressing 'u' again.
+		If there are no more changes to undo, you will get the below
+		message near the bottom of the vim window.
+	      </p>
+	      <pre class="code">Already at oldest change</pre>
+	      <p>
+		Similarly, you can redo multiple times by repeatedly
+		pressing CTRL-R.  When there are no more changes to redo,
+		you will get this message:
+	      </p>
+	      <pre class="code">Already at newest change</pre>
+	      <h3>Search</h3>
+	      <p>
+		All these commands are run in Normal mode.  Press 'Esc' key
+		to go to Normal mode.
+	      </p>
+	      <table>
+		<tr>
+		  <th>
+		    command
+		  </th>
+		  <th>
+		    description
+		  </th>
+		</tr>
+		<tr>
+		  <td>
+		    /hello
+		  </td>
+		  <td>
+		    This will search for the first occurence of the
+		    word "hello" after the cursor position in the current
+		    text file.  Note that the search command
+		    accepts regular expressions.  To learn
+		    regular expressions, go through the
+		    <a href="../exp8/index.html">Searching</a>
+		    experiment.
+		  </td>
+		</tr>
+		<tr>
+		  <td>
+		    /hello\c
+		  </td>
+		  <td>
+		    This will search for the word hello ignoring the
+		    case i.e. Hello, HELLO, hElLo, hello all four will match this
+		    search
+		  </td>
+		</tr>
+		<tr>
+		  <td>
+		    n
+		  </td>
+		  <td>
+		    Takes you to the next occurence of the
+		    search term
+		  </td>
+		</tr>
+		<tr>
+		  <td>
+		    N
+		  </td>
+		  <td>
+		    Takes you to the previous occurence of the
+		    search term
+		  </td>
+		</tr>
+	      </table>
+	      <br />
+	      <p>
+		You can keep searching for the next occurrence of the search
+		term by repeatedly pressing n after starting the
+		search.  When the search hits the bottom of the
+		file, it will start searching from the
+		beginning of the file.  You will see the below
+		message when that happens.
+	      </p>
+	      <pre class="code">search hit BOTTOM, continuing at TOP</pre>
+	      <h3>Substitution</h3>
+	      <table>
+		<tr>
+		  <th>
+		    command
+		  </th>
+		  <th>
+		    description
+		  </th>
+		</tr>
+		<tr>
+		  <td>
+		    :%s/oldtext/newtext
+		  </td>
+		  <td>
+		    substitutes oldtext with newtext in the
+		    current line.  Note that the
+		    substitution command accepts regular
+		    expressions.  To learn regular
+		    expressions, go through
+		    the <a href="../exp8/index.html">Searching</a>
+		    experiment.
+		  </td>
+		</tr>
+		<tr>
+		  <td>
+		    :%s/oldtext/newtext/g 
+		  </td>
+		  <td>
+		    substitutes oldtext with newtext in the
+		    whole document ('g' stands for global)
+		  </td>
+		</tr>
+		<tr>
+		  <td>
+		    :%s/oldtext/newtext/gc
+		  </td>
+		  <td>
+		    substitutes oldtext with newtext asking for confirmation for each occurence
+		  </td>
+		</tr>
+	      </table>
+	      <br />
+	      <p>
+		The global substitution gives a count of
+		substitutions after it is done.
+	      </p>
+	      <pre class="code">60 substitutions on 60 lines</pre>
+	      <p>
+		The global substitution with confirmation (gc)
+		asks for confirmation for each occurence of the
+		substution term.  You can respond with y if you
+		want to substitute that occurence, n if you
+		don't want to, a to substitute all subsequent
+		occurences, q to quit substituting.
+	      </p>
+	      <pre class="code">replace with enter (y/n/a/q/l/^E/^Y)?</pre>
+	      <h3>Set Commands</h3>
+	      <p>You might find these commands helpful in
+		some scenarios.  Go to Normal mode by
+		pressing 'Esc' and try these commands.</p>
+	      <table>
+		<tr>
+		  <th>
+		    command
+		  </th>
+		  <th>
+		    description
+		  </th>
+		</tr>
+		<tr>
+		  <td>
+		    :set nu
+		  </td>
+		  <td>
+		    Sets line numbering
+		  </td>
+		</tr>
+		<tr>
+		  <td>
+		    :set nonu
+		  </td>
+		  <td>
+		    Removes line numbering
+		  </td>
+		</tr>
+		<tr>
+		  <td>
+		    :set hls
+		  </td>
+		  <td>
+		    Highlights last search term
+		  </td>
+		</tr>
+		<tr>
+		  <td>
+		    :set nohls
+		  </td>
+		  <td>
+		    Removes the highlights from the search term
+		  </td>
+		</tr>
+	      </table>
+	      <p>Please note that these settings last only
+		for the current session.  If you exit vim,
+		these settings will be reset.  If you want
+		these settings to persist, type these
+		commands (without the : colon symbol) in
+		.vimrc file in your home directory.  To
+		learn more about files, go
+		through <a href="../exp1/index.html">File
+		  Management</a> experiment.
+	      </p>
+	      <br />
+	      <p>
+		This concludes the theory section of the text
+		editor experiment.  To learn more vim commands,
+		go through the built-in vim tutorial by running
+		the command "vimtutor"
+	      </p>
+	      <pre class="code">$ vimtutor</pre>
+	      <p>
+		vimtutor provides a reasonably detailed overview
+		of vim commands and helps you learn by doing.
+		We strongly encourage you to use vimtutor for
+		getting more familiar with vim text editor
+		and learning more vim commands.
+	      </p>
+            </div>
+	  </section>
+
+
+
+      <section id="experiment-article-section-5">
+	<div id="experiment-article-section-5-icon" 
+	     class="icon">
+	  <!-- Enclose the icon image of your lab.-->
+	  <img src="../images/simulation.jpg" />
+	</div>
+	
+	<div id="experiment-article-section-5-heading" 
+	     class="heading">
+	  Tasks
+	</div>
+	
+	<div id="experiment-article-section-5-content" 
+	     class="content">
+	  <p style="margin-left:0px">
+	    Students who already have a Virtual-Labs login should click
+	    <a href="javascript:void(0)"
+	       onclick="window.open('../php/login-form.php?expid=2',
+			'welcome', width=screen.availWidth, height=screen.availHeight,status='yes')">
+	      here</a> 
+	    to see the list of tasks for this experiment. <br /> 
+	    In case the login credentials are not available, then please click 
+	    <a href="../php/register-form.php">here</a> to
+	    register.
+	  </p>
+        </div> 
+      </section>
+
+
+
+
+	  <section id="experiment-article-section-6">
+	    
+	    <div id="experiment-article-section-6-icon" 
+		 class="icon">
+	      <!-- Enclose the icon image of your lab.-->
+	      <img src="../images/quizzes.jpg" />
+	    </div>
+
+	    <div id="experiment-article-section-6-heading" 
+		 class="heading">
+	      Quiz
+	    </div>
+	    
+	    <div id="experiment-article-section-6-content" 
+		 class="content">
+	      <p>
+		<ol>
+		  <li>Which of the following is not a mode
+		  in vim?
+		    <ol style="list-style-type:upper-alpha">
+		      <li>Normal</li>
+		      <li style="diplay:inline">Escape</li>
+		      <li>Visual</li>
+		      <li>Replace</li>
+		    </ol>
+		  </li>
+		  <li>How would you search for "today" in
+		  the current file using vim?
+		    <ol style="list-style-type:upper-alpha">
+		      <li>:today</li>
+		      <li style="diplay:inline">/today</li>
+		      <li>;today</li>
+		      <li>?today</li>
+		    </ol>
+		  </li>
+		  <li>How would you replace "old" with "new"
+		  in the whole document?
+		    <ol style="list-style-type:upper-alpha">
+		      <li>:%s/old/new/g</li>
+		      <li style="diplay:inline">:%s/new/old/g</li>
+		      <li>:%s/old/new/</li>
+		      <li>:%s/new/old</li>
+		    </ol>
+		  </li>
+		  <li>How do you quit vim without saving the
+		  changes you have made to the file?
+		    <ol style="list-style-type:upper-alpha">
+		      <li>:q</li>
+		      <li>:wq</li>
+		      <li>:q!</li>
+		      <li>:qa</li>
+		    </ol>
+		  </li>
+		  <li>Which of these is not a right way to
+		  delete 10 lines?
+		    <ol style="list-style-type:upper-alpha">
+		      <li>10dd</li>
+		      <li>d10d</li>
+		      <li>dd10</li>
+		    </ol>
+		  </li>
+		  <li>Which of these is not a right way to
+		  set line numbering?
+		    <ol style="list-style-type:upper-alpha">
+		      <li>:set nu</li>
+		      <li>:set number</li>
+		      <li>:set nonu</li>
+		      <li>write "set nu" in the ".vimrc" file</li>
+		    </ol>
+		  </li>
+		</ol>
+	      </p>
+	    </div>
+	  </section>
+
+
+	  <section id="experiment-article-section-8">
+	    <div id="experiment-article-section-8-icon" 
+		 class="icon">
+	      <!-- Enclose the icon image of your lab.-->
+	      <img src="../images/readings.jpg" />
+	    </div>
+
+	    <div id="experiment-article-section-8-heading" 
+		 class="heading">
+	      Further Readings
+	    </div>
+
+	    <div id="experiment-article-section-8-content" 
+		 class="content">
+	      <ul>
+		<li>
+		  <a href="http://www.moolenaar.net/habits.html">Seven
+		  habits of effective text editing</a>
+		</li>
+		<li>
+		  To learn more about vim,
+		  visit <a href="http://www.vim.org">
+		  http://www.vim.org </a> 
+		</li>
+		<li>
+		  <a href="http://en.wikipedia.org/wiki/Vim_%28text_editor%29">
+		    Wikipedia article on vim
+		  </a>
+		</li>
+		<li>
+		  A very detailed Vim user manual is
+		  available at 
+		  <a href="http://vimdoc.sourceforge.net/">
+		    http://vimdoc.sourceforge.net/
+		  </a>.  You might want to use it for reference.
+		</li>
+	      </ul>
+	    </div>
+	  </section>
+
+	  <section id="experiment-article-section-9">
+	    <div id="experiment-article-section-9-icon" 
+		 class="icon">
+	      <!-- Enclose the icon image of your lab.-->
+	      <img src="../images/readings.jpg" />
+	    </div>
+	    <div id="experiment-article-section-9-heading" 
+		 class="heading">
+	      Feedback
+	    </div>
+	    <div id="experiment-article-section-9-content" 
+		 class="content">
+	      <p>
+		Please provide your
+		feedback <a href="http://virtual-labs.ac.in/feedback/">here</a>
+	      </p>
+	    </div>
+	  </section>
+
+	</div>
+
+
+	<!-- An article can have a sidebar that contain related 
+	     links and additional material (however it is kept optional 
+	     at this moment) -->
+	<aside id="lab-article-sidebar" class="default">
+	  <!-- put the content that you want to appear in the 
+	       sidebar -->	
+	</aside>
+
+
+	<!-- Article footer can display related content and 
+	     additional links -->						
+	<footer id="lab-article-footer" class="default">
+	  <!-- Put the content that you want to appear here -->
+	</footer>
+
+      </article>
+
+
+      <!-- Links to other labs, about us page can be kept the lab 
+	   footer-->
+      <footer id="lab-footer" class="footer">
+	<!-- Put the content here-->
+	<a href="http://virtual-labs.ac.in/nmeict/" >Sponsered by MHRD (NME-ICT) </a> | <a href="http://virtual-labs.ac.in/licensing/" target="_blank"> Licensing Terms </a>
+      </footer>
+
+    </div>		
+  </body>
+</html>

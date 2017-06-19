@@ -1,0 +1,7 @@
+graph files {
+	files -- "english.txt";
+	files -- "maths.txt";
+	files -- "physics.txt";
+	files -- "marks.txt";
+	files -- "students.txt";
+};

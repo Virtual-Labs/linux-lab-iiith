@@ -1,0 +1,25 @@
+
+:focus { outline: 0; }
+input.cmdline { margin-left:0px; border: none; border: 0px; font-size:1em; font-family: 'Courier New',monospace; color:white; :padding: 0px; width:800px; float:left; background:black;font-weight:bold;}
+
+table.inputtable { border-collapse:collapse;}
+
+div.inpcls{ margin-left: 10px; color: #666; overflow: hidden; font-size:1em; font-family: 'Courier New',monospace; color:white;}
+div.outcls{ padding-left: 10px; margin-top: 4px; font-size:0.9em; font-family:'Courier New',monospace; color:white;}
+.less { color: #666; }
+.info { color: #090; }
+.help td { padding-right: 25px; font-size: 12px; }
+div.less { display: inline; white-space:nowrap; padding:0px; margin:0px; color:white; }
+#terminal { margin-top:20px; width:80%; height:300px; overflow:auto;margin-bottom:20px;}
+
+#inputtableid td { border-color:black; vertical-align:middle;}
+#signup {display:none;}
+#login {margin-left:20%; margin-top:5%;}
+#logout {display:none;right:0px;}
+#terminal {display:none;float:left;}
+#instr {display:none;width:80%;}
+#signup-warning{color:red;}
+#captchaimg{height:5em; width:8em;}
+
+#logintable{border-collapse:collapse;}
+#logintable td{border-width:0px;}

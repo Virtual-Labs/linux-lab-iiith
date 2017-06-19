@@ -32,59 +32,39 @@
   Following containers are created using the
   =ubuntu-12.04-custom-x86_64= template in base4.
 ** Linux Lab Server
-   1. Set proxy in ~/.bashrc (use =vim ~/.bashrc=) file. (add these two line add end of the file .bashrc)
-      #+BEGIN_SRC 
-      export http_proxy="proxy.iiit.ac.in:8080"
-      export https_proxy="proxy.iiit.ac.in:8080"
-      #+END_SRC
-   2. Also set proxy in =vim /etc/apt/apt.conf= (add these two line add end of the file apt.conf)
-      #+BEGIN_SRC 
-      Acquire::http::Proxy "http://proxy.iiit.ac.in:8080";
-      Acquire::https::Proxy "http://proxy.iiit.ac.in:8080";
-      #+END_SRC
-   3. Update the system.
+   1. Set proxy in ~/.bashrc file.
+   2. Update the system.
       #+BEGIN_EXAMPLE
       apt-get update
       #+END_EXAMPLE
-   4. Clone the lab source code.
+   3. Clone the lab source code.
       #+BEGIN_EXAMPLE
       git clone https://github.com/Virtual-Labs/linux-lab-iiith.git
       #+END_EXAMPLE
-   5. Install graphviz and php.
+   4. Install graphviz and php.
       #+BEGIN_EXAMPLE
-      apt-get install php5
-      apt-get install graphviz 
+      apt-get install graphviz php5
       #+END_EXAMPLE
-      Install the dependencies which are not installed. (i.e if the output of =apt-get install graphviz= show some packages install them all using =apt-get install PACKAGE_NAME=)   
-   6. Navigate to src folder and execute make command.
-      #+BEGIN_SRC 
-      cd ~/linux-lab-iiith/src/
-      make
-      #+END_SRC
-   7. Rsync the content of build folder to =/var/www/= directory in case of ubuntu-12.04 else for 14.04 or higher use =var/www/html=
-      #+BEGIN_SRC 
-      sudo rsync -ar ~/linux-lab-iiith/build/ /var/www
-                         OR
-      sudo rsync -ar ~/linux-lab-iiith/build/ /var/www.html
-      #+END_SRC
-   8. Navigate to http://IP/ to view the lab. =Replace IP by the IP of the container of linux-lab or use ifconfig to get IP.
-   9. Install ldapscripts
+   5. Navigate to src folder and execute make command.
+   6. Rsync the content of build folder to =/var/www= directory.
+   7. Navigate to http://10.4.15.214/ to view the lab.
+   8. Install ldapscripts
       #+BEGIN_EXAMPLE
       apt-get install ldapscripts
       #+END_EXAMPLE
       - refer ::
                  http://www.meso.northwestern.edu/intranet/recipies/useful-computer-files-and-programs/configuring-group-linux-servers-and-terminals-with-ldap-kerberos-and-nfs/ldap-user-and-group-management		  
-   10. Install php5-ldap package and restart apache2.
+   9. Install php5-ldap package and restart apache2.
+      #+BEGIN_EXAMPLE
+      apt-get install php5-ldap
+      service apache2 restart
+      #+END_EXAMPLE
+   10. Configure =/etc/ldapscripts/ldapscripts.conf= as follows:
        #+BEGIN_EXAMPLE
-       apt-get install php5-ldap
-       service apache2 restart
-       #+END_EXAMPLE
-   11. Configure =/etc/ldapscripts/ldapscripts.conf= as follows: use =vim /etc/ldapscripts/ldapscripts.conf= and search following lines one by one and comment existing line and add these below it. 
-       #+BEGIN_EXAMPLE
-       SERVER=ldap://localhost
-       BINDDN='cn=admin,dc=virtual-labs,dc=ac,dc=in'
+       SERVER=localhost
+       BINDDN='cn=admin,dc=example,dc=com'
        BINDPWDFILE="/etc/ldapscripts/ldapscripts.passwd"
-       SUFFIX='dc=virtual-labs,dc=ac,dc=in'
+       SUFFIX='dc=example,dc=com'
        GSUFFIX='ou=Group'
        USUFFIX='ou=People'
        MSUFFIX='ou=Computers'
@@ -92,39 +72,37 @@
        UIDSTART=10000
        MIDSTART=10000
        #+END_EXAMPLE
-   12. Create =ldapscripts.passwd= file as follows:
+   11. Create =ldapscripts.passwd= file as follows:
        #+BEGIN_EXAMPLE
        sudo sh -c "echo -n 'password' > /etc/ldapscripts/ldapscripts.passwd"
-       sudo chmod 440 /etc/ldapscripts/ldapscripts.passwd
+       sudo chmod 400 /etc/ldapscripts/ldapscripts.passwd
        #+END_EXAMPLE
-   13. edit ip address and password of ldap server in
-       =vim /var/www/html/php/ldapexec.php= file like this 
-       #+BEGIN_SRC 
-       ldap_host = "IP"; // Replace IP by IP address of LDAP container
-       $ldap_admin_pass = 'password';  // associated password 
-       #+END_SRC
-   14. Set =USER= directive in =/usr/share/ldapscripts/runtime= as
+   12. Set ip address and password of ldap server in
+       /var/www/php/ldapexec.php file.
+   13. Set =USER= directive in =/usr/share/ldapscripts/runtime= as
        follows:
        #+BEGIN_EXAMPLE
-       vim /usr/share/ldapscripts/runtime
-       USER=$(whoami 2>/dev/null) // search for this line and edit it to this
+       USER=$(whoami 2>/dev/null)
        #+END_EXAMPLE
        - refer:
          http://stackoverflow.com/questions/18017311/bash-script-using-ldapscripts-package-does-not-work-from-cron
+   14. Grant read privileges to ldapscripts.passwd file.
+       #+BEGIN_EXAMPLE
+       chmod 440 ldapscripts.passwd
+       #+END_EXAMPLE
    15. Add =www-data= user to =root= group and restart apache service
-       so that it can read the password file. use these command
+       so that it can read the password file.
        #+BEGIN_EXAMPLE
        usermod -a -G root www-data
        service apache2 restart
        #+END_EXAMPLE
-   16. Set src to gateone server =https://IP= in
+   16. Set src to gateone server =https://10.4.15.215= in
        =/var/www/exp4/interaction-frame.html= as follows:
        #+BEGIN_EXAMPLE
-       <frame src="https://IP/" />
+       <frame src="https://10.4.15.215/" />
        #+END_EXAMPLE
-       Again, replace =IP= by IP of gateone-server (i.e IP of gateone server container if you are using it)
-   17. Register using http://IP/php/register-form.php. (replace IP in url by =IP= of linux-lab container)           
-   18. Login using http://IP/php/login-form.php. (replace IP in url by =IP= of linux-lab container)
+   17. Register using http://10.4.15.214/php/register-form.php.           
+   18. Login using http://10.4.15.214/php/login-form.php.
    19. After login enter following credentials a gateone web interface
        will be presented:
        #+BEGIN_EXAMPLE
@@ -164,25 +142,12 @@
 
 *** Approach 2 (Working)
     - refer: http://liftoff.github.io/GateOne/About/
-    1. Create container
-    2. set proxy same as in Linux Lab server above (repeat step 1,2 and 3)
     1. install tornado
        #+BEGIN_EXAMPLE
        pip install tornado==2.4.1
        #+END_EXAMPLE
-    2. Download gateone from (right click on the given link and click on =copy link location=)
-       https://github.com/downloads/liftoff/GateOne/gateone_1.1-1_all.deb and use this for downloading:
-       #+BEGIN_SRC 
-       wget https://github.com/downloads/liftoff/GateOne/gateone_1.1-1_all.deb
-       #+END_SRC
-       Upgrade =wget= if required. Use:
-       #+BEGIN_EXAMPLE
-       sudo apt-get upgrade wget
-       #+END_EXAMPLE
-    3. Install python-support if not already installed
-       #+BEGIN_EXAMPLE
-       sudo apt-get install python-support
-       #+END_EXAMPLE
+    2. Download gateone from
+       https://github.com/downloads/liftoff/GateOne/gateone_1.1-1_all.deb
     3. Install gateone via dpkg
        #+BEGIN_EXAMPLE
        dpkg -i gateone*.deb
@@ -192,12 +157,11 @@
        #+BEGIN_EXAMPLE
        ./gateone.py
        #+END_EXAMPLE
-    5. Now browse https://IP to access gateone server.(Replace =IP= by IP addr of gateone-server or gateone container)
+    5. Now browse https://10.4.15.215 to access gateone server.
 *** Reference
    - https://github.com/liftoff/GateOne/downloads
    - https://www.youtube.com/watch?v=gnVohdlZXVY&list=UU8c7zNWoShUxaFqWKv7H51g&index=3&feature=plpp_video
 ** Ldap server
-   Create container
    1. set proxy
    2. Update the system.
       #+BEGIN_EXAMPLE
@@ -221,15 +185,13 @@
       Database backend to use: HDB
       Do you want the database to be removed when slapd is purged? No
       #+END_EXAMPLE
-      refer : [[https://www.digitalocean.com/community/tutorials/how-to-install-and-configure-a-basic-ldap-server-on-an-ubuntu-12-04-vps]]
    5. Verify that the ldap setup is done properly.
       #+BEGIN_EXAMPLE
       ldapsearch -Y EXTERNAL -H ldapi:// -b 'dc=virtual-labs,dc=ac,dc=in'
       #+END_EXAMPLE
    6. Create organizational units for people and groups using
-      following commands:
+      following command:
       #+BEGIN_EXAMPLE
-      vim units.ldif // paste the below content of units.ldif and execute below command
       ldapadd -x -D 'cn=admin,dc=virtual-labs,dc=ac,dc=in' -W -f units.ldif
       #+END_EXAMPLE
       units.ldif file should have following content:
@@ -237,7 +199,6 @@
       dn: ou=People,dc=virtual-labs,dc=ac,dc=in
       ou: People
       objectClass: organizationalUnit
-
       dn: ou=Group,dc=virtual-labs,dc=ac,dc=in
       ou: Group
       objectClass: organizationalUnit
@@ -277,23 +238,19 @@
       #+END_EXAMPLE
     
 ** SSH Server
-   create container
-   set proxy as above
-   update =apt-get update= 
    1. Turn on nfs
       #+BEGIN_EXAMPLE
       vzctl set $CTID --features "nfs:on" --save
       #+END_EXAMPLE
-      =CTID= is ID of this container
    2. set proxy
    3. apt-get update
    4. Install libpam-ldapd package
       #+BEGIN_EXAMPLE
-      apt-get install libpam-ldap nscd
+      apt-get install libpam-ldapd
       #+END_EXAMPLE
       Answer the following questions:
       #+BEGIN_EXAMPLE
-      IP address / hostname of the LDAP server: <ip-address-of-ldap-server> /// use ldap instead of ldapi
+      IP address / hostname of the LDAP server: <ip-address-of-ldap-server>
       The search base: dc=virtual-labs,dc=ac,dc=in
       Version of the LDAP connecting to: Version 3
       Configuring LIBNSS-LDAP: OK
@@ -302,13 +259,11 @@
       Root account of LDAP: cn=admin,dc=virtual-labs,dc=ac,dc=in
       Root password: password
       #+END_EXAMPLE
-      - refer:
-        https://www.digitalocean.com/community/tutorials/how-to-authenticate-client-computers-using-ldap-on-an-ubuntu-12-04-vps
    5. Modify =/etc/nsswitch.conf= to contain something like this
       #+BEGIN_EXAMPLE
-      passwd:         ldap compat
-      group:          ldap compat
-      shadow:         ldap compat
+      passwd:         compat ldap
+      group:          compat ldap
+      shadow:         compat ldap
       hosts:          files dns ldap
       #+END_EXAMPLE
    6. Verify that the ldap server is being reached and everything is
@@ -317,7 +272,7 @@
       getent passwd
       #+END_EXAMPLE
    7. Enable creating home directories when user logs in. Edit
-      =/etc/pam.d/common-session= and =add= the following line.
+      =/etc/pam.d/common-session= and add the following line.
       #+BEGIN_EXAMPLE
       session required pam_mkhomedir.so skel=/etc/skel umask=0022
       #+END_EXAMPLE
@@ -325,10 +280,10 @@
       #+BEGIN_EXAMPLE
       apt-get install nfs-common
       #+END_EXAMPLE
-   9. Edit =/etc/fstab= and =add= the following line (with proper server
+   9. Edit =/etc/fstab= and the following line (with proper server
       address)
       #+BEGIN_EXAMPLE
-      IP:/var/export/nfs4/home /home nfs defaults,nolock 0 1 // Replace IP by IP of nfs-server (i.e nfs container)
+      10.4.15.219:/var/export/nfs4/home /home nfs defaults,nolock 0 1
       #+END_EXAMPLE
    10. Mount the filesystem now
        #+BEGIN_EXAMPLE
@@ -345,12 +300,10 @@
       #+BEGIN_EXAMPLE
       vzctl set $CTID --feature nfsd:on --save
       #+END_EXAMPLE
-      Replace CTID with nfs-container id
    2. Set quotaugidlimit
       #+BEGIN_EXAMPLE
       vzctl set CTID --quotaugidlimit 10000 --save
       #+END_EXAMPLE
-      Replace CTID with nfs-container id
    3. Start the container and set proxy.
    4. apt-get update
    5. Install nfs kernel
@@ -361,15 +314,15 @@
       #+BEGIN_EXAMPLE
       mkdir -p /var/export/nfs4/home
       #+END_EXAMPLE
-   7. Edit =/etc/exports= and =add= the following lines, replace
-      <ip-address> with the ip of the shell server (i.e IP of SSH container)
+   7. Edit =/etc/exports= and add the following lines, replace
+      <ip-address> with the ip of the shell server.
       #+BEGIN_EXAMPLE
       /var/export/nfs4 10.4.15.0/24(rw,sync,no_subtree_check,no_root_squash)
       /var/export/nfs4/home 10.4.15.0/24(rw,sync,no_subtree_check,no_root_squash)
       #+END_EXAMPLE
    8. Refresh the export list
       #+BEGIN_EXAMPLE
-      $ exportfs -rav // output should like the next two lines
+      $ exportfs -rav
       exporting 10.4.15.0/24:/var/export/nfs4/home
       exporting 10.4.15.0/24:/var/export/nfs4
       #+END_EXAMPLE
@@ -518,29 +471,3 @@
 
 * Reference Links
   - https://github.com/Virtual-Labs/documentation-popl-linux-labs/blob/master/documents/POPL-backend-gateone-ldap.pdf 
-
-* commands For creating container
-** UID is the user ID of the LDAP account
-** IP is the of base4 machine
-** It will ask for your LDAP-account password
-   =ssh UID@IP=
-
-** use this command to have superuser privileges
-   =sudo su=
-
-** Before starting to create a Container, you shall decide on which OS template your Container will be based.
-** There might be several OS templates installed on the Hardware Node and prepared for the Container creation
-** use the following command to find out what OS templates are available on your system: 
-   =ls /vz/template/cache/=
-
-** After the Container ID and the installed OS template have been chosen
-** for choosing CTID(container-ID) use =vzlist -a= and choose the available container id
-** After that choose the ipadd for container use =ping IP= ( where replace IP by any valid IP addr). 
-** If the output shows =Destination Host Unreachable= again and again then use this IP.
-
-** For creating container use :
-   =vzctl create CTID --ostemplate ubuntu-12.04-custom-x86_64 --ipadd IP --hostname NAME_OF_THE_CONTAINER=
-** Replace CTID by container-ID, IP by chosen IP address, NAME_OF_THE_CONTAINER by the container name (can be anything)
-
-** use =vzctl start CTID= to start container.
-** use =vzctl enter CTID= to enter into the container.
