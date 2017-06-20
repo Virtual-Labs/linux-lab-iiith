@@ -3,6 +3,7 @@
 ldap_config=/etc/ldapscripts/ldapscripts.conf
 ldap_exec=/var/www/html/php/ldapexec.php
 ldap_runtime=/usr/share/ldapscripts/runtime
+gateone=/opt/gateone/server.conf
 
 function install_packages()
 {
@@ -60,6 +61,17 @@ function update_ldapexec_file()
 function update_ldap_runtime()
 {
  sed -i '0,/USER=.*/s//USER=$(whoami 2>\/dev\/null)/' $ldap_runtime
+}
+
+function update_gateone_config()
+{
+ echo "enter the available port for gateone server: "
+ read port
+ sed -i '0,/PORT =.*/s//PORT = $port/' $gateone
+ echo "enter the ip for gateone server: "
+ read ip
+ sed -i '0,/origins =.*/s//origins = "http://localhost;https://localhost;http://127.0.0.1;https://127.0.0.1;https://test;https://$ip:$port"
+ /' $gateone
 }
 
 install_packages
