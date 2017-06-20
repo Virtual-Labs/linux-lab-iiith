@@ -130,6 +130,7 @@
        #+BEGIN_EXAMPLE
        <a href="https://IP/">here</a>
        #+END_EXAMPLE
+       Again, replace =IP= by IP of gateone-server (i.e IP of gateone server container if you are using it)
    18. Register using http://IP/php/register-form.php. (replace IP in url by =IP= of linux-lab container)           
    19. Login using http://IP/php/login-form.php. (replace IP in url by =IP= of linux-lab container)
    20. After login enter following credentials a gateone web interface
