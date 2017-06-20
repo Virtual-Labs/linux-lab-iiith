@@ -53,13 +53,13 @@ function update_ldapexec_file()
  then
     echo "password does not match"
  else
-    sed '0,/$ldap_admin_pass =.*/s//$ldap_admin_pass = "$ldap_password"/' $ldap_exec
+    sed -i '0,/$ldap_admin_pass =.*/s//$ldap_admin_pass = "$ldap_password"/' $ldap_exec
  fi
 }
 
 function update_ldap_runtime()
 {
- sed '0,/USER=.*/s//USER=$(whoami 2>/dev/null)/' $ldap_exec
+ sed -i '0,/USER=.*/s//USER=$(whoami 2>/dev/null)/' $ldap_exec
 }
 
 install_packages
