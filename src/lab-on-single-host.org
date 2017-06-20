@@ -56,12 +56,12 @@
       it.
       #+BEGIN_EXAMPLE
       SERVER=ldap://localhost
+      SUFFIX='dc=virtual-labs,dc=ac,dc=in'
       GSUFFIX='ou=Group'
       USUFFIX='ou=People'
       MSUFFIX='ou=Computers'
       BINDDN='cn=admin,dc=virtual-labs,dc=ac,dc=in'
       BINDPWDFILE="/etc/ldapscripts/ldapscripts.passwd"
-      SUFFIX='dc=virtual-labs,dc=ac,dc=in'
       GIDSTART=10000
       UIDSTART=10000
       MIDSTART=10000
