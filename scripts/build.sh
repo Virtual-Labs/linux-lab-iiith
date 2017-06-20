@@ -4,13 +4,41 @@ ldap_config=/etc/ldapscripts/ldapscripts.conf
 ldap_exec=/var/www/html/php/ldapexec.php
 ldap_runtime=/usr/share/ldapscripts/runtime
 gateone=/opt/gateone/server.conf
+nsswitch=/etc/nsswitch.conf
 
+######## Function for setting proxy
+function set_proxy()
+{
+###### Adding proxy in ~/.bashrc file
+
+  LINE='export http_proxy="http://proxy.iiit.ac.in:8080"'
+  FILE=~/.bashrc
+  grep -qF "$LINE" "$FILE" || echo "$LINE" >> "$FILE" 
+  LINE='export https_proxy="http://proxy.iiit.ac.in:8080"'
+  FILE=~/.bashrc
+  grep -qF "$LINE" "$FILE" || echo "$LINE" >> "$FILE"
+  source ~/.bashrc
+
+####### Adding proxy in /etc/apt/apt.conf
+
+  touch /etc/apt/apt.conf
+  LINE='Acquire::http::Proxy "http://proxy.iiit.ac.in:8080";'
+  FILE=/etc/apt/apt.conf
+  grep -qF "$LINE" "$FILE" || echo "$LINE" >> "$FILE"
+  
+  LINE='Acquire::https::Proxy "http://proxy.iiit.ac.in:8080";'
+  FILE=/etc/apt/apt.conf
+  grep -qF "$LINE" "$FILE" || echo "$LINE" >> "$FILE"
+ 
+}
 function install_packages()
 {
+ sudo apt-get update -y
+ sudo apt-get install git -y
  sudo apt-get install php5 -y
- sudo apt-get install libgd2-noxpm -y
- sudo apt-get install libgd2-xpm -y
- sudo apt-get install libgvc5 -y
+# sudo apt-get install libgd2-noxpm -y
+# sudo apt-get install libgd2-xpm -y
+# sudo apt-get install libgvc5 -y
  sudo apt-get install graphviz -y
  sudo apt-get install ldapscripts -y
  sudo apt-get install php5-ldap
@@ -18,9 +46,15 @@ function install_packages()
 
 function build_lab()
 {
+ ########################
+ git clone https://github.com/Virtual-Labs/linux-lab-iiith.git
+ cd ~/linux-lab-iiith/
+ git checkout linux-lab-on-single-host
+ ########################
+
  cd ~/linux-lab-iiith/src/
  make
- sudo rsync -ar ~/linux-lab-iiith/build/ /var/www
+ sudo rsync -ar ~/linux-lab-iiith/build/ /var/www/html #### added /html 
 }
 
 function update_ldapscripts()
@@ -40,6 +74,94 @@ function create_password_file()
  sudo chmod 440 /etc/ldapscripts/ldapscripts.passwd
 }
 
+function update_ldap_runtime()
+{
+ sed -i '0,/USER=.*/s//USER=$(whoami 2>\/dev\/null)/' $ldap_runtime
+}
+
+function add_www-data_to_root-group()
+{
+ usermod -a -G root www-data
+}
+
+function restart_apache2()
+{
+ service apache2 restart
+}
+
+#################### Gateone Server
+
+function install_tornado_and_python-support()
+{
+ sudo apt-get install python-pip -y
+ pip install tornado==2.4.1
+ sudo apt-get install python-support -y
+}
+
+function download_and_install_gateone()
+{
+ wget https://github.com/downloads/liftoff/GateOne/gateone_1.1-1_all.deb
+ dpkg -i gateone*.deb
+}
+
+function generate_server_conf()
+{
+ /opt/gateone/gateone.py &
+ # Get its PID
+ PID=$!
+ # Wait for 4 seconds
+ sleep 4
+ # Kill it
+ kill $PID 
+}
+
+function update_gateone_config()
+{
+ echo "enter the available port for gateone server: "
+ read port
+ sed -i '0,/PORT =.*/s//PORT = $port/' $gateone
+ echo "enter the ip for gateone server: "
+ read ip
+ sed -i '0,/origins =.*/s//origins = "http://localhost;https://localhost;http://127.0.0.1;https://127.0.0.1;https://test;https://$ip:$port"
+ /' $gateone
+}
+
+###################################### Gateone Server END
+
+
+######################################## SSH server
+function install_nscd()
+{
+export DEBIAN_FRONTEND=noninteractive ## For making non-interactive
+sudo apt-get install libpam-ldap nscd
+}
+
+function configure_ldap()
+{
+ 
+}
+
+function modify_nsswitch_conf()
+{
+ sed '0,/passwd:.*/s//passwd:         ldap compat/' $nsswitch
+ sed '0,/group:.*/s//group:         ldap compat/' $nsswitch
+ sed '0,/shadow:.*/s//shadow:         ldap compat/' $nsswitch
+ sed '0,/hosts:.*/s//hosts:         files dns ldap/' $nsswitch
+}
+
+function edit_common_session()
+{
+  LINE='session required pam_mkhomedir.so skel=/etc/skel umask=0022'
+  FILE=/etc/pam.d/common-session
+  grep -qF "$LINE" "$FILE" || echo "$LINE" >> "$FILE"
+}
+
+function restart_nscd()
+{
+ /etc/init.d/nscd restart
+}
+######################################## SSH server END
+
 function update_ldapexec_file()
 {
  echo "enter ldap ip: "
@@ -58,25 +180,21 @@ function update_ldapexec_file()
  fi
 }
 
-function update_ldap_runtime()
-{
- sed -i '0,/USER=.*/s//USER=$(whoami 2>\/dev\/null)/' $ldap_runtime
-}
-
-function update_gateone_config()
-{
- echo "enter the available port for gateone server: "
- read port
- sed -i '0,/PORT =.*/s//PORT = $port/' $gateone
- echo "enter the ip for gateone server: "
- read ip
- sed -i '0,/origins =.*/s//origins = "http://localhost;https://localhost;http://127.0.0.1;https://127.0.0.1;https://test;https://$ip:$port"
- /' $gateone
-}
-
+set_proxy
 install_packages
 build_lab
 update_ldapscripts
 create_password_file
-update_ldapscr
 update_ldap_runtime
+add_www-data_to_root-group
+restart_apache2
+install_tornado_and_python-support
+download_and_install_gateone
+generate_server_conf
+update_gateone_config
+install_nscd
+configure_ldap
+modify_nsswitch_conf
+edit_common_session
+restart_nscd
+
