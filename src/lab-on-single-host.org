@@ -18,8 +18,8 @@
    1. Set proxy in ~/.bashrc (use =vim ~/.bashrc=) file. (add these
       two line at end of the file .bashrc)
       #+BEGIN_SRC 
-      export http_proxy="proxy.iiit.ac.in:8080"
-      export https_proxy="proxy.iiit.ac.in:8080"
+      export http_proxy="http://proxy.iiit.ac.in:8080"
+      export https_proxy="http://proxy.iiit.ac.in:8080"
       #+END_SRC
    2. Execute ~/.bashrc file:
       #+BEGIN_EXAMPLE
@@ -99,13 +99,13 @@
 ** Gateone Server
    1. Install tornado and python-support
       #+BEGIN_EXAMPLE
+      sudo apt-get install python-pip -y
       pip install tornado==2.4.1
-      sudo apt-get install python-support
+      sudo apt-get install python-support -y
       #+END_EXAMPLE
    2. Upgrade =wget= and then download gateone using the following
       command:
       #+BEGIN_SRC
-      sudo apt-get upgrade wget
       wget https://github.com/downloads/liftoff/GateOne/gateone_1.1-1_all.deb
       #+END_SRC
    3. Install gateone via dpkg
@@ -123,13 +123,6 @@
       port = 8000
       origins = <IP>:8000
       #+END_EXAMPLE
-   7. Navigate inside =/opt/gateone= directory, and execute following
-      command:
-      #+BEGIN_EXAMPLE
-      ./gateone.py
-      #+END_EXAMPLE
-   8. Now browse https://IP to access gateone server. Install the
-      certificate when asked.
 *** Reference
    - https://github.com/liftoff/GateOne/downloads
    -
