@@ -80,9 +80,9 @@
        sudo chmod 440 /etc/ldapscripts/ldapscripts.passwd
        #+END_EXAMPLE
    11. Edit ip address and password of ldap server in
-       =/var/www/php/ldapexec.php= file as follows:
+       =/var/www/html/php/ldapexec.php= file as follows:
        #+BEGIN_SRC 
-       ldap_host = "IP"; // Replace IP by IP address of LDAP container
+       $ldap_host = "IP"; // Replace IP by IP address of LDAP container
        $ldap_admin_pass = 'password';  // associated password 
        #+END_SRC
    12. Set =USER= directive in =/usr/share/ldapscripts/runtime= as
