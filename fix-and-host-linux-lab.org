@@ -299,7 +299,13 @@
       loginShell: /bin/bash
       homeDirectory: /home/testuser1
       #+END_EXAMPLE
-   10. refer :
+   10. Make a file in =/var/log/ldapscripts.log= and run following commands to change file permission and to change the ownership
+       #+BEGIN_EXAMPLE
+      	touch /var/log/ldapscripts.log
+	chmod o-r /var/log/ldapscripts.log
+	chown www-data:www-data /var/log/ldapscripts.log
+       #+END_EXAMPLE
+   11. refer :
        [[https://arthurdejong.org/nss-pam-ldapd/setup]]
 ** SSH Server
    -create container  
@@ -359,6 +365,10 @@
       #+BEGIN_EXAMPLE
       session required pam_mkhomedir.so skel=/etc/skel umask=0022
       #+END_EXAMPLE
+   11. Run this cmd to restart nscd
+       #+BEGIN_EXAMPLE
+       /etc/init.d/nscd restart
+       #+END_EXAMPLE
    11. Install nfs client
       #+BEGIN_EXAMPLE
       apt-get install nfs-common
