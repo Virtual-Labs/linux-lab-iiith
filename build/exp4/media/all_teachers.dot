@@ -1,6 +1,0 @@
-graph teachers {
-	teachers -- "english_teacher";
-	teachers -- "maths_teacher";
-	teachers -- "physics_teacher";
-	teachers -- principal;
-};
