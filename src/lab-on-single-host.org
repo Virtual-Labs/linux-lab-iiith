@@ -36,7 +36,7 @@
       sudo apt-get install libgd2-xpm -y
       sudo apt-get install libgvc5 -y
       sudo apt-get install graphviz -y
-      sudo apt-get install ldapscripts\
+      sudo apt-get install ldapscripts -y
       sudo apt-get install php5-ldap
       #+END_EXAMPLE
       - refer ::
