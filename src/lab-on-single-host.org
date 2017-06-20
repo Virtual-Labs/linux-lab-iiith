@@ -79,25 +79,19 @@
        sudo sh -c "echo -n 'password' > /etc/ldapscripts/ldapscripts.passwd"
        sudo chmod 440 /etc/ldapscripts/ldapscripts.passwd
        #+END_EXAMPLE
-   11. Edit ip address and password of ldap server in
-       =/var/www/html/php/ldapexec.php= file as follows:
-       #+BEGIN_SRC 
-       $ldap_host = "IP"; // Replace IP by IP address of LDAP container
-       $ldap_admin_pass = 'password';  // associated password 
-       #+END_SRC
-   12. Set =USER= directive in =/usr/share/ldapscripts/runtime= as
+   11. Set =USER= directive in =/usr/share/ldapscripts/runtime= as
        follows:
        #+BEGIN_EXAMPLE
        USER=$(whoami 2>/dev/null) // search for this line and edit it to this
        #+END_EXAMPLE
        - refer:
          http://stackoverflow.com/questions/18017311/bash-script-using-ldapscripts-package-does-not-work-from-cron
-   13. Add =www-data= user to =root= group so that it can read the
+   12. Add =www-data= user to =root= group so that it can read the
        password file, using
        #+BEGIN_EXAMPLE
        usermod -a -G root www-data
        #+END_EXAMPLE
-   14. Restart apache2.
+   13. Restart apache2.
        #+BEGIN_EXAMPLE
        service apache2 restart
        #+END_EXAMPLE
@@ -267,30 +261,36 @@
       #+END_EXAMPLE
 
 ** Final setup
-   1. Set href to gateone server =https://IP= in
-      =/var/www/content.html= file.
+   1. Edit ip address and password of ldap server in
+      =/var/www/html/php/ldapexec.php= file as follows:
+      #+BEGIN_SRC 
+      $ldap_host = "IP"; // Replace IP by IP address of LDAP container
+      $ldap_admin_pass = 'password';  // associated password 
+      #+END_SRC
+   2. Set href to gateone server =https://IP= in
+      =/var/www/html/content.html= file.
       #+BEGIN_EXAMPLE
       <a href="https://IP:8000/">here</a>
       #+END_EXAMPLE
-   2. Set "src" to gateone server =https://IP= in
-      =/var/www/exp4/interaction-frame.html= file as follows:
+   3. Set "src" to gateone server =https://IP= in
+      =/var/www/html/exp4/interaction-frame.html= file as follows:
       #+BEGIN_EXAMPLE
       <frame src="https://IP:8000/" />
       #+END_EXAMPLE
-   3. Start gateone server
+   4. Start gateone server
       #+BEGIN_EXAMPLE
       cd /opt/gateone
       ./gateone.py > /dev/null &
       #+END_EXAMPLE
-   4. Restart apache
+   5. Restart apache
       #+BEGIN_EXAMPLE
       sudo service apache2 restart
       #+END_EXAMPLE
-   5. Register using http://IP/php/register-form.php. (replace IP in
+   6. Register using http://IP/php/register-form.php. (replace IP in
       url by =IP= of linux-lab container)
-   6. Login using http://IP/php/login-form.php. (replace IP in url by
+   7. Login using http://IP/php/login-form.php. (replace IP in url by
       =IP= of linux-lab container)
-   7. Navigate to http://IP/ to view the lab. Replace =IP= by the =IP=
+   8. Navigate to http://IP/ to view the lab. Replace =IP= by the =IP=
       of the container of linux-lab or use =ifconfig= to get =IP=.
 
 * Using the lab
