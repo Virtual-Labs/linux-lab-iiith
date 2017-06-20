@@ -22,7 +22,7 @@ function build_lab()
 
 function update_ldapscripts()
 {
- sed -i "s/#SERVER=.*/SERVER=ldap:\/\/localhost/g" "$ldap_config"
+ sed -i 's/#SERVER=.*/SERVER="ldap:\/\/localhost"/g' "$ldap_config"
  sed -i "s/#SUFFIX=.*/SUFFIX='dc=virtual-labs,dc=ac,dc=in'/g" "$ldap_config"
  sed -i "s/#GSUFFIX=.*/GSUFFIX='ou=Group'/g" "$ldap_config"
  sed -i "s/#USUFFIX=.*/USUFFIX='ou=People'/g" "$ldap_config"
