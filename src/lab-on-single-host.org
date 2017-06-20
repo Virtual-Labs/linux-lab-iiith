@@ -15,42 +15,50 @@
   Ubuntu-14.04 operating system.
 
 ** Linux Lab Server
-   1. Set proxy in ~/.bashrc (use =vim ~/.bashrc=) file. (add these two line at end of the file .bashrc)
+   1. Set proxy in ~/.bashrc (use =vim ~/.bashrc=) file. (add these
+      two line at end of the file .bashrc)
       #+BEGIN_SRC 
       export http_proxy="proxy.iiit.ac.in:8080"
       export https_proxy="proxy.iiit.ac.in:8080"
       #+END_SRC
-   2. Also set proxy in =vim /etc/apt/apt.conf= (add these two line at end of the file apt.conf)
+   2. Execute ~/.bashrc file:
+      #+BEGIN_EXAMPLE
+      source ~/.bashrc
+      #+END_EXAMPLE
+   3. Also set proxy in =vim /etc/apt/apt.conf= (add these two line at
+      end of the file apt.conf)
       #+BEGIN_SRC 
       Acquire::http::Proxy "http://proxy.iiit.ac.in:8080";
       Acquire::https::Proxy "http://proxy.iiit.ac.in:8080";
       #+END_SRC
-   3. Update the system.
+   4. Update the system.
       #+BEGIN_EXAMPLE
       sudo apt-get update
       #+END_EXAMPLE
-   4. Install graphviz and php and ldapscripts, php5-ldap
+   5. Install git, graphviz, php, ldapscripts and php5-ldap
       #+BEGIN_EXAMPLE
+      sudo apt-get install git -y
       sudo apt-get install php5 -y
-      sudo apt-get install libgd2-noxpm -y
-      sudo apt-get install libgd2-xpm -y
-      sudo apt-get install libgvc5 -y
       sudo apt-get install graphviz -y
       sudo apt-get install ldapscripts -y
       sudo apt-get install php5-ldap
       #+END_EXAMPLE
-      - refer ::
-                 http://www.meso.northwestern.edu/intranet/recipies/useful-computer-files-and-programs/configuring-group-linux-servers-and-terminals-with-ldap-kerberos-and-nfs/ldap-user-and-group-management		  
-   5. Navigate to src folder and execute make command.
-      #+BEGIN_SRC 
+      - refer:
+        http://www.meso.northwestern.edu/intranet/recipies/useful-computer-files-and-programs/configuring-group-linux-servers-and-terminals-with-ldap-kerberos-and-nfs/ldap-user-and-group-management
+   6. Clone the repo
+      #+BEGIN_EXAMPLE
+      git clone https://github.com/Virtual-Labs/linux-lab-iiith.git
+      #+END_EXAMPLE
+   7. Navigate to src folder and execute make command.
+      #+BEGIN_SRC
       cd ~/linux-lab-iiith/src/
       make
       #+END_SRC
-   6. Rsync the content of build folder to =/var/www/=
+   8. Rsync the content of build folder to =/var/www/html/=
       #+BEGIN_SRC 
-      sudo rsync -ar ~/linux-lab-iiith/build/ /var/www
+      sudo rsync -ar ~/linux-lab-iiith/build/ /var/www/html
       #+END_SRC
-   7. Configure =/etc/ldapscripts/ldapscripts.conf= as follows: use
+   9. Configure =/etc/ldapscripts/ldapscripts.conf= as follows: use
       =vim /etc/ldapscripts/ldapscripts.conf= and search following
       lines one by one and comment existing line and add these below
       it.
@@ -62,34 +70,34 @@
       MSUFFIX='ou=Computers'
       BINDDN='cn=admin,dc=virtual-labs,dc=ac,dc=in'
       BINDPWDFILE="/etc/ldapscripts/ldapscripts.passwd"
-      GIDSTART=10000
-      UIDSTART=10000
-      MIDSTART=10000
+      GIDSTART="10000"
+      UIDSTART="10000"
+      MIDSTART="10000"
       #+END_EXAMPLE
-   8. Create =ldapscripts.passwd= file as follows:
-      #+BEGIN_EXAMPLE
-      sudo sh -c "echo -n 'password' > /etc/ldapscripts/ldapscripts.passwd"
-      sudo chmod 440 /etc/ldapscripts/ldapscripts.passwd
-      #+END_EXAMPLE
-   9. Edit ip address and password of ldap server in
-      =/var/www/php/ldapexec.php= file as follows:
-      #+BEGIN_SRC 
-      ldap_host = "IP"; // Replace IP by IP address of LDAP container
-      $ldap_admin_pass = 'password';  // associated password 
-      #+END_SRC
-   10. Set =USER= directive in =/usr/share/ldapscripts/runtime= as
+   10. Create =ldapscripts.passwd= file as follows:
+       #+BEGIN_EXAMPLE
+       sudo sh -c "echo -n 'password' > /etc/ldapscripts/ldapscripts.passwd"
+       sudo chmod 440 /etc/ldapscripts/ldapscripts.passwd
+       #+END_EXAMPLE
+   11. Edit ip address and password of ldap server in
+       =/var/www/php/ldapexec.php= file as follows:
+       #+BEGIN_SRC 
+       ldap_host = "IP"; // Replace IP by IP address of LDAP container
+       $ldap_admin_pass = 'password';  // associated password 
+       #+END_SRC
+   12. Set =USER= directive in =/usr/share/ldapscripts/runtime= as
        follows:
        #+BEGIN_EXAMPLE
        USER=$(whoami 2>/dev/null) // search for this line and edit it to this
        #+END_EXAMPLE
        - refer:
          http://stackoverflow.com/questions/18017311/bash-script-using-ldapscripts-package-does-not-work-from-cron
-   11. Add =www-data= user to =root= group so that it can read the
+   13. Add =www-data= user to =root= group so that it can read the
        password file, using
        #+BEGIN_EXAMPLE
        usermod -a -G root www-data
        #+END_EXAMPLE
-   12. Restart apache2.
+   14. Restart apache2.
        #+BEGIN_EXAMPLE
        service apache2 restart
        #+END_EXAMPLE
