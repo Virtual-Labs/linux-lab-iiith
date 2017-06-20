@@ -59,7 +59,7 @@ function update_ldapexec_file()
 
 function update_ldap_runtime()
 {
- sed -i '0,/USER=.*/s//USER=$(whoami 2>/dev/null)/' $ldap_exec
+ sed -i '0,/USER=.*/s//USER=$(whoami 2>\/dev\/null)/' $ldap_runtime
 }
 
 install_packages
