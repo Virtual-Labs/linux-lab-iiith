@@ -125,9 +125,14 @@
        <frame src="https://IP/" />
        #+END_EXAMPLE
        Again, replace =IP= by IP of gateone-server (i.e IP of gateone server container if you are using it)
-   17. Register using http://IP/php/register-form.php. (replace IP in url by =IP= of linux-lab container)           
-   18. Login using http://IP/php/login-form.php. (replace IP in url by =IP= of linux-lab container)
-   19. After login enter following credentials a gateone web interface
+   17. Set href to gateone server =https://IP= in 
+       =vim var/www/content.html= search for =gateone= in document and replace href attribute by:
+       #+BEGIN_EXAMPLE
+       <a href="https://IP/">here</a>
+       #+END_EXAMPLE
+   18. Register using http://IP/php/register-form.php. (replace IP in url by =IP= of linux-lab container)           
+   19. Login using http://IP/php/login-form.php. (replace IP in url by =IP= of linux-lab container)
+   20. After login enter following credentials a gateone web interface
        will be presented:
        #+BEGIN_EXAMPLE
        host: 10.4.15.216
