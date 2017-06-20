@@ -2,6 +2,7 @@
 
 ldap_config=/etc/ldapscripts/ldapscripts.conf
 ldap_exec=/var/www/html/php/ldapexec.php
+ldap_runtime=/usr/share/ldapscripts/runtime
 
 function install_packages()
 {
@@ -56,7 +57,14 @@ function update_ldapexec_file()
  fi
 }
 
+function update_ldap_runtime()
+{
+ sed '0,/USER=.*/s//USER=$(whoami 2>/dev/null)/' $ldap_exec
+}
+
 install_packages
 build_lab
 update_ldapscripts
 create_password_file
+update_ldapscr
+update_ldap_runtime
