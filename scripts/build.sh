@@ -105,8 +105,8 @@ function install_tornado_and_python-support()
 
 function download_and_install_gateone()
 {
- wget https://github.com/downloads/liftoff/GateOne/gateone_1.1-1_all.deb
- dpkg -i gateone*.deb
+ wget https://github.com/downloads/liftoff/GateOne/gateone_1.1-1_all.deb -P ~
+ dpkg -i ~/gateone*.deb
 }
 
 function generate_server_conf()
