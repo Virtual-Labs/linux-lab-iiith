@@ -134,7 +134,7 @@ function restart_nscd()
 ######################################## LDAP server configuration
 function install_ldap()
 {
- sudo apt-get install slapd ldap-utils
+ sudo apt-get install slapd ldap-utils -y
 }
 
 function configure_slapd()
