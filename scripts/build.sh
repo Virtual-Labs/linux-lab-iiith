@@ -104,13 +104,17 @@ function install_nscd()
  sudo apt-get install libpam-ldap nscd -y
 }
 
+function configure_ldap()
+{
+ sudo dpkg-reconfigure ldap-auth-config
+}
 
 function modify_nsswitch_conf()
 {
  sed -i '0,/passwd:.*/s//passwd:         ldap compat/' $nsswitch
- sed -i '0,/group:.*/s//group:         ldap compat/' $nsswitch
+ sed -i '0,/group:.*/s//group:          ldap compat/' $nsswitch
  sed -i '0,/shadow:.*/s//shadow:         ldap compat/' $nsswitch
- sed -i '0,/hosts:.*/s//hosts:         files dns ldap/' $nsswitch
+ sed -i '0,/hosts:.*/s//hosts:          files dns ldap/' $nsswitch
 }
 
 function edit_common_session()
