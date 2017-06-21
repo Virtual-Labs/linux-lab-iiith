@@ -6,7 +6,7 @@ script-dir=../scripts
 theme=blue-icon
 
 
-all:  exp4 help-dir infrastructure
+all:  initialise exp4 help-dir infrastructure
 
 help-dir:
 	(touch ${build-dir}/theme-${theme}; rsync -avC --exclude ${mathjax}.zip lab/* lib/* help themes/${theme}/* ${build-dir})
@@ -17,6 +17,8 @@ exp4:
 infrastructure:
 	(cd ${script-dir}; ./build.sh)
 
+initialise:
+	(cd ${script-dir}; ./initialise.sh)
 
 # don't remove the js directory, since copying it again with mathjax takes too long.
 # http://superuser.com/questions/168130/unix-delete-files-and-folders-excluding-pattern
