@@ -133,6 +133,11 @@
       #+BEGIN_EXAMPLE
       sudo apt-get install slapd ldap-utils -y
       #+END_EXAMPLE
+      Answer the following questions?
+      #+BEGIN_EXAMPLE
+      Enter ldap password: password
+      Confirm ldap password: password
+      #+END_EXAMPLE
    2. Reconfigure slapd.
       #+BEGIN_EXAMPLE
       dpkg-reconfigure slapd
