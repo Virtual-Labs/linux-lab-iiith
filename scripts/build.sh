@@ -111,13 +111,15 @@ function download_and_install_gateone()
 
 function generate_server_conf()
 {
- /opt/gateone/gateone.py &
+ cd /opt/gateone
+ ./gateone.py &
  # Get its PID
  PID=$!
  # Wait for 4 seconds
  sleep 4
  # Kill it
- kill $PID 
+ kill $PID
+ cd -
 }
 
 function update_gateone_config()
