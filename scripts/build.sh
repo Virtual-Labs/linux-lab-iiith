@@ -129,7 +129,7 @@ function update_gateone_config()
  sed -i '0,/PORT =.*/s//PORT = $port/' $gateone
  echo "enter the ip for gateone server: "
  read ip
- sed -i '0,/origins =.*/s//origins = "http://localhost;https://localhost;http://127.0.0.1;https://127.0.0.1;https://test;https://$ip:$port"
+ sed -i '0,/origins =.*/s//origins = "http:\/\/localhost;https:\/\/localhost;http:\/\/127.0.0.1;https:\/\/127.0.0.1;https:\/\/test;https:\/\/$ip:$port"
  /' $gateone
 }
 
