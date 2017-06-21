@@ -50,13 +50,13 @@ function install_packages()
 function build_lab()
 {
  ########################
- git clone https://github.com/Virtual-Labs/linux-lab-iiith.git
- cd ~/linux-lab-iiith/
- git checkout linux-lab-on-single-host
+ #git clone https://github.com/Virtual-Labs/linux-lab-iiith.git
+ #cd ~/linux-lab-iiith/
+ #git checkout linux-lab-on-single-host
  ########################
 
- cd ~/linux-lab-iiith/src/
- make
+ #cd ~/linux-lab-iiith/src/
+ #make
  sudo rsync -ar ~/linux-lab-iiith/build/ /var/www/html #### added /html 
 }
 
@@ -280,6 +280,7 @@ install_ldap
 configure_slapd
 create_organizational_units
 create_ldap_log_file
+update_ldapexec_file
 ##########
 
 final_setup
