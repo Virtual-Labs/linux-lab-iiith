@@ -20,7 +20,7 @@ function set_proxy()
   LINE='export https_proxy="http://proxy.iiit.ac.in:8080"'
   FILE=~/.bashrc
   grep -qF "$LINE" "$FILE" || echo "$LINE" >> "$FILE"
-
+  
   export http_proxy="http://proxy.iiit.ac.in:8080"
   export https_proxy="http://proxy.iiit.ac.in:8080"
 
@@ -119,7 +119,7 @@ function generate_server_conf()
  sleep 4
  # Kill it
  kill $PID
- cd -
+ cd - 
 }
 
 function update_gateone_config()
@@ -129,7 +129,7 @@ function update_gateone_config()
  sed -i '0,/PORT =.*/s//PORT = $port/' $gateone
  echo "enter the ip for gateone server: "
  read ip
- sed -i '0,/origins =.*/s//origins = "http:\/\/localhost;https:\/\/localhost;http:\/\/127.0.0.1;https:\/\/127.0.0.1;https:\/\/test;https:\/\/$ip:$port"/' $gateone
+ sed -ie '0,/origins =.*/s//origins = "http:\/\/localhost;https:\/\/localhost;http:\/\/127.0.0.1;https:\/\/127.0.0.1;https:\/\/test;https:\/\/$ip:$port"/' $gateone
 }
 
 ###################################### Gateone Server END
@@ -138,8 +138,7 @@ function update_gateone_config()
 ######################################## SSH server
 function install_nscd()
 {
-#export DEBIAN_FRONTEND=noninteractive ## For making non-interactive
-sudo apt-get install libpam-ldap nscd -y
+ sudo apt-get install libpam-ldap nscd -y
 }
 
 
@@ -222,8 +221,8 @@ function update_ldapexec_file()
 {
  echo "enter ldap ip: "
  read ldap_ip
- sed '0,/$ldap_host =.*/s//$ldap_host = "$ldap_ip"/' $ldap_exec
- echo "enter ldap password: "
+ sed -i '0,/$ldap_host =.*/s//$ldap_host = "$ldap_ip"/' $ldap_exec
+ echo  "enter ldap password: "
  read -s ldap_password
  echo "confirm password: "
  read -s ldap_confirm_password
@@ -246,7 +245,9 @@ function final_setup()
  sed -i '0,/.*.gateone.*/s//                accessed <a href="https:\/\/$gateone_ip:$gateone_port">here<\/a>./' $content_html
  sed -i '0,/.*.gateone.*/s//    <frame src="http:\/\/$gateone_ip:$gateone_port" \/>/' $frame_html
 
- /opt/gateone/gateone.py > /dev/null &
+ cd /opt/gateone
+ ./gateone.py > /dev/null &
+ cd -
  sudo service apache2 restart
 }
 ######################################## FINAL setup
@@ -256,7 +257,7 @@ function final_setup()
 
 set_proxy
 install_packages
-build_lab
+#build_lab
 update_ldapscripts
 create_password_file
 update_ldap_runtime
@@ -272,7 +273,7 @@ update_gateone_config
 
 ########### ssh
 install_nscd
-#configure_ldap
+configure_ldap
 modify_nsswitch_conf
 edit_common_session
 restart_nscd
