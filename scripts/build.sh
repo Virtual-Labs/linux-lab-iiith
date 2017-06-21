@@ -129,8 +129,7 @@ function update_gateone_config()
  sed -i '0,/PORT =.*/s//PORT = $port/' $gateone
  echo "enter the ip for gateone server: "
  read ip
- sed -i '0,/origins =.*/s//origins = "http:\/\/localhost;https:\/\/localhost;http:\/\/127.0.0.1;https:\/\/127.0.0.1;https:\/\/test;https:\/\/$ip:$port"
- /' $gateone
+ sed -i '0,/origins =.*/s//origins = "http:\/\/localhost;https:\/\/localhost;http:\/\/127.0.0.1;https:\/\/127.0.0.1;https:\/\/test;https:\/\/$ip:$port"/' $gateone
 }
 
 ###################################### Gateone Server END
@@ -140,16 +139,16 @@ function update_gateone_config()
 function install_nscd()
 {
 #export DEBIAN_FRONTEND=noninteractive ## For making non-interactive
-sudo apt-get install libpam-ldap nscd
+sudo apt-get install libpam-ldap nscd -y
 }
 
 
 function modify_nsswitch_conf()
 {
- sed '0,/passwd:.*/s//passwd:         ldap compat/' $nsswitch
- sed '0,/group:.*/s//group:         ldap compat/' $nsswitch
- sed '0,/shadow:.*/s//shadow:         ldap compat/' $nsswitch
- sed '0,/hosts:.*/s//hosts:         files dns ldap/' $nsswitch
+ sed -i '0,/passwd:.*/s//passwd:         ldap compat/' $nsswitch
+ sed -i '0,/group:.*/s//group:         ldap compat/' $nsswitch
+ sed -i '0,/shadow:.*/s//shadow:         ldap compat/' $nsswitch
+ sed -i '0,/hosts:.*/s//hosts:         files dns ldap/' $nsswitch
 }
 
 function edit_common_session()
