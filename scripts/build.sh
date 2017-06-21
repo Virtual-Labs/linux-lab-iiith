@@ -59,6 +59,8 @@ function restart_apache2()
 
 function install_tornado_and_python-support()
 {
+ export http_proxy="http://proxy.iiit.ac.in:8080"
+ export https_proxy="http://proxy.iiit.ac.in:8080"
  sudo apt-get install python-pip -y
  pip install tornado==2.4.1
  sudo apt-get install python-support -y
@@ -66,7 +68,7 @@ function install_tornado_and_python-support()
 
 function download_and_install_gateone()
 {
- wget https://github.com/downloads/liftoff/GateOne/gateone_1.1-1_all.deb -P ~
+ ls ~/ | grep -qF gateone || wget https://github.com/downloads/liftoff/GateOne/gateone_1.1-1_all.deb -P ~/
  dpkg -i ~/gateone*.deb
 }
 
