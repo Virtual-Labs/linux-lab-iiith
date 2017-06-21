@@ -222,7 +222,7 @@ function final_setup()
 
 #######################################
 
-#build_lab
+build_lab
 update_ldapscripts
 create_password_file
 update_ldap_runtime
