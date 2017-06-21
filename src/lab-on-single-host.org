@@ -41,7 +41,7 @@
       sudo apt-get install php5 -y
       sudo apt-get install graphviz -y
       sudo apt-get install ldapscripts -y
-      sudo apt-get install php5-ldap
+      sudo apt-get install php5-ldap -y
       #+END_EXAMPLE
       - refer:
         http://www.meso.northwestern.edu/intranet/recipies/useful-computer-files-and-programs/configuring-group-linux-servers-and-terminals-with-ldap-kerberos-and-nfs/ldap-user-and-group-management
@@ -131,8 +131,7 @@
 ** Ldap server
    1. Install openldap.
       #+BEGIN_EXAMPLE
-      export DEBIAN_FRONTEND=noninteractive
-      sudo apt-get install slapd ldap-utils
+      sudo apt-get install slapd ldap-utils -y
       #+END_EXAMPLE
    2. Reconfigure slapd.
       #+BEGIN_EXAMPLE
@@ -216,7 +215,7 @@
 ** SSH Server
    1. Install libpam-ldapd package
       #+BEGIN_EXAMPLE
-      sudo apt-get install libpam-ldap nscd
+      sudo apt-get install libpam-ldap nscd -y
       #+END_EXAMPLE
       Answer the following questions:
       #+BEGIN_EXAMPLE
