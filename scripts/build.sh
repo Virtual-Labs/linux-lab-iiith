@@ -126,10 +126,10 @@ function update_gateone_config()
 {
  echo "enter the available port for gateone server: "
  read port
- sed -i '0,/PORT =.*/s//PORT = $port/' $gateone
+ sed -i '0,/port =.*/s//port = '$port'/' $gateone
  echo "enter the ip for gateone server: "
  read ip
- sed -ie '0,/origins =.*/s//origins = "http:\/\/localhost;https:\/\/localhost;http:\/\/127.0.0.1;https:\/\/127.0.0.1;https:\/\/test;https:\/\/$ip:$port"/' $gateone
+ sed -ie '0,/origins =.*/s//origins = "http:\/\/localhost;https:\/\/localhost;http:\/\/127.0.0.1;https:\/\/127.0.0.1;https:\/\/test;https:\/\/'$ip':'$port'"/' $gateone
 }
 
 ###################################### Gateone Server END
@@ -221,7 +221,7 @@ function update_ldapexec_file()
 {
  echo "enter ldap ip: "
  read ldap_ip
- sed -i '0,/$ldap_host =.*/s//$ldap_host = "$ldap_ip"/' $ldap_exec
+ sed -i '0,/$ldap_host =.*/s//$ldap_host = \"'$ldap_ip'\"/' $ldap_exec
  echo  "enter ldap password: "
  read -s ldap_password
  echo "confirm password: "
@@ -231,7 +231,7 @@ function update_ldapexec_file()
  then
     echo "password does not match"
  else
-    sed -i '0,/$ldap_admin_pass =.*/s//$ldap_admin_pass = "$ldap_password"/' $ldap_exec
+    sed -i '0,/$ldap_admin_pass =.*/s//$ldap_admin_pass = \"'$ldap_password'\"/' $ldap_exec
  fi
 }
 
@@ -242,8 +242,8 @@ function final_setup()
  read gateone_ip
  echo "enter gateone port: "
  read gateone_port
- sed -i '0,/.*.gateone.*/s//                accessed <a href="https:\/\/$gateone_ip:$gateone_port">here<\/a>./' $content_html
- sed -i '0,/.*.gateone.*/s//    <frame src="http:\/\/$gateone_ip:$gateone_port" \/>/' $frame_html
+ sed -ie '0,/                accessed <a href="http.*/s//                accessed <a href="https:\/\/'$gateone_ip':'$gateone_port'">here<\/a>./' $content_html
+ sed -ie '0,/    <frame src="http.*/s//    <frame src="http:\/\/'$gateone_ip':'$gateone_port'" \/>/' $frame_html
 
  cd /opt/gateone
  ./gateone.py > /dev/null &
