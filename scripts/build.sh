@@ -5,6 +5,9 @@ ldap_exec=/var/www/html/php/ldapexec.php
 ldap_runtime=/usr/share/ldapscripts/runtime
 gateone=/opt/gateone/server.conf
 nsswitch=/etc/nsswitch.conf
+port=8000
+content_html=/var/www/html/content.html
+frame_html=/var/www/html/exp4/interaction-frame.html
 
 ######## Function for setting proxy
 function set_proxy()
@@ -132,14 +135,10 @@ function update_gateone_config()
 ######################################## SSH server
 function install_nscd()
 {
-export DEBIAN_FRONTEND=noninteractive ## For making non-interactive
+#export DEBIAN_FRONTEND=noninteractive ## For making non-interactive
 sudo apt-get install libpam-ldap nscd
 }
 
-function configure_ldap()
-{
- 
-}
 
 function modify_nsswitch_conf()
 {
@@ -162,6 +161,60 @@ function restart_nscd()
 }
 ######################################## SSH server END
 
+
+######################################## LDAP server configuration
+function install_ldap()
+{
+ sudo apt-get install slapd ldap-utils
+}
+
+function configure_slapd()
+{
+ dpkg-reconfigure slapd
+}
+function create_organizational_units()
+{
+ touch ~/units.ldif ~/group.ldif ~/testuser1.ldif
+ echo "dn: ou=People,dc=virtual-labs,dc=ac,dc=in
+ou: People
+objectClass: organizationalUnit
+
+dn: ou=Group,dc=virtual-labs,dc=ac,dc=in
+ou: Group
+objectClass: organizationalUnit" > ~/units.ldif
+
+ echo "dn: cn=vlusers,ou=Group,dc=virtual-labs,dc=ac,dc=in
+cn: vlusers
+gidNumber: 20000
+objectClass: top
+objectClass: posixGroup" > ~/group.ldif
+
+ echo "dn: uid=testuser1,ou=People,dc=virtual-labs,dc=ac,dc=in
+uid: testuser1
+uidNumber: 20000
+gidNumber: 20000
+cn: Test User 1
+sn: User
+objectClass: top
+objectClass: person
+objectClass: posixAccount
+objectClass: shadowAccount
+loginShell: /bin/bash
+homeDirectory: /home/testuser1" > ~/testuser1.ldif
+
+ldapadd -x -D 'cn=admin,dc=virtual-labs,dc=ac,dc=in' -W -f units.ldif
+ldapadd -x -D 'cn=admin,dc=virtual-labs,dc=ac,dc=in' -W -f group.ldif
+ldapadd -x -D 'cn=admin,dc=virtual-labs,dc=ac,dc=in' -W -f testuser1.ldif
+
+}
+
+function create_ldap_log_file()
+{
+ touch /var/log/ldapscripts.log
+ chmod o-r /var/log/ldapscripts.log
+ chown www-data:www-data /var/log/ldapscripts.log
+}
+ 
 function update_ldapexec_file()
 {
  echo "enter ldap ip: "
@@ -180,6 +233,22 @@ function update_ldapexec_file()
  fi
 }
 
+######################################## ldap END
+function final_setup()
+{
+ echo "enter ldap ip: "
+ read ldap_ip
+ sed -i '0,/#/s//#/' $content_html
+ sed -i '0,/#/s//#/' $frame_html
+
+ /opt/gateone/gateone.py > /dev/null &
+ sudo service apache2 restart
+}
+######################################## FINAL setup
+
+
+#######################################
+
 set_proxy
 install_packages
 build_lab
@@ -188,13 +257,27 @@ create_password_file
 update_ldap_runtime
 add_www-data_to_root-group
 restart_apache2
+
+########### gateone
 install_tornado_and_python-support
 download_and_install_gateone
 generate_server_conf
 update_gateone_config
+###################
+
+########### ssh
 install_nscd
-configure_ldap
+#configure_ldap
 modify_nsswitch_conf
 edit_common_session
 restart_nscd
+###############
 
+###### ldap
+install_ldap
+configure_slapd
+create_organizational_units
+create_ldap_log_file
+##########
+
+final_setup
