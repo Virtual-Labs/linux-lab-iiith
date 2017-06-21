@@ -243,7 +243,7 @@ function final_setup()
  echo "enter gateone port: "
  read gateone_port
  sed -ie '0,/                accessed <a href="http.*/s//                accessed <a href="https:\/\/'$gateone_ip':'$gateone_port'">here<\/a>./' $content_html
- sed -ie '0,/    <frame src="http.*/s//    <frame src="http:\/\/'$gateone_ip':'$gateone_port'" \/>/' $frame_html
+ sed -ie '0,/    <frame src="http.*/s//    <frame src="https:\/\/'$gateone_ip':'$gateone_port'" \/>/' $frame_html
 
  cd /opt/gateone
  ./gateone.py > /dev/null &
