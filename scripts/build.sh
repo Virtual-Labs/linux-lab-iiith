@@ -205,9 +205,9 @@ objectClass: shadowAccount
 loginShell: /bin/bash
 homeDirectory: /home/testuser1" > ~/testuser1.ldif
 
-ldapadd -x -D 'cn=admin,dc=virtual-labs,dc=ac,dc=in' -W -f units.ldif
-ldapadd -x -D 'cn=admin,dc=virtual-labs,dc=ac,dc=in' -W -f group.ldif
-ldapadd -x -D 'cn=admin,dc=virtual-labs,dc=ac,dc=in' -W -f testuser1.ldif
+ldapadd -x -D 'cn=admin,dc=virtual-labs,dc=ac,dc=in' -W -f ~/units.ldif
+ldapadd -x -D 'cn=admin,dc=virtual-labs,dc=ac,dc=in' -W -f ~/group.ldif
+ldapadd -x -D 'cn=admin,dc=virtual-labs,dc=ac,dc=in' -W -f ~/testuser1.ldif
 
 }
 
