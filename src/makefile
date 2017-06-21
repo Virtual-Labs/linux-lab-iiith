@@ -15,7 +15,7 @@ exp4:
 	(cd lab/exp4/media; make)
 
 infrastructure:
-        (cd ${script-dir}; ./build.sh)
+	(cd ${script-dir}; ./build.sh)
 
 
 # don't remove the js directory, since copying it again with mathjax takes too long.
