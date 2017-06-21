@@ -20,7 +20,9 @@ function set_proxy()
   LINE='export https_proxy="http://proxy.iiit.ac.in:8080"'
   FILE=~/.bashrc
   grep -qF "$LINE" "$FILE" || echo "$LINE" >> "$FILE"
-  source ~/.bashrc
+
+  export http_proxy="http://proxy.iiit.ac.in:8080"
+  export https_proxy="http://proxy.iiit.ac.in:8080"
 
 ####### Adding proxy in /etc/apt/apt.conf
 
