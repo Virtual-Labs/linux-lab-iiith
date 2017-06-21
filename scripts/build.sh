@@ -236,10 +236,12 @@ function update_ldapexec_file()
 ######################################## ldap END
 function final_setup()
 {
- echo "enter ldap ip: "
- read ldap_ip
- sed -i '0,/#/s//#/' $content_html
- sed -i '0,/#/s//#/' $frame_html
+ echo "enter gateone ip: "
+ read gateone_ip
+ echo "enter gateone port: "
+ read gateone_port
+ sed -i '0,/.*.gateone.*/s//                accessed <a href="https:\/\/$gateone_ip:$gateone_port">here<\/a>./' $content_html
+ sed -i '0,/.*.gateone.*/s//    <frame src="http:\/\/$gateone_ip:$gateone_port" \/>/' $frame_html
 
  /opt/gateone/gateone.py > /dev/null &
  sudo service apache2 restart
