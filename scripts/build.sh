@@ -184,7 +184,7 @@ function update_ldapexec_file()
 {
  echo "enter ldap ip: "
  read ldap_ip
- sed -i '0,/$ldap_host =.*/s//$ldap_host = \"'$ldap_ip'\"/' $ldap_exec
+ sed -i '0,/$ldap_host =.*/s//$ldap_host = \"'$ldap_ip'\";/' $ldap_exec
  echo  "enter ldap password: "
  read -s ldap_password
  echo "confirm password: "
@@ -194,7 +194,7 @@ function update_ldapexec_file()
  then
     echo "password does not match"
  else
-    sed -i '0,/$ldap_admin_pass =.*/s//$ldap_admin_pass = \"'$ldap_password'\"/' $ldap_exec
+    sed -i '0,/$ldap_admin_pass =.*/s//$ldap_admin_pass = \"'$ldap_password'\";/' $ldap_exec
  fi
 }
 
