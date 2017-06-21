@@ -236,14 +236,6 @@ generate_server_conf
 update_gateone_config
 ###################
 
-########### ssh
-install_nscd
-configure_ldap
-modify_nsswitch_conf
-edit_common_session
-restart_nscd
-###############
-
 ###### ldap
 install_ldap
 configure_slapd
@@ -251,5 +243,13 @@ create_organizational_units
 create_ldap_log_file
 update_ldapexec_file
 ##########
+
+########### ssh
+install_nscd
+configure_ldap
+modify_nsswitch_conf
+edit_common_session
+restart_nscd
+###############
 
 final_setup
