@@ -16,7 +16,7 @@ frame_html=/var/www/html/exp4/interaction-frame.html
     echo "Enter the admin password"
     read passwd
 
-function build_lab()nd 
+function build_lab()
 {
  ########################
  #git clone https://github.com/Virtual-Labs/linux-lab-iiith.git
