@@ -6,13 +6,39 @@
 * Introduction
   This document describes the steps to build and run Linux Lab on a
   single host machine.
-
 * Design
 ** Architecture diagram
    [[../arch/linux-lab-architecture-single-host.jpeg]]
+** Overview
+This article describes the architecture, details and instructions for setting up restricted shell access.
+
+For many CSE related virtual labs, it is a fundamental requirement to provide a way for the user to interact with a
+computer. This interaction could be the execution of system command to observe the output, the execution of a
+program to see the result or the execution of a program by an evaluation mechanism. It is desirable to make this
+interaction imitate a real system interaction as closely as possible. Hence providing a terminal emulator on the
+user's browser while taking care of security considerations would be a good solution.
+
+This document is intended for lab developers looking for a way to use the remote shell service and for system
+administrators maintaining the infrastructure for restricted shell access.
+
+** Architecture 
+The following is the current architecture of the lab :
+
+1. User visits the virtual lab webpage
+2. The webpage loads some scripts
+3. The script makes a connection to backend 'Gateone' gateway server using WebSockets
+4. The gateway server then connects to a backend SSH server via the SSH protocol
+5. The gateway server also emulates a terminal to the SSH server
+6. The contents of the emulated terminal are sent to the user's web page and get displayed
+7. All the user's input is forwarded via the gateway the SSH server
+8. For security, there are several limitations put up on the user's account in the restricted shell SSH server
+9. The user account information comes from an OpenLDAP server setup separately
+10. Accounts on the OpenLDAP server get created when the user registers for virtual labs
+11. Home directories for the user's are created on the local machine on which this lab has been setted
+  
 * Setup
   Following servers are to be setup on a single host. We use
-  Ubuntu-14.04 operating system.
+  =Ubuntu-14.04= operating system.
 
 ** Linux Lab Server
    1. Set proxy in ~/.bashrc (use =vim ~/.bashrc=) file. (add these
@@ -25,7 +51,7 @@
       #+BEGIN_EXAMPLE
       source ~/.bashrc
       #+END_EXAMPLE
-   3. Also set proxy in =vim /etc/apt/apt.conf= (add these two line at
+   3. Also set proxy in =/etc/apt/apt.conf= (add these two line at
       end of the file apt.conf)
       #+BEGIN_SRC 
       Acquire::http::Proxy "http://proxy.iiit.ac.in:8080";
@@ -45,7 +71,7 @@
       #+END_EXAMPLE
       - refer:
         http://www.meso.northwestern.edu/intranet/recipies/useful-computer-files-and-programs/configuring-group-linux-servers-and-terminals-with-ldap-kerberos-and-nfs/ldap-user-and-group-management
-   6. Clone the repo
+   6. Clone the repository : 
       #+BEGIN_EXAMPLE
       git clone https://github.com/Virtual-Labs/linux-lab-iiith.git
       #+END_EXAMPLE
@@ -117,17 +143,18 @@
       #+BEGIN_EXAMPLE
       ./gateone.py
       #+END_EXAMPLE
-   5. Terminate the gateone.py
-   6. Edit =/opt/gateone/server.conf= as follows:
+   5. Terminate the gateone.py : press =ctrl+c=
+   6. Edit =/opt/gateone/server.conf=. Change the values of the following Keys :
       #+BEGIN_EXAMPLE
       port = 8000
       origins = <IP>:8000
       #+END_EXAMPLE
+      We have used port 8000 for testing purposes you can use any other port >= 1025 and suitable for you
 *** Reference
    - https://github.com/liftoff/GateOne/downloads
-   -
-     https://www.youtube.com/watch?v=gnVohdlZXVY&list=UU8c7zNWoShUxaFqWKv7H51g&index=3&feature=plpp_video
+   - https://www.youtube.com/watch?v=gnVohdlZXVY&list=UU8c7zNWoShUxaFqWKv7H51g&index=3&feature=plpp_video
    - http://liftoff.github.io/GateOne/About/
+
 ** Ldap server
    1. Install openldap.
       #+BEGIN_EXAMPLE
@@ -138,6 +165,7 @@
       Enter ldap password: password
       Confirm ldap password: password
       #+END_EXAMPLE
+      We have used 'password' as ldap password you can use any other password too  
    2. Reconfigure slapd.
       #+BEGIN_EXAMPLE
       dpkg-reconfigure slapd
@@ -328,7 +356,7 @@
 
 * Features to be implemented
   1. Capthca in register
-  2. Restricting user root privileges using "chroot jail".
+  2. Restricting user root privileges.
 
 * Reference Links
   - https://github.com/Virtual-Labs/documentation-popl-linux-labs/blob/master/documents/POPL-backend-gateone-ldap.pdf 
