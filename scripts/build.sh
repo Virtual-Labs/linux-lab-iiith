@@ -9,12 +9,14 @@ content_html=/var/www/html/content.html
 frame_html=/var/www/html/exp4/interaction-frame.html
 
 
-    [ -z $IP ] && IP="$(zenity --entry --height=160 --width=400 --text="Enter the IP of your system on which you want to host lab\nUse: ifconfig | grep 'inet addr' | cut -d: -f2 | tail -2| head -1 | awk '{print $1}' " --title=Authentication)"
-    [ -z $port ] && port="$(zenity --entry --height=160 --width=400 --text="Enter the available port for gateone server" --title=Authentication)"
-    [ -z $passwd ] && passwd="$(zenity --password --height=160 --width=400 --text="Enter the admin password" --title=Authentication)"
+    echo "Enter the IP of your system on which you want to host lab\nUse this command to find ip:\nifconfig | grep 'inet addr' | cut -d: -f2 | tail -1 | awk '{print $1}' "
+    read IP
+    echo "Enter the available port for gateone server" 
+    read port
+    echo "Enter the admin password"
+    read passwd
 
-
-function build_lab()
+function build_lab()nd 
 {
  ########################
  #git clone https://github.com/Virtual-Labs/linux-lab-iiith.git
