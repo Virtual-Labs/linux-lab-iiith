@@ -8,7 +8,7 @@ nsswitch=/etc/nsswitch.conf
 content_html=/var/www/html/content.html
 frame_html=/var/www/html/exp4/interaction-frame.html
 
-#!/bin/bash
+
     [ -z $IP ] && IP="$(zenity --entry --height=160 --width=400 --text="Enter the IP of your system on which you want to host lab\nUse: ifconfig | grep 'inet addr' | cut -d: -f2 | tail -2| head -1 | awk '{print $1}' " --title=Authentication)"
     [ -z $port ] && port="$(zenity --entry --height=160 --width=400 --text="Enter the available port for gateone server" --title=Authentication)"
     [ -z $passwd ] && passwd="$(zenity --password --height=160 --width=400 --text="Enter the admin password" --title=Authentication)"
