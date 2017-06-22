@@ -5,9 +5,13 @@ ldap_exec=/var/www/html/php/ldapexec.php
 ldap_runtime=/usr/share/ldapscripts/runtime
 gateone=/opt/gateone/server.conf
 nsswitch=/etc/nsswitch.conf
-port=8000
 content_html=/var/www/html/content.html
 frame_html=/var/www/html/exp4/interaction-frame.html
+
+#!/bin/bash
+    [ -z $IP ] && IP="$(zenity --entry --height=160 --width=400 --text="Enter the IP of your system on which you want to host lab\nUse: ifconfig | grep 'inet addr' | cut -d: -f2 | tail -2| head -1 | awk '{print $1}' " --title=Authentication)"
+    [ -z $port ] && port="$(zenity --entry --height=160 --width=400 --text="Enter the available port for gateone server" --title=Authentication)"
+    [ -z $passwd ] && passwd="$(zenity --password --height=160 --width=400 --text="Enter the admin password" --title=Authentication)"
 
 
 function build_lab()
@@ -87,11 +91,8 @@ function generate_server_conf()
 
 function update_gateone_config()
 {
- echo "enter the available port for gateone server: "
- read port
  sed -i '0,/port =.*/s//port = '$port'/' $gateone
- echo "enter the ip for gateone server: "
- read ip
+ ip=$IP
  sed -ie '0,/origins =.*/s//origins = "http:\/\/localhost;https:\/\/localhost;http:\/\/127.0.0.1;https:\/\/127.0.0.1;https:\/\/test;https:\/\/'$ip':'$port'"/' $gateone
 }
 
@@ -186,14 +187,10 @@ function create_ldap_log_file()
  
 function update_ldapexec_file()
 {
- echo "enter ldap ip: "
- read ldap_ip
+ ldap_ip=$IP
  sed -i '0,/$ldap_host =.*/s//$ldap_host = \"'$ldap_ip'\";/' $ldap_exec
- echo  "enter ldap password: "
- read -s ldap_password
- echo "confirm password: "
- read -s ldap_confirm_password
-
+ ldap_password=$passwd
+ ldap_confirm_password=$passwd
  if [ $ldap_password != $ldap_confirm_password ]
  then
     echo "password does not match"
@@ -202,13 +199,15 @@ function update_ldapexec_file()
  fi
 }
 
-######################################## ldap END
+######################################## ldap 
+
+
+############################################ Final Setup
+
 function final_setup()
 {
- echo "enter gateone ip: "
- read gateone_ip
- echo "enter gateone port: "
- read gateone_port
+ gateone_ip=$IP
+ gateone_port=$port
  sed -ie '0,/.*accessed <a href="http.*/s//                accessed <a href="https:\/\/'$gateone_ip':'$gateone_port'">here<\/a>./' $content_html
  sed -ie '0,/    <frame src="http.*/s//    <frame src="https:\/\/'$gateone_ip':'$gateone_port'" \/>/' $frame_html
 
@@ -217,6 +216,7 @@ function final_setup()
  cd -
  sudo service apache2 restart
 }
+
 ######################################## FINAL setup
 
 
