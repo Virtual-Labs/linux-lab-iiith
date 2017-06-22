@@ -36,7 +36,8 @@ function install_packages()
  sudo apt-get install php5 -y
  sudo apt-get install graphviz -y
  sudo apt-get install ldapscripts -y
- sudo apt-get install php5-ldap
+ sudo apt-get install php5-ldap -y
+ sudo apt-get install zenity -y
 }
 
 set_proxy
