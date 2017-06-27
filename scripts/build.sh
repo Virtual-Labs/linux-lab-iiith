@@ -42,7 +42,7 @@ function update_ldapscripts()
 
 function create_password_file()
 {
- sudo sh -c "echo -n 'password' > /etc/ldapscripts/ldapscripts.passwd"
+ sudo sh -c "echo -n $passwd > /etc/ldapscripts/ldapscripts.passwd"
  sudo chmod 440 /etc/ldapscripts/ldapscripts.passwd
 }
 
