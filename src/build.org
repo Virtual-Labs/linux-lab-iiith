@@ -8,8 +8,8 @@
 
 * Purpose 
   - This script is for setting up the linux-lab on =ubuntu 14.04=
-  - For Architecture of the lab refer to following link: [[https://github.com/Virtual-Labs/linux-lab-iiith/blob/linux-lab-on-single-host/src/lab-on-single-host.org
-]]
+  - For Architecture of the lab refer to following link: [[https://github.com/Virtual-Labs/linux-lab-iiith/blob/linux-lab-on-single-host/src/lab-on-single-host.org]]
+  
 * Setup : basic configuration
 ** The below block is for setting variable having values as the path to configuration-files
    1. =ldap_config= : It is the absolute-path for ldapscripts configuration file
