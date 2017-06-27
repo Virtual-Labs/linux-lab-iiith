@@ -19,7 +19,7 @@
 
 ** Function for Adding proxy 
 *** First one is for setting proxy in =~/.bashrc= file
-*** Second one is for setting proxy for apt : In this first you have to create a file =/etc/apt/apt.conf
+*** Second one is for setting proxy for apt : In this first you have to create a file =/etc/apt/apt.conf=
 
 #+NAME: proxy
 #+BEGIN_SRC bash
