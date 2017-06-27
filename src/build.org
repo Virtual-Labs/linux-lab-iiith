@@ -1,0 +1,200 @@
+#+Title: Hosting Linux Lab on a single host machine
+#+Date: <2017-06-27 Tue>
+#+Author: Nikhil Bansal
+#+Email: nikhilbansal3456@gmail.com
+
+* Introduction 
+  Script to automatically set-up the linux-lab
+
+* Purpose 
+  - This script is for setting up the linux-lab on =ubuntu 14.04=
+  - For Architecture of the lab refer to following link: [[https://github.com/Virtual-Labs/linux-lab-iiith/blob/linux-lab-on-single-host/src/lab-on-single-host.org
+]]
+* Setup : basic configuration
+** The below block is for setting variable having values as the path to configuration-files
+   1. =ldap_config= : It is the absolute-path for ldapscripts configuration file
+   2. =ldap_exec= : This is the path for backend php file for executing-lab
+   3. =ldap_runtime= : This is path for a ldap-runtime file 
+   4. =gateone= : Path of gateone-server configuration-file
+   5. =nsswitch= : path to nsswitch configuration file
+   6. =content_html= : Path to html file
+   7. =frame_html= : path to interaction-frame html file
+#+NAME: variables
+#+BEGIN_SRC bash
+#!/bin/bash
+
+ldap_config=/etc/ldapscripts/ldapscripts.conf
+ldap_exec=/var/www/html/php/ldapexec.php
+ldap_runtime=/usr/share/ldapscripts/runtime
+gateone=/opt/gateone/server.conf
+nsswitch=/etc/nsswitch.conf
+content_html=/var/www/html/content.html
+frame_html=/var/www/html/exp4/interaction-frame.html
+
+
+#+END_SRC
+
+** The below block is for taking user-input:
+   - For IP of the system on which you want to host lab
+   - Port for gateone-server
+   - Admin password : For ldap admin configurations
+#+NAME: readingInput
+#+BEGIN_SRC bash
+    echo "Enter the IP of your system on which you want to host lab\nUse this command to find ip:\nifconfig | grep 'inet addr' | cut -d: -f2 | tail -1 | awk '{print $1}' "
+    read IP
+    echo "Enter the available port for gateone server" 
+    read port
+    echo "Enter the admin password"
+    read passwd
+
+#+END_SRC   
+** This function is for rsyncing the content of build folder to /var/www/html/
+#+NAME: buildLab
+#+BEGIN_SRC bash
+function build_lab()
+{
+ ########################
+ #git clone https://github.com/Virtual-Labs/linux-lab-iiith.git
+ #cd ~/linux-lab-iiith/
+ #git checkout linux-lab-on-single-host
+ ########################
+
+ #cd ~/linux-lab-iiith/src/
+ #make
+ sudo rsync -ar ~/linux-lab-iiith/build/ /var/www/html #### added /html 
+}
+
+#+END_SRC
+** This function is for updating the ldapscripts configuration file
+#+NAME: updateLdapscripts
+#+BEGIN_SRC bash
+function update_ldapscripts()
+{
+ sed -i 's/#SERVER=.*/SERVER="ldap:\/\/localhost"/g' "$ldap_config"
+ sed -i "s/#SUFFIX=.*/SUFFIX='dc=virtual-labs,dc=ac,dc=in'/g" "$ldap_config"
+ sed -i "s/#GSUFFIX=.*/GSUFFIX='ou=Group'/g" "$ldap_config"
+ sed -i "s/#USUFFIX=.*/USUFFIX='ou=People'/g" "$ldap_config"
+ sed -i "s/#MSUFFIX=.*/MSUFFIX='ou=Computers'/g" "$ldap_config"
+ sed -i "s/BINDDN=.*/BINDDN='cn=admin,dc=virtual-labs,dc=ac,dc=in'/g" "$ldap_config"
+ sed -i 's/MIDSTART=.*/MIDSTART="10000"/g' "$ldap_config"
+}
+
+#+END_SRC
+** This function is for creating password-file and providing it suitable permissions 
+#+NAME: createPasswordfile
+#+BEGIN_SRC bash
+function create_password_file()
+{
+ sudo sh -c "echo -n $passwd > /etc/ldapscripts/ldapscripts.passwd"
+ sudo chmod 440 /etc/ldapscripts/ldapscripts.passwd
+}
+
+#+END_SRC
+** This function is for updating ldap-runtime file
+#+NAME: updateLdapRuntime
+#+BEGIN_SRC bash 
+function update_ldap_runtime()
+{
+ sed -i '0,/USER=.*/s//USER=$(whoami 2>\/dev\/null)/' $ldap_runtime
+}
+
+#+END_SRC
+** This function is for adding www-data to root-group
+#+NAME: addWwwdataToRootGroup
+#+BEGIN_SRC bash
+function add_www-data_to_root-group()
+{
+ usermod -a -G root www-data
+}
+
+#+END_SRC
+** For restarting apache2 server
+#+NAME: restartingApache2
+#+BEGIN_SRC bash
+function restart_apache2()
+{
+ service apache2 restart
+}
+
+#+END_SRC
+
+
+* Setup: Gateone server
+** For installing: 
+   1. Tornado-server
+   2. python-pip
+   3. python-support
+#+NAME: installingTornadoAndPythonSupport
+#+BEGIN_SRC bash
+#################### Gateone Server
+
+function install_tornado_and_python-support()
+{
+ export http_proxy="http://proxy.iiit.ac.in:8080"
+ export https_proxy="http://proxy.iiit.ac.in:8080"
+ sudo apt-get install python-pip -y
+ pip install tornado==2.4.1
+ sudo apt-get install python-support -y
+}
+
+#+END_SRC
+** This function is for downloading and installing gateone
+#+NAME: downloadAndInstallingGateone
+#+BEGIN_SRC bash 
+function download_and_install_gateone()
+{
+ ls ~/ | grep -qF gateone || wget https://github.com/downloads/liftoff/GateOne/gateone_1.1-1_all.deb -P ~/
+ dpkg -i ~/gateone*.deb
+}
+
+#+END_SRC
+
+** This function is for generating serv.conf file: In order to generate this file the gateone server should run a single time
+#+NAME: generateServerConfigurationFile
+#+BEGIN_SRC bash
+function generate_server_conf()
+{
+ cd /opt/gateone
+ ./gateone.py &
+ # Get its PID
+ PID=$!
+ # Wait for 4 seconds
+ sleep 4
+ # Kill it
+ kill $PID
+ cd - 
+}
+
+#+END_SRC
+
+** For Updating server.conf i.e configuration file of gateone-server
+   - For changing the IP and port of gateone server according to the user-input
+#+NAME: updateGateoneConfiguration
+#+BEGIN_SRC bash 
+function update_gateone_config()
+{
+ sed -i '0,/port =.*/s//port = '$port'/' $gateone
+ ip=$IP
+ sed -ie '0,/origins =.*/s//origins = "http:\/\/localhost;https:\/\/localhost;http:\/\/127.0.0.1;https:\/\/127.0.0.1;https:\/\/test;https:\/\/'$ip':'$port'"/' $gateone
+}
+
+###################################### Gateone Server END
+
+
+#+END_SRC
+* Tangle
+#+BEGIN_SRC bash :tangle ../scripts/build.sh :eval no :noweb yes 
+<<imports>>
+<<variables>>
+<<readingInput>>
+<<buildLab>>
+<<updateLdapscripts>>
+<<createPasswordfile>>
+<<updateLdapRuntime>>
+<<addWwwdataToRootGroup>>
+<<restartingApache2>>
+<<installingTornadoAndPythonSupport>>
+<<downloadAndInstallingGateone>>
+<<generateServerConfigurationFile>>
+<<updateGateoneConfiguration>> 
+#+END_SRC
