@@ -182,6 +182,266 @@ function update_gateone_config()
 
 
 #+END_SRC
+
+* Setup: LDAP server
+** Firstly, you need to install LDAP-utils 
+   - The ldap-utils package includes a number of utilities that can be used to perform queries on the LDAP server.
+#+NAME: install-ldap-utils
+#+BEGIN_SRC bash
+######################################## LDAP server configuration
+function install_ldap()
+{
+ sudo apt-get install slapd ldap-utils -y
+}
+
+#+END_SRC
+** Configure the slapd
+   - Slapd is the stand-alone LDAP daemon. 
+   - It listens for LDAP connections on any number of ports (default 389), responding to the LDAP operations it receives over these connections. 
+   - slapd is typically invoked at boot time, usually out of /etc/rc.local.
+*** Use following setting while configuring slapd
+    - Omit OpenLDAP server configuration? =No=
+    - DNS domain name: =virtual-labs.ac.in=
+    - Organization name? =Virtual Labs=
+    - Administrator password: =Enter the same password that you have entered before=
+    - Confirm password: =Above password=
+    - Database backend to use: =HDB=
+    - Do you want the database to be removed when slapd is purged? =NO=
+    - Move old database? =yes=
+    - Allow LDAPv2 protocol ? =No=
+#+NAME: configureSlapd
+#+BEGIN_SRC bash
+function configure_slapd()
+{
+ dpkg-reconfigure slapd
+}
+
+#+END_SRC
+
+** To verify LDAP is configured properly use:
+#+BEGIN_SRC
+ldapsearch -Y EXTERNAL -H ldapi:// -b 'dc=virtual-labs,dc=ac,dc=in'
+#+END_SRC
+** Creating organizational units for people,groups using following function and a test user in 'vlusers'
+#+NAME: createOraganisationalUnit
+#+BEGIN_SRC bash
+function create_organizational_units()
+{
+ touch ~/units.ldif ~/group.ldif ~/testuser1.ldif
+ echo "dn: ou=People,dc=virtual-labs,dc=ac,dc=in
+ou: People
+objectClass: organizationalUnit
+dn: ou=Group,dc=virtual-labs,dc=ac,dc=in
+ou: Group
+objectClass: organizationalUnit" > ~/units.ldif
+
+ echo "dn: cn=vlusers,ou=Group,dc=virtual-labs,dc=ac,dc=in
+cn: vlusers
+gidNumber: 20000
+objectClass: top
+objectClass: posixGroup" > ~/group.ldif
+
+ echo "dn: uid=testuser1,ou=People,dc=virtual-labs,dc=ac,dc=in
+uid: testuser1
+uidNumber: 20000
+gidNumber: 20000
+cn: Test User 1
+sn: User
+objectClass: top
+objectClass: person
+objectClass: posixAccount
+objectClass: shadowAccount
+loginShell: /bin/bash
+homeDirectory: /home/testuser1" > ~/testuser1.ldif
+
+ldapadd -x -D 'cn=admin,dc=virtual-labs,dc=ac,dc=in' -W -f ~/units.ldif
+ldapadd -x -D 'cn=admin,dc=virtual-labs,dc=ac,dc=in' -W -f ~/group.ldif
+ldapadd -x -D 'cn=admin,dc=virtual-labs,dc=ac,dc=in' -W -f ~/testuser1.ldif
+
+}
+
+#+END_SRC
+** This function is for creating ldap log file 
+#+NAME: createLdapLogFile
+#+BEGIN_SRC bash
+function create_ldap_log_file()
+{
+ touch /var/log/ldapscripts.log
+ chmod o-r /var/log/ldapscripts.log
+ chown www-data:www-data /var/log/ldapscripts.log
+}
+
+#+END_SRC
+** This function is for updating the ldapexec file with new ip and password provided by the one who is hosting this lab.
+#+NAME: updateLdapexecFile
+#+BEGIN_SRC bash
+function update_ldapexec_file()
+{
+ ldap_ip=$IP
+ sed -i '0,/$ldap_host =.*/s//$ldap_host = \"'$ldap_ip'\";/' $ldap_exec
+ ldap_password=$passwd
+ ldap_confirm_password=$passwd
+ if [ $ldap_password != $ldap_confirm_password ]
+ then
+    echo "password does not match"
+ else
+    sed -i '0,/$ldap_admin_pass =.*/s//$ldap_admin_pass = \"'$ldap_password'\";/' $ldap_exec
+ fi
+}
+
+######################################## ldap 
+
+
+############################################ SSH server
+
+#+END_SRC
+
+* Setup: SSH server
+**  This function is for installing libamp-ldap nscd package. You were asked these questions while installing:
+    - IP address / hostname of the LDAP server: <ip-address-of-ldap-server> =use ldap instead of ldapi=
+    - The search base: dc=virtual-labs,dc=ac,dc=in
+    - Version of the LDAP connecting to: =Version 3=
+    - Configuring LIBNSS-LDAP: =OK=
+    - Make root the DB admin: =Yes=
+    - DB requires logging in: =No=
+    - Root account of LDAP: cn=admin,dc=virtual-labs,dc=ac,dc=in
+    - Root password: =use the same password used above=
+#+NAME: installLibamp
+#+BEGIN_SRC bash
+function install_nscd()
+{
+ sudo apt-get install libpam-ldap nscd -y
+}
+
+#+END_SRC
+
+**  This function is for configuring ldap-auth
+*** use following setting for configuration:
+    - Should debconf manage LDAP configuration? =Yes=
+    - ldap server Uniform Resource Identifier ? =<ip-address>=
+    - Distinguished name of the search base: dc=virtual-labs,dc=ac,dc=in
+    - Ldap version to use? =3=
+    - Make root the DB admin: =Yes=
+    - DB requires logging in: =No=
+    - Root account of LDAP: cn=admin,dc=virtual-labs,dc=ac,dc=in
+    - Root password: =Use same password that is being used till now=
+    - Local crypt to use when changing passwords: =clear= 
+#+NAME: Configuration
+#+BEGIN_SRC bash 
+function configure_ldap()
+{
+ sudo dpkg-reconfigure ldap-auth-config
+}
+
+#+END_SRC
+**  For Mofifiyng /etc/nsswitch.conf to contain something like this:
+    #+BEGIN_SRC 
+    passwd:         ldap compat
+    group:          ldap compat
+    shadow:         ldap compat
+    hosts:          files dns ldap
+    #+END_SRC
+#+NAME: modifyNsswitch
+#+BEGIN_SRC bash
+function modify_nsswitch_conf()
+{
+ sed -i '0,/passwd:.*/s//passwd:         ldap compat/' $nsswitch
+ sed -i '0,/group:.*/s//group:          ldap compat/' $nsswitch
+ sed -i '0,/shadow:.*/s//shadow:         ldap compat/' $nsswitch
+ sed -i '0,/hosts:.*/s//hosts:          files dns ldap/' $nsswitch
+}
+
+#+END_SRC
+**  This is for: Enable creating home directories when user logs in. Edit /etc/pam.d/common-session and add the following line.
+#+NAME: editCommonSession
+#+BEGIN_SRC bash
+function edit_common_session()
+{
+  LINE='session required pam_mkhomedir.so skel=/etc/skel umask=0022'
+  FILE=/etc/pam.d/common-session
+  grep -qF "$LINE" "$FILE" || echo "$LINE" >> "$FILE"
+}
+
+#+END_SRC
+**  This function is for restaring nscd
+#+NAME: restartingNscd
+#+BEGIN_SRC bash
+function restart_nscd()
+{
+ /etc/init.d/nscd restart
+}
+######################################## SSH server END
+
+
+######################################## Final setup
+
+#+END_SRC
+
+
+* Setup: Final
+** This function is for:
+   1. Editing HTML files for changing IP and port to new values
+   2. Running gateway server
+   3. Restarting apache2
+#+NAME: finalSetup
+#+BEGIN_SRC bash
+function final_setup()
+{
+ gateone_ip=$IP
+ gateone_port=$port
+ sed -ie '0,/.*accessed <a href="http.*/s//                accessed <a href="https:\/\/'$gateone_ip':'$gateone_port'">here<\/a>./' $content_html
+ sed -ie '0,/    <frame src="http.*/s//    <frame src="https:\/\/'$gateone_ip':'$gateone_port'" \/>/' $frame_html
+
+ cd /opt/gateone
+ ./gateone.py > /dev/null &
+ cd -
+ sudo service apache2 restart
+}
+
+######################################## FINAL setup
+
+
+#######################################
+
+#+END_SRC 
+
+* Calling functions
+** This function is for calling different functions defined above
+#+NAME: calling
+#+BEGIN_SRC bash
+build_lab
+update_ldapscripts
+create_password_file
+update_ldap_runtime
+add_www-data_to_root-group
+restart_apache2
+
+########### gateone
+install_tornado_and_python-support
+download_and_install_gateone
+generate_server_conf
+update_gateone_config
+###################
+
+###### ldap
+install_ldap
+configure_slapd
+create_organizational_units
+create_ldap_log_file
+update_ldapexec_file
+##########
+
+########### ssh
+install_nscd
+configure_ldap
+modify_nsswitch_conf
+edit_common_session
+restart_nscd
+###############
+
+final_setup
+
+#+END_SRC
 * Tangle
 #+BEGIN_SRC bash :tangle ../scripts/build.sh :eval no :noweb yes 
 <<imports>>
@@ -196,5 +456,16 @@ function update_gateone_config()
 <<installingTornadoAndPythonSupport>>
 <<downloadAndInstallingGateone>>
 <<generateServerConfigurationFile>>
-<<updateGateoneConfiguration>> 
+<<updateGateoneConfiguration>>
+<<install-ldap-utils>>
+<<configureSlapd>>
+<<createOraganisationalUnit>>
+<<createLdapLogFile>>
+<<updateLdapexecFile>>
+<<installLibamp>>
+<<Configuration>>
+<<editCommonSession>>
+<<restartingNscd>>
+<<finalSetup>> 
+<<calling>>
 #+END_SRC
